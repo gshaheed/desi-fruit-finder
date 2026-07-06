@@ -1,30 +1,191 @@
 {
-  "generated_at": "2026-07-05T00:00:00+00:00",
+  "generated_at": "2026-07-06T03:53:29.617664+00:00",
   "note": "Vendor stock is refreshed by scraper.py via GitHub Actions. 'last_checked' shows when each auto-checked vendor was last verified. In-store vendors are marked manual — call ahead or check in person.",
   "fruits": [
-    { "name": "Mango", "hindi_names": ["Aam"], "typical_season": "March – July (Indian imports peak Apr – Jun)", "source_regions": "Maharashtra, Gujarat, Andhra Pradesh (India); Mexico/Florida for domestic" },
-    { "name": "Lychee", "hindi_names": ["Litchi"], "typical_season": "May – July", "source_regions": "Florida, imports from SE Asia" },
-    { "name": "Mangosteen", "hindi_names": [], "typical_season": "June – September", "source_regions": "Thailand, Southeast Asia (imported)" },
-    { "name": "Jackfruit", "hindi_names": ["Kathal"], "typical_season": "March – August", "source_regions": "Mexico, SE Asia; green jackfruit canned year-round" },
-    { "name": "Custard Apple", "hindi_names": ["Sitaphal", "Sharifa"], "typical_season": "August – November", "source_regions": "Maharashtra (India); cherimoya from California/Spain" },
-    { "name": "Chikoo", "hindi_names": ["Sapota", "Sapodilla"], "typical_season": "Nov – Feb and Jun – Aug", "source_regions": "Gujarat & Maharashtra (India); Mexico" },
-    { "name": "Jamun", "hindi_names": ["Java Plum"], "typical_season": "May – July (short window)", "source_regions": "India; mostly frozen in the US" },
-    { "name": "Guava", "hindi_names": ["Amrood"], "typical_season": "Year-round, peak winter", "source_regions": "Mexico, Florida, California" },
-    { "name": "Pomegranate", "hindi_names": ["Anar"], "typical_season": "September – January", "source_regions": "California, India, imports" },
-    { "name": "Dragon Fruit", "hindi_names": ["Pitaya"], "typical_season": "Summer – Fall", "source_regions": "California, Mexico, SE Asia" },
-    { "name": "Rambutan", "hindi_names": [], "typical_season": "June – September", "source_regions": "Guatemala, SE Asia (imported)" },
-    { "name": "Longan", "hindi_names": ["Dragon's Eye"], "typical_season": "July – September", "source_regions": "Florida, SE Asia" },
-    { "name": "Ber", "hindi_names": ["Indian Jujube"], "typical_season": "December – March", "source_regions": "India; fresh Chinese jujube in US" },
-    { "name": "Wood Apple", "hindi_names": ["Bael"], "typical_season": "April – June", "source_regions": "India (mostly as pulp/sharbat in US)" },
-    { "name": "Phalsa", "hindi_names": ["Falsa"], "typical_season": "May – June (very short)", "source_regions": "India (rare fresh in US)" },
-    { "name": "Tamarind", "hindi_names": ["Imli"], "typical_season": "Year-round (harvest winter)", "source_regions": "Mexico, India; blocks & paste year-round" },
-    { "name": "Amla", "hindi_names": ["Indian Gooseberry"], "typical_season": "October – February", "source_regions": "India; fresh, frozen, candied in US" },
-    { "name": "Starfruit", "hindi_names": ["Kamrakh", "Carambola"], "typical_season": "Fall – Winter", "source_regions": "Florida, Mexico, SE Asia" },
-    { "name": "Muskmelon", "hindi_names": ["Kharbooja"], "typical_season": "May – August", "source_regions": "California, Mexico" },
-    { "name": "Karonda", "hindi_names": ["Bengal Currant"], "typical_season": "July – September", "source_regions": "India (rare fresh in US; often pickled)" },
-    { "name": "Passion Fruit", "hindi_names": ["Krishna Phal"], "typical_season": "Summer – Fall", "source_regions": "California, Colombia, SE Asia" },
-    { "name": "Sweet Lime", "hindi_names": ["Mosambi"], "typical_season": "Winter – Spring", "source_regions": "India, Mexico" },
-    { "name": "Water Apple", "hindi_names": ["Jamrul", "Rose Apple"], "typical_season": "Summer", "source_regions": "SE Asia, Florida (rare fresh in US)" }
+    {
+      "name": "Mango",
+      "hindi_names": [
+        "Aam"
+      ],
+      "typical_season": "March – July (Indian imports peak Apr – Jun)",
+      "source_regions": "Maharashtra, Gujarat, Andhra Pradesh (India); Mexico/Florida for domestic"
+    },
+    {
+      "name": "Lychee",
+      "hindi_names": [
+        "Litchi"
+      ],
+      "typical_season": "May – July",
+      "source_regions": "Florida, imports from SE Asia"
+    },
+    {
+      "name": "Mangosteen",
+      "hindi_names": [],
+      "typical_season": "June – September",
+      "source_regions": "Thailand, Southeast Asia (imported)"
+    },
+    {
+      "name": "Jackfruit",
+      "hindi_names": [
+        "Kathal"
+      ],
+      "typical_season": "March – August",
+      "source_regions": "Mexico, SE Asia; green jackfruit canned year-round"
+    },
+    {
+      "name": "Custard Apple",
+      "hindi_names": [
+        "Sitaphal",
+        "Sharifa"
+      ],
+      "typical_season": "August – November",
+      "source_regions": "Maharashtra (India); cherimoya from California/Spain"
+    },
+    {
+      "name": "Chikoo",
+      "hindi_names": [
+        "Sapota",
+        "Sapodilla"
+      ],
+      "typical_season": "Nov – Feb and Jun – Aug",
+      "source_regions": "Gujarat & Maharashtra (India); Mexico"
+    },
+    {
+      "name": "Jamun",
+      "hindi_names": [
+        "Java Plum"
+      ],
+      "typical_season": "May – July (short window)",
+      "source_regions": "India; mostly frozen in the US"
+    },
+    {
+      "name": "Guava",
+      "hindi_names": [
+        "Amrood"
+      ],
+      "typical_season": "Year-round, peak winter",
+      "source_regions": "Mexico, Florida, California"
+    },
+    {
+      "name": "Pomegranate",
+      "hindi_names": [
+        "Anar"
+      ],
+      "typical_season": "September – January",
+      "source_regions": "California, India, imports"
+    },
+    {
+      "name": "Dragon Fruit",
+      "hindi_names": [
+        "Pitaya"
+      ],
+      "typical_season": "Summer – Fall",
+      "source_regions": "California, Mexico, SE Asia"
+    },
+    {
+      "name": "Rambutan",
+      "hindi_names": [],
+      "typical_season": "June – September",
+      "source_regions": "Guatemala, SE Asia (imported)"
+    },
+    {
+      "name": "Longan",
+      "hindi_names": [
+        "Dragon's Eye"
+      ],
+      "typical_season": "July – September",
+      "source_regions": "Florida, SE Asia"
+    },
+    {
+      "name": "Ber",
+      "hindi_names": [
+        "Indian Jujube"
+      ],
+      "typical_season": "December – March",
+      "source_regions": "India; fresh Chinese jujube in US"
+    },
+    {
+      "name": "Wood Apple",
+      "hindi_names": [
+        "Bael"
+      ],
+      "typical_season": "April – June",
+      "source_regions": "India (mostly as pulp/sharbat in US)"
+    },
+    {
+      "name": "Phalsa",
+      "hindi_names": [
+        "Falsa"
+      ],
+      "typical_season": "May – June (very short)",
+      "source_regions": "India (rare fresh in US)"
+    },
+    {
+      "name": "Tamarind",
+      "hindi_names": [
+        "Imli"
+      ],
+      "typical_season": "Year-round (harvest winter)",
+      "source_regions": "Mexico, India; blocks & paste year-round"
+    },
+    {
+      "name": "Amla",
+      "hindi_names": [
+        "Indian Gooseberry"
+      ],
+      "typical_season": "October – February",
+      "source_regions": "India; fresh, frozen, candied in US"
+    },
+    {
+      "name": "Starfruit",
+      "hindi_names": [
+        "Kamrakh",
+        "Carambola"
+      ],
+      "typical_season": "Fall – Winter",
+      "source_regions": "Florida, Mexico, SE Asia"
+    },
+    {
+      "name": "Muskmelon",
+      "hindi_names": [
+        "Kharbooja"
+      ],
+      "typical_season": "May – August",
+      "source_regions": "California, Mexico"
+    },
+    {
+      "name": "Karonda",
+      "hindi_names": [
+        "Bengal Currant"
+      ],
+      "typical_season": "July – September",
+      "source_regions": "India (rare fresh in US; often pickled)"
+    },
+    {
+      "name": "Passion Fruit",
+      "hindi_names": [
+        "Krishna Phal"
+      ],
+      "typical_season": "Summer – Fall",
+      "source_regions": "California, Colombia, SE Asia"
+    },
+    {
+      "name": "Sweet Lime",
+      "hindi_names": [
+        "Mosambi"
+      ],
+      "typical_season": "Winter – Spring",
+      "source_regions": "India, Mexico"
+    },
+    {
+      "name": "Water Apple",
+      "hindi_names": [
+        "Jamrul",
+        "Rose Apple"
+      ],
+      "typical_season": "Summer",
+      "source_regions": "SE Asia, Florida (rare fresh in US)"
+    }
   ],
   "vendors": [
     {
@@ -34,13 +195,26 @@
       "location": "Ships nationwide with free shipping — Homewood, IL based",
       "url": "https://tropicalfruitbox.com/collections/asian-exotic-tropical-fruits",
       "check_url": "https://tropicalfruitbox.com/collections/asian-exotic-tropical-fruits",
-      "fruits": ["Mango", "Mangosteen", "Rambutan", "Lychee", "Longan", "Dragon Fruit", "Jackfruit", "Starfruit", "Chikoo", "Passion Fruit", "Guava", "Custard Apple"],
+      "fruits": [
+        "Mango",
+        "Mangosteen",
+        "Rambutan",
+        "Lychee",
+        "Longan",
+        "Dragon Fruit",
+        "Jackfruit",
+        "Starfruit",
+        "Chikoo",
+        "Passion Fruit",
+        "Guava",
+        "Custard Apple"
+      ],
       "note": "Single-fruit and build-your-own exotic boxes; carries rare Asian fruit when in season.",
       "contact": null,
       "auto_checked": true,
-      "status": "unknown",
-      "status_text": "Awaiting first automated stock check — use the button to see live stock.",
-      "last_checked": null
+      "status": "sold_out",
+      "status_text": "ellow dragon fruit box while they last! sold out kumquat fruit box from $69.00 kumquats",
+      "last_checked": "2026-07-06T03:53:29.617664+00:00"
     },
     {
       "id": "miami-fruit",
@@ -49,13 +223,25 @@
       "location": "Ships nationwide (perishable orders ship Mon–Thu) — Miami, FL based",
       "url": "https://miamifruit.org/",
       "check_url": "https://miamifruit.org/products/mangosteen-box",
-      "fruits": ["Mangosteen", "Rambutan", "Lychee", "Jackfruit", "Dragon Fruit", "Longan", "Passion Fruit", "Starfruit", "Custard Apple", "Mango", "Guava"],
+      "fruits": [
+        "Mangosteen",
+        "Rambutan",
+        "Lychee",
+        "Jackfruit",
+        "Dragon Fruit",
+        "Longan",
+        "Passion Fruit",
+        "Starfruit",
+        "Custard Apple",
+        "Mango",
+        "Guava"
+      ],
       "note": "Tropical-fruit hub; mangosteen, durian and jackfruit boxes sourced from farm partners. Highly perishable — eat on arrival.",
       "contact": null,
       "auto_checked": true,
-      "status": "unknown",
-      "status_text": "Awaiting first automated stock check — use the button to see live stock.",
-      "last_checked": null
+      "status": "in_stock",
+      "status_text": "schema availability = \"https://schema.org/InStock\"",
+      "last_checked": "2026-07-06T03:53:29.617664+00:00"
     },
     {
       "id": "weee",
@@ -64,7 +250,18 @@
       "location": "Online Asian-American grocery; delivers across CA metros and much of the US",
       "url": "https://www.sayweee.com",
       "check_url": null,
-      "fruits": ["Mango", "Lychee", "Longan", "Dragon Fruit", "Rambutan", "Guava", "Custard Apple", "Jamun", "Chikoo", "Starfruit"],
+      "fruits": [
+        "Mango",
+        "Lychee",
+        "Longan",
+        "Dragon Fruit",
+        "Rambutan",
+        "Guava",
+        "Custard Apple",
+        "Jamun",
+        "Chikoo",
+        "Starfruit"
+      ],
       "note": "Marketplace with many sellers — search the app/site for current stock in your delivery zone. Jamun & chikoo usually frozen.",
       "contact": null,
       "auto_checked": false,
@@ -79,13 +276,15 @@
       "location": "Bay Area, CA — free local delivery, ships nationwide",
       "url": "https://aumpi.com",
       "check_url": "https://aumpi.com/products/alphonso",
-      "fruits": ["Mango"],
+      "fruits": [
+        "Mango"
+      ],
       "note": "Alphonso, Kesar & Banganapalli mango specialists.",
       "contact": "WhatsApp: +1 510-270-0969",
       "auto_checked": true,
       "status": "sold_out",
-      "status_text": "Alphonso listing showed out of stock at last check (season winding down).",
-      "last_checked": "2026-07-05T00:00:00+00:00"
+      "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
+      "last_checked": "2026-07-06T03:53:29.617664+00:00"
     },
     {
       "id": "bhanu-natural-products",
@@ -94,13 +293,15 @@
       "location": "Delivers to San Francisco, San Jose, Fremont, CA",
       "url": "https://bhanunaturalproducts.com/us/buy-mangoes-in-bay-area",
       "check_url": "https://bhanunaturalproducts.com/us/buy-mangoes-in-bay-area",
-      "fruits": ["Mango"],
+      "fruits": [
+        "Mango"
+      ],
       "note": "Alphonso mango; harvest-dependent, pre-order recommended.",
       "contact": null,
       "auto_checked": true,
       "status": "pre_order",
-      "status_text": "Pre-orders recommended as stock sells out quickly.",
-      "last_checked": "2026-07-05T00:00:00+00:00"
+      "status_text": "june, depending on harvest conditions. pre-orders are recommended as stock sells out qui",
+      "last_checked": "2026-07-06T03:53:29.617664+00:00"
     },
     {
       "id": "fresh-mangoes",
@@ -109,13 +310,16 @@
       "location": "Ships nationwide via air cargo — Virginia based",
       "url": "https://freshmangoes.us",
       "check_url": "https://freshmangoes.us/products/pre-order-2025-season-ratnagiri-devgad-alphonso-mangoes",
-      "fruits": ["Mango", "Custard Apple"],
+      "fruits": [
+        "Mango",
+        "Custard Apple"
+      ],
       "note": "Ratnagiri & Devgad Alphonso, Kesar and Banganapalli mangoes.",
       "contact": null,
       "auto_checked": true,
       "status": "sold_out",
-      "status_text": "Season sold out at last check — verify for next season.",
-      "last_checked": "2026-07-05T00:00:00+00:00"
+      "status_text": "0 usd unit price / &nbsp;per&nbsp; sale sold out shipping calculated at checkout. quanti",
+      "last_checked": "2026-07-06T03:53:29.617664+00:00"
     },
     {
       "id": "a1mangos",
@@ -124,13 +328,15 @@
       "location": "Ships nationwide",
       "url": "https://www.a1mangos.com",
       "check_url": "https://www.a1mangos.com/products/indian-mangos-in-usa",
-      "fruits": ["Mango"],
+      "fruits": [
+        "Mango"
+      ],
       "note": "Indian Alphonso mangoes shipped in the US.",
       "contact": null,
       "auto_checked": true,
       "status": "sold_out",
-      "status_text": "Listing showed out of stock at last check.",
-      "last_checked": "2026-07-05T00:00:00+00:00"
+      "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
+      "last_checked": "2026-07-06T03:53:29.617664+00:00"
     },
     {
       "id": "ar4mangoes",
@@ -139,13 +345,15 @@
       "location": "Ships nationwide",
       "url": "https://www.ar4mangoes.com",
       "check_url": "https://www.ar4mangoes.com/product-page/alphonso-deliveredinusa",
-      "fruits": ["Mango"],
+      "fruits": [
+        "Mango"
+      ],
       "note": "Alphonso mango delivered across the US.",
       "contact": null,
       "auto_checked": true,
       "status": "sold_out",
-      "status_text": "Listing showed out of stock at last check.",
-      "last_checked": "2026-07-05T00:00:00+00:00"
+      "status_text": "og:availability = \"out of stock\"",
+      "last_checked": "2026-07-06T03:53:29.617664+00:00"
     },
     {
       "id": "zzmango",
@@ -154,7 +362,9 @@
       "location": "Ships nationwide",
       "url": "https://zzmango.com/product-category/alphonso/",
       "check_url": null,
-      "fruits": ["Mango"],
+      "fruits": [
+        "Mango"
+      ],
       "note": "Moved from mangozz.com; check the Alphonso category page directly.",
       "contact": null,
       "auto_checked": false,
@@ -169,7 +379,17 @@
       "location": "Santa Clara & Bay Area (NorCal) and Artesia / Little India & Greater LA (SoCal)",
       "url": "https://www.patelbros.com/locations",
       "check_url": null,
-      "fruits": ["Mango", "Jamun", "Chikoo", "Custard Apple", "Guava", "Amla", "Tamarind", "Ber", "Sweet Lime"],
+      "fruits": [
+        "Mango",
+        "Jamun",
+        "Chikoo",
+        "Custard Apple",
+        "Guava",
+        "Amla",
+        "Tamarind",
+        "Ber",
+        "Sweet Lime"
+      ],
       "note": "Largest US desi grocery chain. In-store stock varies daily and by location — call the store or check in person.",
       "contact": null,
       "auto_checked": false,
@@ -184,7 +404,16 @@
       "location": "Bay Area & South Bay, CA (Sunnyvale, Fremont, San Jose + more)",
       "url": "https://www.indiacashandcarry.com",
       "check_url": null,
-      "fruits": ["Mango", "Chikoo", "Guava", "Custard Apple", "Jamun", "Amla", "Tamarind", "Sweet Lime"],
+      "fruits": [
+        "Mango",
+        "Chikoo",
+        "Guava",
+        "Custard Apple",
+        "Jamun",
+        "Amla",
+        "Tamarind",
+        "Sweet Lime"
+      ],
       "note": "Bay Area desi grocery chain; seasonal fresh Indian fruit plus frozen jamun & pulp. Check in store.",
       "contact": null,
       "auto_checked": false,
@@ -199,7 +428,15 @@
       "location": "Multiple CA locations (Bay Area, Sacramento, Southern CA)",
       "url": "https://namasteplaza.com",
       "check_url": null,
-      "fruits": ["Mango", "Guava", "Chikoo", "Custard Apple", "Amla", "Tamarind", "Jamun"],
+      "fruits": [
+        "Mango",
+        "Guava",
+        "Chikoo",
+        "Custard Apple",
+        "Amla",
+        "Tamarind",
+        "Jamun"
+      ],
       "note": "Desi supermarket; seasonal fresh mango, chikoo and guava, plus frozen and pulp. Check in store.",
       "contact": null,
       "auto_checked": false,
@@ -214,7 +451,17 @@
       "location": "Many locations across NorCal & SoCal",
       "url": "https://www.99ranch.com",
       "check_url": null,
-      "fruits": ["Mango", "Lychee", "Longan", "Rambutan", "Dragon Fruit", "Jackfruit", "Starfruit", "Guava", "Water Apple"],
+      "fruits": [
+        "Mango",
+        "Lychee",
+        "Longan",
+        "Rambutan",
+        "Dragon Fruit",
+        "Jackfruit",
+        "Starfruit",
+        "Guava",
+        "Water Apple"
+      ],
       "note": "Large Asian grocery chain; strong seasonal exotics (lychee, rambutan, dragon fruit, longan). Longan sometimes only dried off-season. Check store or Instacart.",
       "contact": null,
       "auto_checked": false,
@@ -229,7 +476,16 @@
       "location": "NorCal (Bay Area) & SoCal locations",
       "url": "https://www.hmart.com/produce/fruit",
       "check_url": null,
-      "fruits": ["Mango", "Lychee", "Longan", "Rambutan", "Dragon Fruit", "Jackfruit", "Muskmelon", "Starfruit"],
+      "fruits": [
+        "Mango",
+        "Lychee",
+        "Longan",
+        "Rambutan",
+        "Dragon Fruit",
+        "Jackfruit",
+        "Muskmelon",
+        "Starfruit"
+      ],
       "note": "Korean-American grocery chain with a strong exotic-fruit produce section. Check store or online for your area.",
       "contact": null,
       "auto_checked": false,
@@ -244,7 +500,14 @@
       "location": "Greater Los Angeles & Southern California",
       "url": "https://www.northgatemarket.com",
       "check_url": null,
-      "fruits": ["Guava", "Starfruit", "Dragon Fruit", "Tamarind", "Mango", "Passion Fruit"],
+      "fruits": [
+        "Guava",
+        "Starfruit",
+        "Dragon Fruit",
+        "Tamarind",
+        "Mango",
+        "Passion Fruit"
+      ],
       "note": "Latino supermarket; excellent for guava, tamarind, starfruit, dragon fruit and mango. Check in store.",
       "contact": null,
       "auto_checked": false,
@@ -259,7 +522,14 @@
       "location": "Southern & Central California",
       "url": "https://www.vallartasupermarkets.com",
       "check_url": null,
-      "fruits": ["Guava", "Tamarind", "Starfruit", "Dragon Fruit", "Mango", "Passion Fruit"],
+      "fruits": [
+        "Guava",
+        "Tamarind",
+        "Starfruit",
+        "Dragon Fruit",
+        "Mango",
+        "Passion Fruit"
+      ],
       "note": "Mexican-American grocery chain; strong tropical & Latin fruit selection. Check in store.",
       "contact": null,
       "auto_checked": false,
@@ -274,7 +544,14 @@
       "location": "Statewide (NorCal & SoCal)",
       "url": "https://www.wholefoodsmarket.com",
       "check_url": null,
-      "fruits": ["Mango", "Dragon Fruit", "Guava", "Passion Fruit", "Pomegranate", "Starfruit"],
+      "fruits": [
+        "Mango",
+        "Dragon Fruit",
+        "Guava",
+        "Passion Fruit",
+        "Pomegranate",
+        "Starfruit"
+      ],
       "note": "Corporate grocer; carries mango, dragon fruit and passion fruit seasonally. Availability varies by store — check locally.",
       "contact": null,
       "auto_checked": false,
@@ -289,7 +566,12 @@
       "location": "Statewide warehouses",
       "url": "https://www.costco.com",
       "check_url": null,
-      "fruits": ["Mango", "Dragon Fruit", "Pomegranate", "Muskmelon"],
+      "fruits": [
+        "Mango",
+        "Dragon Fruit",
+        "Pomegranate",
+        "Muskmelon"
+      ],
       "note": "Seasonal Ataulfo/Champagne mango cases and dragon fruit; stock rotates fast. Check your local warehouse.",
       "contact": null,
       "auto_checked": false,
