@@ -3,54 +3,29 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Desi Fruit Finder — A field guide to South Asian & tropical fruit</title>
-<meta name="description" content="A hand-built field guide to the fruits of South Asia and the tropics — from mango and lychee to mangosteen, jamun and phalsa. Search, filter by season and taste, and learn how to eat each one." />
+<title>Desi Fruit Finder — Where to buy desi & tropical fruit near you</title>
+<meta name="description" content="Find where to buy South Asian & tropical fruit — mango, lychee, mangosteen, jamun, chikoo and more — near you in California or shipped to your door, and see whether it's in stock right now." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#fff6ea;
-    --paper-2:#ffefdc;
-    --ink:#241a12;
-    --ink-soft:#6b5b4d;
-    --mango:#ff7a00;
-    --guava:#e8195b;
-    --leaf:#128a5b;
-    --plum:#5b1a8c;
-    --sun:#ffc23c;
-    --line:#e7d6bf;
-    --card:#fffaf2;
-    --shadow:rgba(58,34,10,.14);
+    --paper:#fff6ea; --paper-2:#ffefdc; --ink:#241a12; --ink-soft:#6b5b4d;
+    --mango:#ff7a00; --guava:#e8195b; --leaf:#128a5b; --plum:#5b1a8c; --sun:#ffc23c;
+    --line:#e7d6bf; --card:#fffaf2; --shadow:rgba(58,34,10,.14);
+    --in:#0f8a4c; --in-bg:#e3f5ea; --pre:#c67c00; --pre-bg:#fdefd2; --out:#d23b3b; --out-bg:#fbe4e4;
+    --neutral:#5b7fb0; --neutral-bg:#e6eefa; --muted:#8a7a68; --muted-bg:#efe6d8;
     --maxw:1180px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{
-    margin:0;
-    font-family:"Space Grotesk",system-ui,sans-serif;
-    color:var(--ink);
-    background:var(--paper);
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  /* subtle paper grain */
-  body::before{
-    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-  }
+  body{margin:0;font-family:"Space Grotesk",system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;position:relative;z-index:1}
   a{color:inherit}
   button{font-family:inherit;cursor:pointer}
 
-  /* ---------- Top bar ---------- */
-  header.top{
-    position:sticky;top:0;z-index:40;
-    background:rgba(255,246,234,.82);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
+  header.top{position:sticky;top:0;z-index:40;background:rgba(255,246,234,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   .top-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
   .brand{display:flex;align-items:center;gap:11px;font-family:"Fraunces",serif;font-weight:900;font-size:20px;letter-spacing:-.01em}
   .brand .mark{width:34px;height:34px;flex:none}
@@ -59,19 +34,18 @@
   .top nav a:hover{opacity:1}
   @media(max-width:720px){.top nav{display:none}}
 
-  /* ---------- Hero ---------- */
-  .hero{position:relative;padding:74px 0 40px;overflow:hidden}
-  .hero .blob{position:absolute;border-radius:50%;filter:blur(6px);opacity:.55;z-index:0}
-  .b1{width:340px;height:340px;background:radial-gradient(circle at 30% 30%,var(--sun),transparent 70%);top:-80px;right:-40px}
+  .hero{position:relative;padding:70px 0 34px;overflow:hidden}
+  .hero .blob{position:absolute;border-radius:50%;filter:blur(6px);z-index:0}
+  .b1{width:340px;height:340px;background:radial-gradient(circle at 30% 30%,var(--sun),transparent 70%);top:-80px;right:-40px;opacity:.55}
   .b2{width:300px;height:300px;background:radial-gradient(circle at 30% 30%,var(--guava),transparent 68%);top:120px;right:220px;opacity:.28}
   .b3{width:260px;height:260px;background:radial-gradient(circle at 30% 30%,var(--leaf),transparent 70%);top:-40px;left:-90px;opacity:.3}
   .hero-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:30px;align-items:center;position:relative;z-index:1}
   @media(max-width:860px){.hero-grid{grid-template-columns:1fr}}
   .eyebrow{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--guava);margin-bottom:18px}
   .eyebrow::before{content:"";width:26px;height:2px;background:var(--guava);display:inline-block}
-  h1.display{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(42px,7vw,82px);line-height:.96;letter-spacing:-.02em;margin:0 0 20px}
+  h1.display{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(40px,6.4vw,76px);line-height:.98;letter-spacing:-.02em;margin:0 0 20px}
   h1.display em{font-style:italic;font-weight:500;color:var(--mango)}
-  .lead{font-size:clamp(16px,2vw,19px);color:var(--ink-soft);max-width:30em;margin:0 0 26px}
+  .lead{font-size:clamp(16px,2vw,19px);color:var(--ink-soft);max-width:32em;margin:0 0 26px}
   .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
   .btn{border:none;border-radius:100px;padding:14px 24px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;transition:transform .15s,box-shadow .2s}
   .btn-primary{background:var(--ink);color:var(--paper)}
@@ -87,25 +61,29 @@
   .hero-art .h-d{bottom:6px;right:40px;animation-delay:1.8s;transform:rotate(-5deg)}
   @keyframes float{0%,100%{translate:0 0}50%{translate:0 -12px}}
   @media(max-width:860px){.hero-art{display:none}}
-
-  .stat-strip{display:flex;gap:34px;margin-top:44px;flex-wrap:wrap;position:relative;z-index:1}
+  .stat-strip{display:flex;gap:34px;margin-top:40px;flex-wrap:wrap;position:relative;z-index:1}
   .stat b{font-family:"Fraunces",serif;font-size:30px;font-weight:900;display:block;line-height:1}
-  .stat span{font-size:13px;color:var(--ink-soft);letter-spacing:.02em}
+  .stat span{font-size:13px;color:var(--ink-soft)}
 
-  /* ---------- Finder ---------- */
-  .finder{padding:26px 0 90px}
-  .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:40px 0 24px;flex-wrap:wrap}
+  .finder{padding:22px 0 90px}
+  .section-head{margin:34px 0 20px}
   .section-head h2{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(28px,4vw,42px);margin:0;letter-spacing:-.02em}
   .section-head p{margin:6px 0 0;color:var(--ink-soft);font-size:15px}
 
   .controls{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 6px 20px var(--shadow);position:sticky;top:82px;z-index:20}
+  .region-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:14px;border-bottom:1px dashed var(--line)}
+  .region-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:6px}
+  .region-toggle{display:flex;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:4px}
+  .region-toggle button{border:none;background:transparent;border-radius:100px;padding:8px 16px;font-size:13.5px;font-weight:600;color:var(--ink-soft);transition:all .15s}
+  .region-toggle button.on{background:var(--ink);color:var(--paper)}
+  .region-note{font-size:12.5px;color:var(--muted);margin-left:auto}
   .search-row{display:flex;gap:12px;align-items:center}
   .search-box{flex:1;display:flex;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:0 14px}
   .search-box:focus-within{border-color:var(--mango)}
   .search-box svg{width:18px;height:18px;opacity:.5;flex:none}
   .search-box input{flex:1;border:none;background:transparent;padding:13px 0;font-size:15.5px;font-family:inherit;color:var(--ink);outline:none}
   .count-pill{font-size:13px;font-weight:600;color:var(--ink-soft);white-space:nowrap;padding:0 4px}
-  .filter-groups{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px}
+  .filter-groups{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;align-items:flex-end}
   .fg{display:flex;flex-direction:column;gap:8px}
   .fg .lab{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
   .chips{display:flex;flex-wrap:wrap;gap:7px}
@@ -113,68 +91,104 @@
   .chip:hover{border-color:var(--ink)}
   .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
   .chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
-  .reset{margin-left:auto;align-self:flex-end;background:transparent;border:none;color:var(--guava);font-weight:600;font-size:13px;text-decoration:underline;padding:6px}
+  .toggle-avail{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;user-select:none}
+  .toggle-avail input{display:none}
+  .toggle-avail .sw{width:38px;height:22px;border-radius:100px;background:var(--line);position:relative;transition:background .2s}
+  .toggle-avail .sw::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .toggle-avail input:checked + .sw{background:var(--leaf)}
+  .toggle-avail input:checked + .sw::after{transform:translateX(16px)}
+  .reset{background:transparent;border:none;color:var(--guava);font-weight:600;font-size:13px;text-decoration:underline;padding:6px}
 
-  /* ---------- Grid ---------- */
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;margin-top:26px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;position:relative;overflow:hidden;transition:transform .18s,box-shadow .2s,border-color .2s;text-align:left}
   .card:hover{transform:translateY(-5px);box-shadow:0 18px 34px var(--shadow);border-color:transparent}
-  .card .art{height:150px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;position:relative;overflow:hidden}
-  .card .art svg{width:118px;height:118px;position:relative;z-index:1;transition:transform .25s}
+  .card .art{height:140px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:13px;position:relative;overflow:hidden}
+  .card .art svg{width:112px;height:112px;position:relative;z-index:1;transition:transform .25s}
   .card:hover .art svg{transform:scale(1.07) rotate(-3deg)}
   .card .season-tag{position:absolute;top:10px;right:10px;z-index:2;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.85);padding:4px 9px;border-radius:100px;color:var(--ink)}
   .card h3{font-family:"Fraunces",serif;font-weight:900;font-size:21px;margin:0 0 2px;letter-spacing:-.01em}
   .card .local{font-size:13px;color:var(--ink-soft);font-style:italic;margin-bottom:10px}
-  .card .tastes{display:flex;flex-wrap:wrap;gap:6px}
-  .taste-tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--paper-2);color:var(--ink-soft)}
+  .avail{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;padding:7px 10px;border-radius:12px;margin-top:2px}
+  .avail .adot{width:9px;height:9px;border-radius:50%;flex:none}
+  .avail.in{background:var(--in-bg);color:var(--in)} .avail.in .adot{background:var(--in)}
+  .avail.pre{background:var(--pre-bg);color:var(--pre)} .avail.pre .adot{background:var(--pre)}
+  .avail.out{background:var(--out-bg);color:var(--out)} .avail.out .adot{background:var(--out)}
+  .avail.check{background:var(--neutral-bg);color:var(--neutral)} .avail.check .adot{background:var(--neutral)}
+  .avail.none{background:var(--muted-bg);color:var(--muted)} .avail.none .adot{background:var(--muted)}
   .no-results{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--ink-soft)}
   .no-results b{font-family:"Fraunces",serif;font-size:22px;color:var(--ink);display:block;margin-bottom:6px}
+  .data-note{font-size:12.5px;color:var(--muted);margin-top:16px;text-align:right}
 
-  /* ---------- Modal ---------- */
   .modal-scrim{position:fixed;inset:0;z-index:60;background:rgba(36,26,18,.5);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
   .modal-scrim.open{display:flex}
-  .modal{background:var(--paper);border-radius:26px;max-width:760px;width:100%;box-shadow:0 30px 80px rgba(36,26,18,.4);position:relative;animation:pop .3s cubic-bezier(.2,.8,.2,1);overflow:hidden}
+  .modal{background:var(--paper);border-radius:26px;max-width:780px;width:100%;box-shadow:0 30px 80px rgba(36,26,18,.4);position:relative;animation:pop .3s cubic-bezier(.2,.8,.2,1);overflow:hidden}
   @keyframes pop{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
-  .modal .m-hero{padding:40px 40px 30px;display:flex;gap:26px;align-items:center;position:relative}
-  .modal .m-art{width:150px;height:150px;flex:none;border-radius:22px;display:flex;align-items:center;justify-content:center}
-  .modal .m-art svg{width:118px;height:118px}
-  .modal .m-title h2{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(30px,5vw,44px);margin:0;line-height:1;letter-spacing:-.02em}
+  .modal .m-hero{padding:38px 40px 26px;display:flex;gap:26px;align-items:center;position:relative}
+  .modal .m-art{width:140px;height:140px;flex:none;border-radius:22px;display:flex;align-items:center;justify-content:center}
+  .modal .m-art svg{width:110px;height:110px}
+  .modal .m-title h2{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(30px,5vw,42px);margin:0;line-height:1;letter-spacing:-.02em}
   .modal .m-title .m-local{font-style:italic;color:var(--ink-soft);font-size:16px;margin:6px 0 12px}
   .modal .m-title .tastes{display:flex;flex-wrap:wrap;gap:6px}
+  .taste-tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--paper-2);color:var(--ink-soft)}
   .close-x{position:absolute;top:18px;right:18px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(36,26,18,.08);font-size:20px;display:flex;align-items:center;justify-content:center;color:var(--ink);z-index:3}
   .close-x:hover{background:rgba(36,26,18,.16)}
-  .m-tagline{padding:0 40px 4px;font-family:"Fraunces",serif;font-style:italic;font-size:19px;color:var(--ink);opacity:.9}
-  .m-body{padding:22px 40px 40px}
-  .m-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
-  .fact{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
-  .fact .k{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
-  .fact .v{font-weight:600;font-size:14.5px}
-  .m-section{margin-bottom:22px}
-  .m-section h4{font-family:"Fraunces",serif;font-weight:900;font-size:17px;margin:0 0 7px;display:flex;align-items:center;gap:9px}
+  .m-body{padding:6px 40px 40px}
+  .buy-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:6px 0 14px;flex-wrap:wrap}
+  .buy-head h4{font-family:"Fraunces",serif;font-weight:900;font-size:20px;margin:0}
+  .buy-head .ctx{font-size:12.5px;color:var(--muted)}
+  .vendor-list{display:flex;flex-direction:column;gap:12px}
+  .vendor{border:1px solid var(--line);border-radius:16px;padding:15px 16px;background:var(--card)}
+  .vendor-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .vendor-name{font-weight:700;font-size:15.5px}
+  .vendor-loc{font-size:13px;color:var(--ink-soft);margin:5px 0 0}
+  .vendor-note{font-size:12.5px;color:var(--muted);margin:6px 0 0}
+  .vendor-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:11px;flex-wrap:wrap}
+  .checked{font-size:11.5px;color:var(--muted)}
+  .status-badge{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+  .status-badge .sd{width:8px;height:8px;border-radius:50%}
+  .sb-in{background:var(--in-bg);color:var(--in)} .sb-in .sd{background:var(--in)}
+  .sb-pre{background:var(--pre-bg);color:var(--pre)} .sb-pre .sd{background:var(--pre)}
+  .sb-out{background:var(--out-bg);color:var(--out)} .sb-out .sd{background:var(--out)}
+  .sb-check{background:var(--neutral-bg);color:var(--neutral)} .sb-check .sd{background:var(--neutral)}
+  .sb-ended{background:var(--muted-bg);color:var(--muted)} .sb-ended .sd{background:var(--muted)}
+  .visit{font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:100px;padding:7px 14px;transition:all .15s;white-space:nowrap}
+  .visit:hover{background:var(--ink);color:var(--paper)}
+  .vendor-contact{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+  .no-vendors{border:1px dashed var(--line);border-radius:16px;padding:18px;text-align:center;color:var(--ink-soft);font-size:14px;background:var(--paper)}
+  .no-vendors b{color:var(--ink)}
+  .m-divider{height:1px;background:var(--line);margin:26px 0 22px;border:none}
+  .m-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+  .fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+  .fact .k{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .fact .v{font-weight:600;font-size:13.5px}
+  .m-section{margin-bottom:20px}
+  .m-section h4{font-family:"Fraunces",serif;font-weight:900;font-size:16px;margin:0 0 6px;display:flex;align-items:center;gap:9px}
   .m-section h4 .ic{width:22px;height:22px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:none}
-  .m-section p{margin:0;color:var(--ink-soft);font-size:15px}
+  .m-section p{margin:0;color:var(--ink-soft);font-size:14.5px}
   .nutri{display:flex;flex-wrap:wrap;gap:8px}
-  .nutri span{background:var(--paper-2);border-radius:100px;padding:5px 12px;font-size:13px;font-weight:600}
+  .nutri span{background:var(--paper-2);border-radius:100px;padding:5px 12px;font-size:12.5px;font-weight:600}
+  .enc-toggle{background:transparent;border:1.5px solid var(--line);border-radius:100px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--ink-soft);margin-top:4px}
+  .enc-toggle:hover{border-color:var(--ink);color:var(--ink)}
+  .enc[hidden]{display:none}
   @media(max-width:560px){
-    .modal .m-hero{flex-direction:column;text-align:center;padding:34px 24px 20px}
-    .m-tagline,.m-body{padding-left:24px;padding-right:24px}
+    .modal .m-hero{flex-direction:column;text-align:center;padding:32px 22px 18px}
+    .m-body{padding-left:22px;padding-right:22px}
     .m-facts{grid-template-columns:1fr}
+    .region-note{margin-left:0;width:100%}
   }
 
-  /* ---------- About ---------- */
-  .about{background:var(--ink);color:var(--paper);padding:80px 0;margin-top:20px;border-radius:40px 40px 0 0;position:relative;z-index:1}
+  .about{background:var(--ink);color:var(--paper);padding:74px 0;margin-top:20px;border-radius:40px 40px 0 0;position:relative;z-index:1}
   .about h2{font-family:"Fraunces",serif;font-weight:900;font-size:clamp(28px,4vw,40px);margin:0 0 18px;letter-spacing:-.02em}
-  .about .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
-  @media(max-width:760px){.about .about-grid{grid-template-columns:1fr;gap:28px}}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+  @media(max-width:760px){.about-grid{grid-template-columns:1fr;gap:28px}}
   .about p{color:#e8dccb;font-size:16px;max-width:34em}
-  .about .mini{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:8px}
+  .about .mini{display:grid;grid-template-columns:1fr 1fr;gap:22px}
   .about .mini .m b{font-family:"Fraunces",serif;font-size:16px;display:block;margin-bottom:4px;color:var(--sun)}
   .about .mini .m span{font-size:14px;color:#d8ccbb}
 
   footer{background:var(--ink);color:#cbb9a4;padding:26px 0 44px;font-size:13.5px;position:relative;z-index:1}
   .foot-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center;border-top:1px solid rgba(255,255,255,.12);padding-top:22px}
   footer a{color:var(--sun);text-decoration:none}
-
   .to-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--paper);border:none;font-size:20px;box-shadow:0 8px 20px var(--shadow);z-index:30;opacity:0;pointer-events:none;transition:opacity .3s}
   .to-top.show{opacity:1;pointer-events:auto}
 </style>
@@ -192,8 +206,8 @@
       Desi Fruit Finder
     </a>
     <nav>
-      <a href="#finder">Finder</a>
-      <a href="#seasons">By season</a>
+      <a href="#finder">Find fruit</a>
+      <a href="#how">How it works</a>
       <a href="#about">About</a>
     </nav>
   </div>
@@ -203,17 +217,17 @@
   <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
   <div class="wrap hero-grid">
     <div>
-      <span class="eyebrow">A field guide to desi &amp; tropical fruit</span>
-      <h1 class="display">Find the fruit,<br>then <em>fall for it.</em></h1>
-      <p class="lead">From the alphonso mango of Ratnagiri to the purple armour of a mangosteen — a searchable guide to the sweet, tart and strange fruits of South Asia and the tropics. Learn what's in season, how to open it, and where to find it.</p>
+      <span class="eyebrow">Where to buy desi &amp; tropical fruit</span>
+      <h1 class="display">Find the fruit.<br>See <em>who's got it.</em></h1>
+      <p class="lead">Mango, lychee, mangosteen, jamun, chikoo and more — this finder shows you which vendors carry each fruit near you in California or shipped to your door, and whether it looks in stock right now.</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#finder">Start exploring →</a>
-        <a class="btn btn-ghost" href="#about">Why this exists</a>
+        <a class="btn btn-primary" href="#finder">Find fruit near me →</a>
+        <a class="btn btn-ghost" href="#how">How stock is checked</a>
       </div>
       <div class="stat-strip">
-        <div class="stat"><b id="statCount">24</b><span>fruits catalogued</span></div>
-        <div class="stat"><b>4</b><span>seasons mapped</span></div>
-        <div class="stat"><b>100%</b><span>hand-illustrated</span></div>
+        <div class="stat"><b id="statFruit">23</b><span>fruits</span></div>
+        <div class="stat"><b id="statVendor">18</b><span>vendors tracked</span></div>
+        <div class="stat"><b>3</b><span>regions + shipping</span></div>
       </div>
     </div>
     <div class="hero-art" id="heroArt"></div>
@@ -222,18 +236,26 @@
 
 <section class="finder" id="finder">
   <div class="wrap">
-    <div class="section-head" id="seasons">
-      <div>
-        <h2>The Finder</h2>
-        <p>Search by name, or filter by season, taste and where it grows.</p>
-      </div>
+    <div class="section-head">
+      <h2>The Finder</h2>
+      <p>Pick where you are, search or filter, then open any fruit to see where to buy it and its latest stock status.</p>
     </div>
 
     <div class="controls">
+      <div class="region-row">
+        <span class="region-label">📍 I'm shopping in</span>
+        <div class="region-toggle" id="regionToggle">
+          <button data-region="all" class="on">All regions</button>
+          <button data-region="norcal">NorCal</button>
+          <button data-region="socal">SoCal</button>
+          <button data-region="ships">Ships to me</button>
+        </div>
+        <span class="region-note" id="regionNote"></span>
+      </div>
       <div class="search-row">
         <div class="search-box">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <input id="search" type="text" placeholder="Search a fruit… try 'mango', 'sour' or 'monsoon'" autocomplete="off" />
+          <input id="search" type="text" placeholder="Search a fruit… try 'mango', 'lychee' or 'sour'" autocomplete="off" />
         </div>
         <span class="count-pill" id="countPill"></span>
       </div>
@@ -241,29 +263,42 @@
     </div>
 
     <div class="grid" id="grid"></div>
+    <div class="data-note" id="dataNote"></div>
   </div>
 </section>
 
-<section class="about" id="about">
+<section class="about" id="how">
   <div class="wrap about-grid">
     <div>
-      <h2>A guide made by hand, not by algorithm.</h2>
-      <p>Most fruit charts stop at apples and bananas. This one starts where those leave off — with the fruits people actually grow up on across the subcontinent and the wider tropics, the ones sold from handcarts and eaten over a sink because they're too juicy for a plate.</p>
-      <p>Every fruit here is drawn from scratch, described plainly, and tagged so you can find it by taste or season. No stock photos, no filler.</p>
+      <h2>How the stock check works</h2>
+      <p>For online vendors, a script checks each store's public product page every few hours and reads its stock signal — so a badge like <b>In stock</b>, <b>Pre-order</b> or <b>Sold out</b> reflects the last automated check, with the time shown on each listing.</p>
+      <p>Grocery stores don't publish live inventory, so those are marked <b>Check directly</b> — the finder points you to the right store and aisle, and you confirm by phone, app, or in person. Every listing has a direct link so you can verify before you go.</p>
     </div>
     <div class="mini">
-      <div class="m"><b>Eat it right</b><span>Each entry tells you how locals actually open and eat it.</span></div>
-      <div class="m"><b>Know the season</b><span>Summer, monsoon, winter — timing is half the flavour.</span></div>
-      <div class="m"><b>Find it near you</b><span>Where each fruit tends to show up, fresh or frozen.</span></div>
-      <div class="m"><b>Learn something</b><span>A fun fact per fruit, because trivia sticks.</span></div>
+      <div class="m"><b>Near you</b><span>Filter by NorCal, SoCal, or vendors that ship to your door.</span></div>
+      <div class="m"><b>Right now</b><span>Live-ish stock badges for online sellers, refreshed automatically.</span></div>
+      <div class="m"><b>Every source</b><span>Desi, Asian and Latin groceries, specialty shippers and corporate stores.</span></div>
+      <div class="m"><b>Know the fruit</b><span>Each fruit also has a full guide: season, how to eat, nutrition.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about" style="border-radius:0;margin-top:0;padding-top:0">
+  <div class="wrap about-grid">
+    <div>
+      <h2>Why this exists</h2>
+      <p>The best desi and tropical fruits show up for only a few weeks a year, and the good stock vanishes fast. This finder was built to answer one question quickly: where can I actually buy this fruit right now, near me?</p>
+    </div>
+    <div>
+      <p style="color:#e8dccb;font-size:16px">It covers South Asian favourites and the wider tropical world, from Alphonso mango and jamun to mangosteen, rambutan and dragon fruit — with real vendors across California and nationwide shipping. Vendor coverage keeps growing.</p>
     </div>
   </div>
 </section>
 
 <footer>
   <div class="wrap foot-inner">
-    <div>Desi Fruit Finder — a small love letter to good fruit. Data compiled for general reference.</div>
-    <div>Built with care · <a href="#finder">Back to the finder</a></div>
+    <div>Desi Fruit Finder — a small love letter to good fruit. Stock is best-effort, not guaranteed; always confirm with the vendor.</div>
+    <div>Data updated <span id="footUpdated">recently</span> · <a href="#finder">Back to the finder</a></div>
   </div>
 </footer>
 
@@ -274,24 +309,20 @@
 <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
 
 <script>
-/* =========================================================
-   SVG ILLUSTRATIONS — flat, hand-styled, one per fruit
-   ========================================================= */
-const leaf = (x,y,r)=>`<path transform="translate(${x} ${y}) rotate(${r})" d="M0 0c8-10 22-11 30-6-6 8-20 12-30 6Z" fill="#128a5b"/>`;
-const stem = (x,y,h=14)=>`<rect x="${x-2}" y="${y}" width="4" height="${h}" rx="2" fill="#7a4a1e"/>`;
-
-const ART = {
+const leaf=(x,y,r)=>`<path transform="translate(${x} ${y}) rotate(${r})" d="M0 0c8-10 22-11 30-6-6 8-20 12-30 6Z" fill="#128a5b"/>`;
+const stem=(x,y,h=14)=>`<rect x="${x-2}" y="${y}" width="4" height="${h}" rx="2" fill="#7a4a1e"/>`;
+const ART={
   mango:`<svg viewBox="0 0 100 100">${stem(50,10,10)}${leaf(50,10,20)}<path d="M46 20c18-4 34 8 36 26 2 22-16 34-34 30C30 72 20 54 26 38 30 26 38 22 46 20Z" fill="#ffb020"/><path d="M56 22c14 2 26 14 26 32 0 18-16 28-30 26 12-6 18-22 16-38-1-8-6-16-12-20Z" fill="#ff7a00"/><ellipse cx="44" cy="40" rx="8" ry="12" fill="#ffd166" opacity=".55"/></svg>`,
-  lychee:`<svg viewBox="0 0 100 100">${stem(50,12,8)}${leaf(50,12,15)}<circle cx="50" cy="56" r="30" fill="#e8195b"/><g fill="#c50f45">${Array.from({length:26}).map((_,i)=>{const a=i*0.62; return `<circle cx="${(50+Math.cos(a)*24).toFixed(1)}" cy="${(56+Math.sin(a)*24).toFixed(1)}" r="4"/>`}).join('')}</g><circle cx="42" cy="48" r="8" fill="#ff5c8a" opacity=".5"/></svg>`,
-  mangosteen:`<svg viewBox="0 0 100 100"><circle cx="50" cy="54" r="30" fill="#4a1130"/><circle cx="50" cy="54" r="30" fill="#5b1a40" opacity=".6"/><circle cx="44" cy="46" r="9" fill="#7a2350" opacity=".7"/><g fill="#128a5b"><path d="M50 20c-8 0-14 4-16 10 6 3 12 3 16 1 4 2 10 2 16-1-2-6-8-10-16-10Z"/><path d="M50 22c-3 4-3 9 0 13 3-4 3-9 0-13Z" fill="#0c6e48"/></g>${stem(50,16,8)}<g fill="#e8b8d0"><circle cx="50" cy="70" r="2"/><circle cx="45" cy="72" r="1.6"/><circle cx="55" cy="72" r="1.6"/><circle cx="50" cy="75" r="1.4"/><circle cx="41" cy="70" r="1.4"/><circle cx="59" cy="70" r="1.4"/></g></svg>`,
-  jackfruit:`<svg viewBox="0 0 100 100">${stem(50,8,10)}<path d="M50 16c22 0 36 16 36 40 0 22-16 36-36 36S14 78 14 56C14 32 28 16 50 16Z" fill="#9bbf3a"/><g fill="#7fa02c">${Array.from({length:60}).map((_,i)=>{const x=18+(i%9)*8; const y=26+Math.floor(i/9)*9; return `<circle cx="${x}" cy="${y}" r="2.4"/>`}).join('')}</g><path d="M50 16c22 0 36 16 36 40 0 8-2 15-6 21-4-40-24-56-52-52C36 20 42 16 50 16Z" fill="#b6d557" opacity=".5"/></svg>`,
-  custardapple:`<svg viewBox="0 0 100 100">${stem(50,10,8)}${leaf(50,12,18)}<path d="M50 20c18 0 32 12 32 30 0 20-16 32-32 32S18 70 18 50c0-18 14-30 32-30Z" fill="#8fae6b"/><g fill="#748c53">${Array.from({length:40}).map((_,i)=>{const ang=(i%7)/7*Math.PI*2; const row=Math.floor(i/7); const cx=50+Math.cos(ang)*(10+row*3); const cy=52+Math.sin(ang)*(10+row*3)-row*2; return `<path d="M${(cx-5).toFixed(1)} ${cy.toFixed(1)}q5 -6 10 0q-5 6 -10 0Z"/>`}).join('')}</g><path d="M50 20c10 0 19 4 25 12-20-6-38 4-46 24-4-6-6-12-6-18 0-18 14-18 27-18Z" fill="#a6c483" opacity=".5"/></svg>`,
+  lychee:`<svg viewBox="0 0 100 100">${stem(50,12,8)}${leaf(50,12,15)}<circle cx="50" cy="56" r="30" fill="#e8195b"/><g fill="#c50f45">${Array.from({length:26}).map((_,i)=>{const a=i*0.62;return `<circle cx="${(50+Math.cos(a)*24).toFixed(1)}" cy="${(56+Math.sin(a)*24).toFixed(1)}" r="4"/>`}).join('')}</g><circle cx="42" cy="48" r="8" fill="#ff5c8a" opacity=".5"/></svg>`,
+  mangosteen:`<svg viewBox="0 0 100 100"><circle cx="50" cy="54" r="30" fill="#4a1130"/><circle cx="50" cy="54" r="30" fill="#5b1a40" opacity=".6"/><circle cx="44" cy="46" r="9" fill="#7a2350" opacity=".7"/><g fill="#128a5b"><path d="M50 20c-8 0-14 4-16 10 6 3 12 3 16 1 4 2 10 2 16-1-2-6-8-10-16-10Z"/><path d="M50 22c-3 4-3 9 0 13 3-4 3-9 0-13Z" fill="#0c6e48"/></g>${stem(50,16,8)}<g fill="#e8b8d0"><circle cx="50" cy="70" r="2"/><circle cx="45" cy="72" r="1.6"/><circle cx="55" cy="72" r="1.6"/><circle cx="50" cy="75" r="1.4"/></g></svg>`,
+  jackfruit:`<svg viewBox="0 0 100 100">${stem(50,8,10)}<path d="M50 16c22 0 36 16 36 40 0 22-16 36-36 36S14 78 14 56C14 32 28 16 50 16Z" fill="#9bbf3a"/><g fill="#7fa02c">${Array.from({length:60}).map((_,i)=>{const x=18+(i%9)*8;const y=26+Math.floor(i/9)*9;return `<circle cx="${x}" cy="${y}" r="2.4"/>`}).join('')}</g><path d="M50 16c22 0 36 16 36 40 0 8-2 15-6 21-4-40-24-56-52-52C36 20 42 16 50 16Z" fill="#b6d557" opacity=".5"/></svg>`,
+  custardapple:`<svg viewBox="0 0 100 100">${stem(50,10,8)}${leaf(50,12,18)}<path d="M50 20c18 0 32 12 32 30 0 20-16 32-32 32S18 70 18 50c0-18 14-30 32-30Z" fill="#8fae6b"/><g fill="#748c53">${Array.from({length:40}).map((_,i)=>{const ang=(i%7)/7*Math.PI*2;const row=Math.floor(i/7);const cx=50+Math.cos(ang)*(10+row*3);const cy=52+Math.sin(ang)*(10+row*3)-row*2;return `<path d="M${(cx-5).toFixed(1)} ${cy.toFixed(1)}q5 -6 10 0q-5 6 -10 0Z"/>`}).join('')}</g><path d="M50 20c10 0 19 4 25 12-20-6-38 4-46 24-4-6-6-12-6-18 0-18 14-18 27-18Z" fill="#a6c483" opacity=".5"/></svg>`,
   chikoo:`<svg viewBox="0 0 100 100">${stem(50,14,7)}${leaf(50,16,15)}<ellipse cx="50" cy="56" rx="30" ry="28" fill="#a9784a"/><ellipse cx="50" cy="56" rx="30" ry="28" fill="#8a5f38" opacity=".4"/><ellipse cx="43" cy="48" rx="9" ry="8" fill="#c79a6a" opacity=".6"/><g fill="#7a5430" opacity=".5"><circle cx="38" cy="46" r="1"/><circle cx="58" cy="50" r="1"/><circle cx="46" cy="66" r="1"/><circle cx="60" cy="62" r="1"/><circle cx="52" cy="40" r="1"/><circle cx="40" cy="60" r="1"/></g></svg>`,
   jamun:`<svg viewBox="0 0 100 100">${stem(50,10,8)}${leaf(52,12,20)}<ellipse cx="46" cy="42" rx="15" ry="20" fill="#3a1a5c" transform="rotate(-10 46 42)"/><ellipse cx="58" cy="58" rx="16" ry="21" fill="#2a1246" transform="rotate(8 58 58)"/><ellipse cx="42" cy="38" rx="5" ry="7" fill="#6a3a9c" opacity=".6" transform="rotate(-10 42 38)"/><ellipse cx="54" cy="52" rx="5" ry="7" fill="#5a2a8c" opacity=".5" transform="rotate(8 54 52)"/></svg>`,
   guava:`<svg viewBox="0 0 100 100">${stem(50,12,8)}${leaf(50,14,18)}<path d="M50 22c16 0 30 12 30 30s-14 30-30 30-30-12-30-30 14-30 30-30Z" fill="#c8d94e"/><path d="M50 22c16 0 30 12 30 30 0 10-4 18-11 24-2-34-22-48-46-42C29 28 38 22 50 22Z" fill="#e0ec7a" opacity=".55"/><ellipse cx="50" cy="54" rx="12" ry="14" fill="#f4a6c0" opacity=".5"/><g fill="#e88aab">${Array.from({length:8}).map((_,i)=>{const a=i/8*6.28;return `<circle cx="${(50+Math.cos(a)*6).toFixed(1)}" cy="${(54+Math.sin(a)*7).toFixed(1)}" r="1.6"/>`}).join('')}</g></svg>`,
   pomegranate:`<svg viewBox="0 0 100 100"><path d="M50 18c3-6 9-8 15-6-2 5-6 8-11 9Z" fill="#128a5b"/><g fill="#a01030"><path d="M50 24c2-4 5-6 5-10 3 3 3 7 1 10Z"/><path d="M50 24c-2-4-5-6-5-10-3 3-3 7-1 10Z"/></g><circle cx="50" cy="56" r="30" fill="#c81e3a"/><circle cx="50" cy="56" r="30" fill="#a0122c" opacity=".4"/><path d="M50 26c16 0 28 12 28 28 0 9-4 16-10 21-2-30-18-42-40-38 5-7 13-11 22-11Z" fill="#e0324e" opacity=".5"/><g fill="#7a0a20"><circle cx="46" cy="52" r="2"/><circle cx="54" cy="58" r="2"/><circle cx="50" cy="66" r="2"/><circle cx="40" cy="60" r="1.6"/><circle cx="60" cy="54" r="1.6"/></g></svg>`,
   dragonfruit:`<svg viewBox="0 0 100 100"><ellipse cx="50" cy="54" rx="26" ry="32" fill="#e5195e"/><ellipse cx="50" cy="54" rx="26" ry="32" fill="#c50f4c" opacity=".35"/><g fill="#5bc16a"><path d="M50 22c4-8 12-10 18-6-4 10-12 10-18 6Z"/><path d="M76 44c8-2 12 4 12 10-8 2-12-4-12-10Z"/><path d="M24 44c-8-2-12 4-12 10 8 2 12-4 12-10Z"/><path d="M74 72c6 2 8 8 5 13-6-2-8-8-5-13Z"/><path d="M26 72c-6 2-8 8-5 13 6-2 8-8 5-13Z"/></g><ellipse cx="44" cy="46" rx="7" ry="9" fill="#ff5c8a" opacity=".5"/></svg>`,
-  rambutan:`<svg viewBox="0 0 100 100">${stem(50,14,7)}<circle cx="50" cy="56" r="24" fill="#d81f2a"/><g stroke="#128a5b" stroke-width="3" stroke-linecap="round">${Array.from({length:24}).map((_,i)=>{const a=i/24*6.28;const x1=50+Math.cos(a)*22;const y1=56+Math.sin(a)*22;const x2=50+Math.cos(a)*34;const y2=56+Math.sin(a)*34;return `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`}).join('')}</g><circle cx="50" cy="56" r="24" fill="#b01620" opacity=".4"/><ellipse cx="43" cy="48" rx="7" ry="8" fill="#ff5b64" opacity=".5"/></svg>`,
+  rambutan:`<svg viewBox="0 0 100 100">${stem(50,14,7)}<circle cx="50" cy="56" r="24" fill="#d81f2a"/><g stroke="#128a5b" stroke-width="3" stroke-linecap="round">${Array.from({length:24}).map((_,i)=>{const a=i/24*6.28;return `<line x1="${(50+Math.cos(a)*22).toFixed(1)}" y1="${(56+Math.sin(a)*22).toFixed(1)}" x2="${(50+Math.cos(a)*34).toFixed(1)}" y2="${(56+Math.sin(a)*34).toFixed(1)}"/>`}).join('')}</g><circle cx="50" cy="56" r="24" fill="#b01620" opacity=".4"/><ellipse cx="43" cy="48" rx="7" ry="8" fill="#ff5b64" opacity=".5"/></svg>`,
   longan:`<svg viewBox="0 0 100 100">${stem(50,12,8)}<circle cx="42" cy="46" r="16" fill="#c39a6a"/><circle cx="58" cy="60" r="17" fill="#b0885a"/><circle cx="42" cy="46" r="16" fill="#a67c4e" opacity=".3"/><circle cx="38" cy="42" r="5" fill="#d8b487" opacity=".6"/><circle cx="54" cy="56" r="5" fill="#c9a271" opacity=".6"/><circle cx="58" cy="60" r="4" fill="#3a2a1a"/></svg>`,
   ber:`<svg viewBox="0 0 100 100">${stem(50,14,8)}${leaf(52,16,18)}<ellipse cx="50" cy="56" rx="24" ry="28" fill="#c96b1e"/><ellipse cx="50" cy="46" rx="24" ry="18" fill="#d8a63c"/><ellipse cx="50" cy="56" rx="24" ry="28" fill="#a8531a" opacity=".2"/><ellipse cx="44" cy="44" rx="7" ry="6" fill="#f0d27a" opacity=".6"/></svg>`,
   woodapple:`<svg viewBox="0 0 100 100">${stem(50,16,7)}<circle cx="50" cy="56" r="30" fill="#9c7a4e"/><circle cx="50" cy="56" r="30" fill="#7a5e38" opacity=".35"/><circle cx="50" cy="56" r="24" fill="none" stroke="#6b5230" stroke-width="1.5" opacity=".5"/><g fill="#6b5230" opacity=".5"><circle cx="40" cy="46" r="1.2"/><circle cx="58" cy="50" r="1.2"/><circle cx="46" cy="66" r="1.2"/><circle cx="62" cy="60" r="1.2"/><circle cx="52" cy="42" r="1.2"/><circle cx="38" cy="62" r="1.2"/></g></svg>`,
@@ -303,232 +334,107 @@ const ART = {
   karonda:`<svg viewBox="0 0 100 100">${stem(50,20,8)}${leaf(54,22,20)}<g>${[[42,48],[56,46],[48,60],[60,58],[40,60]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="10" fill="#d0356a"/><circle cx="${x-3}" cy="${y-3}" r="3.5" fill="#ff7aa0" opacity=".55"/>`).join('')}</g><circle cx="52" cy="52" r="10" fill="#e0f0f0"/><circle cx="49" cy="49" r="3" fill="#fff" opacity=".7"/></svg>`,
   passionfruit:`<svg viewBox="0 0 100 100">${stem(50,14,6)}<circle cx="50" cy="56" r="28" fill="#5b2a6a"/><circle cx="50" cy="56" r="28" fill="#42204e" opacity=".4"/><ellipse cx="44" cy="48" rx="8" ry="7" fill="#8a4aac" opacity=".5"/><g fill="#7a3a90" opacity=".5"><circle cx="40" cy="46" r=".9"/><circle cx="58" cy="50" r=".9"/><circle cx="46" cy="66" r=".9"/><circle cx="60" cy="62" r=".9"/><circle cx="52" cy="40" r=".9"/><circle cx="38" cy="60" r=".9"/></g></svg>`,
   mosambi:`<svg viewBox="0 0 100 100">${stem(50,14,6)}${leaf(52,16,18)}<circle cx="50" cy="56" r="29" fill="#a8c93a"/><circle cx="50" cy="56" r="29" fill="#c5dd6a" opacity=".4"/><ellipse cx="44" cy="48" rx="8" ry="7" fill="#dcec9a" opacity=".6"/></svg>`,
-  wax_jambu:`<svg viewBox="0 0 100 100">${stem(50,10,7)}<path d="M50 20c10 0 18 6 20 16 3 14-4 30-20 34-16-4-23-20-20-34 2-10 10-16 20-16Z" fill="#e5195e"/><path d="M50 20c10 0 18 6 20 16 1 6 0 12-2 18-6-22-22-30-36-24 4-6 11-10 18-10Z" fill="#ff5c8a" opacity=".5"/><path d="M40 66c4 4 16 4 20 0-3 5-7 8-10 8s-7-3-10-8Z" fill="#c50f45"/></svg>`,
+  wax_jambu:`<svg viewBox="0 0 100 100">${stem(50,10,7)}<path d="M50 20c10 0 18 6 20 16 3 14-4 30-20 34-16-4-23-20-20-34 2-10 10-16 20-16Z" fill="#e5195e"/><path d="M50 20c10 0 18 6 20 16 1 6 0 12-2 18-6-22-22-30-36-24 4-6 11-10 18-10Z" fill="#ff5c8a" opacity=".5"/><path d="M40 66c4 4 16 4 20 0-3 5-7 8-10 8s-7-3-10-8Z" fill="#c50f45"/></svg>`
 };
 
-/* =========================================================
-   FRUIT DATA
-   ========================================================= */
 const TASTE_COLORS={Sweet:"#ff7a00",Tart:"#e8195b",Tropical:"#128a5b",Floral:"#c04ac0",Earthy:"#9c7a4e",Sour:"#c8b400",Creamy:"#e0a040"};
-const SEASON_COLORS={Summer:"#ff7a00",Monsoon:"#128a5b",Winter:"#5b8ad6","Year-round":"#9c7a4e"};
+const SEASON_COLORS={Summer:"#ff7a00",Monsoon:"#128a5b",Winter:"#5b8ad6"};
 
 const FRUITS=[
-  {id:"mango",name:"Mango",local:"Aam · आम",art:"mango",bg:"linear-gradient(135deg,#ffe08a,#ffb020)",season:"Summer",region:"South Asia",tastes:["Sweet","Tropical"],
-   tagline:"The undisputed king. Everything else is negotiating for second place.",
-   about:"There are hundreds of cultivars — Alphonso, Kesar, Langra, Dasheri, Chaunsa — each with its own zealots. Flesh ranges from firm and tangy to almost custard-soft, with a fragrance that fills a room.",
-   nutrition:["Vitamin C","Vitamin A","Fibre","Antioxidants"],
-   eat:"Squeeze a ripe one to soften it, snip a corner, and drink it straight — or slice off the two cheeks, cross-hatch the flesh and invert into a hedgehog. Green mango goes into pickle and chutney.",
-   find:"Summer markets across South Asia; ripe fruit and Alphonso pulp are widely exported and sold frozen or canned year-round.",
-   fun:"India grows nearly half the world's mangoes, yet exports only a small share — most are eaten at home."},
-  {id:"lychee",name:"Lychee",local:"Litchi · लीची",art:"lychee",bg:"linear-gradient(135deg,#ffb3c9,#e8195b)",season:"Summer",region:"East & South Asia",tastes:["Sweet","Floral"],
-   tagline:"Crack the pink shell and a bead of perfume falls out.",
-   about:"A knobbly red-pink rind hides translucent, jelly-like flesh around a single dark seed. The taste is grape-like but more floral, almost rose-scented.",
-   nutrition:["Vitamin C","Copper","Potassium"],
-   eat:"Press a thumbnail into the shell near the stem and peel it away in one piece. Eat the flesh off the seed; don't bite the seed.",
-   find:"Peak in early summer. Fresh in Asian groceries; also sold canned in syrup year-round.",
-   fun:"A Tang dynasty emperor once ran a horse relay across China just to deliver fresh lychees to his consort."},
-  {id:"mangosteen",name:"Mangosteen",local:"Mangostin",art:"mangosteen",bg:"linear-gradient(135deg,#7a2350,#3a1130)",season:"Monsoon",region:"Southeast Asia",tastes:["Sweet","Tropical","Tart"],
-   tagline:"The 'queen of fruits' — thick purple armour, snow-white treasure inside.",
-   about:"Under a hard, deep-purple rind sit segments of soft white flesh that taste sweet-tart, like a cross between lychee, peach and citrus. Impossibly delicate.",
-   nutrition:["Fibre","Vitamin C","Manganese"],
-   eat:"Score around the equator with a knife (don't cut all the way), twist the two halves apart, and lift out the white segments. The purple rind stains — mind your clothes.",
-   find:"Tropical Southeast Asia in the rains. Sold fresh in Asian markets and increasingly frozen elsewhere.",
-   fun:"The number of petal-like marks on the base tells you exactly how many segments are inside."},
-  {id:"jackfruit",name:"Jackfruit",local:"Kathal · कटहल",art:"jackfruit",bg:"linear-gradient(135deg,#c8e07a,#9bbf3a)",season:"Summer",region:"South & SE Asia",tastes:["Sweet","Tropical"],
-   tagline:"The largest fruit that grows on a tree — a whole meal in a spiky shell.",
-   about:"Ripe, its golden bulbs are intensely sweet and bubblegum-fragrant. Unripe, it's cooked like meat — the fibrous texture is why it became the vegan 'pulled pork' staple.",
-   nutrition:["Fibre","Vitamin B6","Potassium","Protein (unripe)"],
-   eat:"Oil your hands and knife (the sap is sticky), cut it open, and pull out the yellow bulbs — eat ripe ones raw, cook green ones in curry.",
-   find:"Summer in South and Southeast Asia. Sold whole, in pre-cut trays, canned (in brine for cooking) and frozen.",
-   fun:"A single jackfruit can weigh over 40 kg — roughly the size of a small child."},
-  {id:"custardapple",name:"Custard Apple",local:"Sitaphal · सीताफल",art:"custardapple",bg:"linear-gradient(135deg,#c3d99a,#8fae6b)",season:"Winter",region:"South Asia",tastes:["Sweet","Creamy"],
-   tagline:"Break it open and eat clouds with a spoon.",
-   about:"Also called sugar apple or sharifa. A knobbly green skin over white, custard-soft flesh studded with black seeds. Tastes of vanilla, banana and pineapple whipped together.",
-   nutrition:["Vitamin C","Magnesium","Potassium","Fibre"],
-   eat:"When it yields to a gentle press, split it by hand and scoop the flesh with a spoon. Spit the hard black seeds — they're not edible.",
-   find:"Post-monsoon into winter across the subcontinent. Fresh in season; pulp sold frozen for shakes and ice cream.",
-   fun:"The seeds are toxic if crushed and eaten, but the pulp around them is completely safe and beloved."},
-  {id:"chikoo",name:"Chikoo",local:"Sapota · चीकू",art:"chikoo",bg:"linear-gradient(135deg,#c9a06a,#a9784a)",season:"Winter",region:"South Asia",tastes:["Sweet","Earthy"],
-   tagline:"Malt, brown sugar and pear in a fuzzy brown skin.",
-   about:"Sapodilla looks like a small potato and tastes like a soft, grainy pear soaked in caramel. Unripe fruit is mouth-puckeringly astringent — only eat it fully soft.",
-   nutrition:["Fibre","Vitamin C","Copper","Natural sugars"],
-   eat:"Wait until it's soft like a ripe avocado, halve it, remove the shiny black seeds, and scoop or slice.",
-   find:"Winter markets in South Asia. Fresh in Asian and Latin groceries; also in shakes and ice cream.",
-   fun:"The tree's milky sap, chicle, was the original chewing-gum base before synthetics took over."},
-  {id:"jamun",name:"Jamun",local:"Java Plum · जामुन",art:"jamun",bg:"linear-gradient(135deg,#5a2a8c,#2a1246)",season:"Monsoon",region:"South Asia",tastes:["Tart","Sweet"],
-   tagline:"Stains your tongue purple and your childhood with it.",
-   about:"Also black plum or Java plum. Oval, deep-purple fruit with a sweet-tart, slightly astringent taste and a single large seed. A monsoon icon sold with black salt.",
-   nutrition:["Vitamin C","Iron","Antioxidants"],
-   eat:"Eat off the seed like an olive. Toss with a pinch of black salt to cut the astringency and brighten the flavour.",
-   find:"Only in the rains — it doesn't travel or keep well, so it's a seasonal treat. Rarely frozen.",
-   fun:"Jamun and its seeds have a long history in traditional medicine for helping manage blood sugar."},
-  {id:"guava",name:"Guava",local:"Amrood · अमरूद",art:"guava",bg:"linear-gradient(135deg,#e0ec7a,#c8d94e)",season:"Winter",region:"South Asia & Latin Am.",tastes:["Sweet","Tart"],
-   tagline:"Crunchy, floral, and perfect with a dusting of chilli salt.",
-   about:"Green skin, white or pink grainy flesh, and a scent you can smell across a room. Eaten firm and crunchy or soft and sweet, seeds and all.",
-   nutrition:["Vitamin C","Fibre","Folate","Potassium"],
-   eat:"Wash and bite straight in — skin, seeds, everything. Street vendors slice it and sprinkle chilli powder and salt.",
-   find:"Cool-season markets almost everywhere in the tropics. Fresh year-round in many places; also as juice and paste.",
-   fun:"A single guava can pack more than four times the vitamin C of an orange."},
-  {id:"pomegranate",name:"Pomegranate",local:"Anar · अनार",art:"pomegranate",bg:"linear-gradient(135deg,#e0324e,#a0122c)",season:"Winter",region:"South & West Asia",tastes:["Sweet","Tart"],
-   tagline:"A leather globe full of edible rubies.",
-   about:"Crack it open and hundreds of juice-filled arils spill out — sweet, tart and pleasantly crunchy at the seed. Kandahari and Bhagwa varieties are prized for deep colour.",
-   nutrition:["Vitamin C","Vitamin K","Antioxidants","Folate"],
-   eat:"Score the crown, break into sections underwater in a bowl (the arils sink, the pith floats), and separate. Eat the arils whole.",
-   find:"Cooler months, but stored and shipped globally — available fresh much of the year, plus bottled juice.",
-   fun:"An old Persian and Mediterranean symbol of abundance, it appears in art and myth across three continents."},
-  {id:"dragonfruit",name:"Dragon Fruit",local:"Pitaya",art:"dragonfruit",bg:"linear-gradient(135deg,#ff5c8a,#c50f4c)",season:"Monsoon",region:"Tropical (cactus)",tastes:["Sweet","Tropical"],
-   tagline:"Alien-pink outside, kiwi-speckled inside, mild and refreshing.",
-   about:"The fruit of a climbing cactus. Vivid pink or yellow scaly skin hides white or magenta flesh dotted with tiny black seeds. Flavour is subtle — like a mild kiwi-pear.",
-   nutrition:["Fibre","Vitamin C","Magnesium","Iron"],
-   eat:"Halve it and scoop the flesh with a spoon, or peel back the skin like a banana. Chill first — it's best cold.",
-   find:"Warm months in the tropics but widely cultivated now — fresh in most supermarkets, plus frozen chunks.",
-   fun:"Its flowers bloom for a single night and are pollinated by bats and moths."},
-  {id:"rambutan",name:"Rambutan",local:"Rambutan",art:"rambutan",bg:"linear-gradient(135deg,#ff5b64,#b01620)",season:"Monsoon",region:"Southeast Asia",tastes:["Sweet","Floral"],
-   tagline:"A hairy red sea urchin hiding a sweet grape.",
-   about:"Its name comes from the Malay word for 'hair'. The soft spiky shell peels to reveal translucent, lychee-like flesh that's sweeter and a touch more acidic.",
-   nutrition:["Vitamin C","Copper","Fibre"],
-   eat:"Slice around the middle, twist off the shell, and pop the flesh out. Nibble it off the seed — the seed isn't eaten raw.",
-   find:"Tropical Southeast Asia in the wet season. Fresh in Asian groceries; also canned in syrup.",
-   fun:"Rambutan, lychee and longan are botanical cousins — all in the soapberry family."},
-  {id:"longan",name:"Longan",local:"Dragon's Eye",art:"longan",bg:"linear-gradient(135deg,#d8b487,#a67c4e)",season:"Monsoon",region:"East & SE Asia",tastes:["Sweet","Floral"],
-   tagline:"'Dragon's eye' — translucent flesh over one dark seed.",
-   about:"Small, tan-skinned and grape-sized. Peel it and the near-clear flesh around a black seed looks like an eye — hence the name. Sweeter and muskier than lychee.",
-   nutrition:["Vitamin C","Riboflavin","Potassium"],
-   eat:"Pinch the thin skin and it splits; squeeze the flesh out and eat around the seed.",
-   find:"Late summer and monsoon. Fresh in Asian markets; dried longan is used in soups and teas year-round.",
-   fun:"Dried longan is a staple of Chinese herbal soups, prized for its warming sweetness."},
-  {id:"ber",name:"Ber",local:"Indian Jujube · बेर",art:"ber",bg:"linear-gradient(135deg,#e8c15a,#c96b1e)",season:"Winter",region:"South Asia",tastes:["Sweet","Tart"],
-   tagline:"The crunchy little 'Indian date' of winter afternoons.",
-   about:"Small round-to-oval fruit with crisp, apple-like flesh. Green-yellow when tart, reddening as it sweetens. A schoolyard snack across the subcontinent.",
-   nutrition:["Vitamin C","Fibre","Calcium"],
-   eat:"Wash and eat whole like a small apple, working around the single stony pit. Often eaten with a little salt.",
-   find:"Winter and early spring in South Asia. Fresh in season; also dried and made into candy.",
-   fun:"One of humanity's oldest cultivated fruits — grown for more than 4,000 years."},
-  {id:"woodapple",name:"Wood Apple",local:"Bael · बेल",art:"woodapple",bg:"linear-gradient(135deg,#c9a06a,#9c7a4e)",season:"Summer",region:"South Asia",tastes:["Sweet","Tart","Earthy"],
-   tagline:"A hard shell you crack open for tangy, aromatic pulp.",
-   about:"Bael (and the related kaith) has a woody rind you literally have to break. Inside is fragrant, sticky pulp — tart, sweet and slightly funky — usually turned into a drink.",
-   nutrition:["Fibre","Vitamin C","B vitamins"],
-   eat:"Crack the shell, scoop the pulp, strain out the seeds and fibres, and blend with water, sugar and a little salt for sharbat.",
-   find:"Summer in South Asia. Fresh in season; bael sharbat and squash concentrate are sold year-round.",
-   fun:"The bael tree is sacred in Hinduism — its trifoliate leaves are offered to Lord Shiva."},
-  {id:"phalsa",name:"Phalsa",local:"Falsa · फालसा",art:"phalsa",bg:"linear-gradient(135deg,#8a4aac,#4a1a5c)",season:"Summer",region:"South Asia",tastes:["Tart","Sweet"],
-   tagline:"Tiny purple berries that make the drink of the hot season.",
-   about:"Pea-sized, deep-purple berries with a sweet-sour, cranberry-like tang. Too small and delicate to travel far, so they're a fleeting early-summer specialty.",
-   nutrition:["Vitamin C","Antioxidants","Iron"],
-   eat:"Eat them by the handful with a sprinkle of salt, or crush and strain them into a chilled, tangy sharbat.",
-   find:"A short window in early summer. Almost always sold fresh and local; rarely frozen.",
-   fun:"Phalsa sharbat is a classic Ayurvedic cooling drink to beat the peak of summer heat."},
-  {id:"tamarind",name:"Tamarind",local:"Imli · इमली",art:"tamarind",bg:"linear-gradient(135deg,#a5713a,#5a3418)",season:"Winter",region:"Tropical (pod)",tastes:["Sour","Sweet"],
-   tagline:"The sticky brown pod behind every great chutney.",
-   about:"A legume, not a berry. The brittle pod holds sticky, fibrous pulp around hard seeds — intensely sour with a date-like sweetness. The backbone of countless sauces and drinks.",
-   nutrition:["Tartaric acid","Magnesium","Potassium","B vitamins"],
-   eat:"Peel the pod and eat the pulp straight (with salt and chilli) or soak it, squeeze out the pulp, and use in chutney, sambar and candy.",
-   find:"Harvested in winter but sold year-round as blocks, paste and concentrate almost everywhere.",
-   fun:"Its name comes from Arabic 'tamr hindi' — 'date of India'."},
-  {id:"amla",name:"Amla",local:"Indian Gooseberry · आंवला",art:"amla",bg:"linear-gradient(135deg,#cfe07a,#b5c94a)",season:"Winter",region:"South Asia",tastes:["Sour","Tart"],
-   tagline:"So sour it loops back to sweet — the health tonic in fruit form.",
-   about:"A pale-green, translucent, ridged fruit that's fiercely sour and astringent raw, leaving a sweet aftertaste. Rarely eaten plain — it's pickled, candied or juiced.",
-   nutrition:["Vitamin C (very high)","Antioxidants","Fibre"],
-   eat:"Brave a raw bite with salt for the sweet finish, or have it as murabba (candied), pickle, or a morning shot of juice.",
-   find:"Winter harvest in South Asia. Sold fresh, candied, dried, powdered and as juice year-round.",
-   fun:"A cornerstone of Ayurveda for millennia and one of the richest natural sources of vitamin C."},
-  {id:"starfruit",name:"Starfruit",local:"Kamrakh · कमरख",art:"starfruit",bg:"linear-gradient(135deg,#f2e08a,#e8c93a)",season:"Winter",region:"South & SE Asia",tastes:["Tart","Sweet"],
-   tagline:"Slice it and every piece is a perfect star.",
-   about:"Carambola has five ridges, so cross-sections are star-shaped. Crisp and juicy, ranging from lemon-tart to mild and sweet, with edible waxy skin.",
-   nutrition:["Vitamin C","Fibre","Potassium"],
-   eat:"Wash, trim the ridge edges if brown, and slice crosswise into stars — eat skin and all. Great in salads and as garnish.",
-   find:"Cooler months in the tropics. Fresh in Asian and Latin groceries.",
-   fun:"People with kidney problems are advised to avoid it — it contains a neurotoxin they can't clear."},
-  {id:"muskmelon",name:"Muskmelon",local:"Kharbooja · खरबूजा",art:"muskmelon",bg:"linear-gradient(135deg,#e8c06a,#d9a441)",season:"Summer",region:"South & Central Asia",tastes:["Sweet","Creamy"],
-   tagline:"Netted skin, orange flesh, and the smell of summer.",
-   about:"The classic desi summer melon — netted tan rind, fragrant salmon-orange flesh, sweet and soft. Its seeds (magaz) are dried and used in cooking too.",
-   nutrition:["Vitamin A","Vitamin C","Potassium","Water"],
-   eat:"Halve, scoop the seeds, and slice into wedges or cubes. Blended with milk, sugar and ice it becomes a beloved summer cooler.",
-   find:"Peak summer across the region. Fresh in season; pre-cut and frozen year-round.",
-   fun:"The dried seeds are a prized ingredient in rich Mughlai gravies and sweets."},
-  {id:"karonda",name:"Karonda",local:"Bengal Currant · करौंदा",art:"karonda",bg:"linear-gradient(135deg,#ff7aa0,#d0356a)",season:"Monsoon",region:"South Asia",tastes:["Sour","Tart"],
-   tagline:"Sharp pink-white berries that pickle beautifully.",
-   about:"Small oval berries, pinkish-white to dark purple, with a bracing sourness. Too tart for most palates raw, so they shine in pickles, chutneys and tart curries.",
-   nutrition:["Vitamin C","Iron","Antioxidants"],
-   eat:"Rarely eaten straight. Turn them into achar, add to sabzi for tang, or candy them to tame the sourness.",
-   find:"Monsoon season in South Asia. Mostly sold fresh and local, or already pickled.",
-   fun:"The hardy shrub is often grown as a thorny hedge that doubles as a fruit source."},
-  {id:"passionfruit",name:"Passion Fruit",local:"Krishna Phal",art:"passionfruit",bg:"linear-gradient(135deg,#8a4aac,#42204e)",season:"Monsoon",region:"Tropical",tastes:["Tart","Tropical","Floral"],
-   tagline:"Wrinkly and unglamorous outside; a burst of perfume inside.",
-   about:"A hard purple or yellow shell holds golden, jelly-like pulp packed with crunchy edible seeds — wildly aromatic, intensely tart-sweet. A little goes a long way.",
-   nutrition:["Vitamin C","Vitamin A","Fibre","Iron"],
-   eat:"Halve it and spoon out the pulp, seeds and all. Stir into yoghurt, drinks and desserts, or drink it neat.",
-   find:"Grown in the hills of South India and the wider tropics. Fresh in season; pulp sold frozen and bottled.",
-   fun:"Missionaries named its elaborate flower after the Passion of Christ — hence 'passion' fruit."},
-  {id:"mosambi",name:"Sweet Lime",local:"Mosambi · मौसंबी",art:"mosambi",bg:"linear-gradient(135deg,#c5dd6a,#a8c93a)",season:"Winter",region:"South Asia",tastes:["Sweet","Sour"],
-   tagline:"The gentle citrus juiced at every street corner.",
-   about:"A greenish-yellow citrus that's mild, low-acid and sweetly refreshing — nothing like a sour lime. Its juice is the go-to fresh drink of Indian street stalls.",
-   nutrition:["Vitamin C","Folate","Potassium"],
-   eat:"Mostly juiced fresh with a pinch of salt or black salt. Also peeled and segmented like an orange.",
-   find:"Winter and spring peak, but juiced year-round at stalls across South Asia.",
-   fun:"It's a common first fresh juice given to people recovering from illness for a gentle vitamin C boost."},
-  {id:"wax_jambu",name:"Water Apple",local:"Gulab Jamun (fruit) · जामरूल",art:"wax_jambu",bg:"linear-gradient(135deg,#ff8aab,#c50f45)",season:"Summer",region:"South & SE Asia",tastes:["Sweet","Tart"],
-   tagline:"Bell-shaped, crisp and watery — the crunch of a cool summer.",
-   about:"Also rose apple or java apple. A glossy, bell-shaped fruit with crisp, spongy, very watery flesh and a faint rose-apple sweetness. Refreshing more than rich.",
-   nutrition:["Vitamin C","Fibre","Water"],
-   eat:"Wash and bite straight in — skin and all. No peeling; just avoid the small seeds in the hollow core. Best cold.",
-   find:"Summer in coastal and eastern South Asia and Southeast Asia. Almost always sold fresh and local.",
-   fun:"Despite the nickname, it's unrelated to the syrupy dessert gulab jamun — it just shares a name root."},
+  {id:"mango",name:"Mango",local:"Aam · आम",art:"mango",bg:"linear-gradient(135deg,#ffe08a,#ffb020)",season:"Summer",region:"South Asia",tastes:["Sweet","Tropical"],tagline:"The undisputed king. Everything else is negotiating for second place.",about:"Hundreds of cultivars — Alphonso, Kesar, Langra, Dasheri, Chaunsa — each with its own zealots. Flesh ranges from firm and tangy to almost custard-soft.",nutrition:["Vitamin C","Vitamin A","Fibre"],eat:"Squeeze a ripe one soft, snip a corner and drink it, or cross-hatch the cheeks into a hedgehog. Green mango goes into pickle.",fun:"India grows nearly half the world's mangoes, yet exports only a small share — most are eaten at home."},
+  {id:"lychee",name:"Lychee",local:"Litchi · लीची",art:"lychee",bg:"linear-gradient(135deg,#ffb3c9,#e8195b)",season:"Summer",region:"East & South Asia",tastes:["Sweet","Floral"],tagline:"Crack the pink shell and a bead of perfume falls out.",about:"A knobbly red-pink rind hides translucent, jelly-like flesh around a single dark seed — grape-like but floral, almost rose-scented.",nutrition:["Vitamin C","Copper","Potassium"],eat:"Press a thumbnail into the shell near the stem and peel it off. Eat the flesh off the seed.",fun:"A Tang emperor once ran a horse relay across China to deliver fresh lychees to his consort."},
+  {id:"mangosteen",name:"Mangosteen",local:"Mangostin",art:"mangosteen",bg:"linear-gradient(135deg,#7a2350,#3a1130)",season:"Monsoon",region:"Southeast Asia",tastes:["Sweet","Tropical","Tart"],tagline:"The 'queen of fruits' — thick purple armour, snow-white treasure inside.",about:"Under a hard, deep-purple rind sit segments of soft white flesh that taste sweet-tart, like a cross between lychee, peach and citrus.",nutrition:["Fibre","Vitamin C","Manganese"],eat:"Score around the equator, twist the halves apart, and lift out the white segments. The rind stains — mind your clothes.",fun:"The petal-like marks on the base tell you exactly how many segments are inside."},
+  {id:"jackfruit",name:"Jackfruit",local:"Kathal · कटहल",art:"jackfruit",bg:"linear-gradient(135deg,#c8e07a,#9bbf3a)",season:"Summer",region:"South & SE Asia",tastes:["Sweet","Tropical"],tagline:"The largest fruit that grows on a tree — a whole meal in a spiky shell.",about:"Ripe, its golden bulbs are intensely sweet. Unripe, it's cooked like meat — the fibrous texture is why it became the vegan 'pulled pork'.",nutrition:["Fibre","Vitamin B6","Potassium"],eat:"Oil your hands and knife (sticky sap), open it, and pull out the yellow bulbs — eat ripe ones raw, cook green ones.",fun:"A single jackfruit can weigh over 40 kg — the size of a small child."},
+  {id:"custardapple",name:"Custard Apple",local:"Sitaphal · सीताफल",art:"custardapple",bg:"linear-gradient(135deg,#c3d99a,#8fae6b)",season:"Winter",region:"South Asia",tastes:["Sweet","Creamy"],tagline:"Break it open and eat clouds with a spoon.",about:"Sugar apple / sharifa — knobbly green skin over white, custard-soft flesh studded with black seeds. Tastes of vanilla, banana and pineapple.",nutrition:["Vitamin C","Magnesium","Fibre"],eat:"When it yields to a gentle press, split it and scoop with a spoon. Spit the hard black seeds.",fun:"The seeds are toxic if crushed and eaten, but the pulp is completely safe and beloved."},
+  {id:"chikoo",name:"Chikoo",local:"Sapota · चीकू",art:"chikoo",bg:"linear-gradient(135deg,#c9a06a,#a9784a)",season:"Winter",region:"South Asia",tastes:["Sweet","Earthy"],tagline:"Malt, brown sugar and pear in a fuzzy brown skin.",about:"Sapodilla looks like a small potato and tastes like a soft, grainy pear soaked in caramel. Only eat it fully soft.",nutrition:["Fibre","Vitamin C","Copper"],eat:"Wait until soft like a ripe avocado, halve it, remove the shiny black seeds, and scoop.",fun:"The tree's milky sap, chicle, was the original chewing-gum base."},
+  {id:"jamun",name:"Jamun",local:"Java Plum · जामुन",art:"jamun",bg:"linear-gradient(135deg,#5a2a8c,#2a1246)",season:"Monsoon",region:"South Asia",tastes:["Tart","Sweet"],tagline:"Stains your tongue purple and your childhood with it.",about:"Oval, deep-purple fruit with a sweet-tart, slightly astringent taste and a single large seed. A monsoon icon sold with black salt.",nutrition:["Vitamin C","Iron","Antioxidants"],eat:"Eat off the seed like an olive. Toss with black salt to cut the astringency.",fun:"Jamun has a long history in traditional medicine for helping manage blood sugar."},
+  {id:"guava",name:"Guava",local:"Amrood · अमरूद",art:"guava",bg:"linear-gradient(135deg,#e0ec7a,#c8d94e)",season:"Winter",region:"South Asia & Latin Am.",tastes:["Sweet","Tart"],tagline:"Crunchy, floral, and perfect with a dusting of chilli salt.",about:"Green skin, white or pink grainy flesh, and a scent you can smell across a room. Eaten firm and crunchy or soft and sweet, seeds and all.",nutrition:["Vitamin C","Fibre","Folate"],eat:"Wash and bite straight in — skin, seeds, everything. Vendors slice it with chilli powder and salt.",fun:"A single guava can pack over four times the vitamin C of an orange."},
+  {id:"pomegranate",name:"Pomegranate",local:"Anar · अनार",art:"pomegranate",bg:"linear-gradient(135deg,#e0324e,#a0122c)",season:"Winter",region:"South & West Asia",tastes:["Sweet","Tart"],tagline:"A leather globe full of edible rubies.",about:"Crack it open and hundreds of juice-filled arils spill out — sweet, tart and pleasantly crunchy at the seed.",nutrition:["Vitamin C","Vitamin K","Antioxidants"],eat:"Score the crown, break into sections underwater (arils sink, pith floats), and separate.",fun:"An old Persian and Mediterranean symbol of abundance across three continents."},
+  {id:"dragonfruit",name:"Dragon Fruit",local:"Pitaya",art:"dragonfruit",bg:"linear-gradient(135deg,#ff5c8a,#c50f4c)",season:"Monsoon",region:"Tropical (cactus)",tastes:["Sweet","Tropical"],tagline:"Alien-pink outside, kiwi-speckled inside, mild and refreshing.",about:"The fruit of a climbing cactus. Vivid scaly skin hides white or magenta flesh dotted with tiny black seeds. Subtle, like a mild kiwi-pear.",nutrition:["Fibre","Vitamin C","Iron"],eat:"Halve it and scoop with a spoon, or peel back the skin like a banana. Best chilled.",fun:"Its flowers bloom for a single night and are pollinated by bats and moths."},
+  {id:"rambutan",name:"Rambutan",local:"Rambutan",art:"rambutan",bg:"linear-gradient(135deg,#ff5b64,#b01620)",season:"Monsoon",region:"Southeast Asia",tastes:["Sweet","Floral"],tagline:"A hairy red sea urchin hiding a sweet grape.",about:"Named for the Malay word for 'hair'. The soft spiky shell peels to reveal translucent, lychee-like flesh, sweeter and a touch more acidic.",nutrition:["Vitamin C","Copper","Fibre"],eat:"Slice around the middle, twist off the shell, and pop the flesh out. Eat around the seed.",fun:"Rambutan, lychee and longan are all cousins in the soapberry family."},
+  {id:"longan",name:"Longan",local:"Dragon's Eye",art:"longan",bg:"linear-gradient(135deg,#d8b487,#a67c4e)",season:"Monsoon",region:"East & SE Asia",tastes:["Sweet","Floral"],tagline:"'Dragon's eye' — translucent flesh over one dark seed.",about:"Small, tan-skinned, grape-sized. The near-clear flesh around a black seed looks like an eye. Sweeter and muskier than lychee.",nutrition:["Vitamin C","Riboflavin","Potassium"],eat:"Pinch the thin skin so it splits; squeeze the flesh out and eat around the seed.",fun:"Dried longan is a staple of Chinese herbal soups, prized for its warming sweetness."},
+  {id:"ber",name:"Ber",local:"Indian Jujube · बेर",art:"ber",bg:"linear-gradient(135deg,#e8c15a,#c96b1e)",season:"Winter",region:"South Asia",tastes:["Sweet","Tart"],tagline:"The crunchy little 'Indian date' of winter afternoons.",about:"Small round-to-oval fruit with crisp, apple-like flesh. Green-yellow when tart, reddening as it sweetens.",nutrition:["Vitamin C","Fibre","Calcium"],eat:"Wash and eat whole like a small apple, around the single stony pit. Often eaten with a little salt.",fun:"One of humanity's oldest cultivated fruits — grown for over 4,000 years."},
+  {id:"woodapple",name:"Wood Apple",local:"Bael · बेल",art:"woodapple",bg:"linear-gradient(135deg,#c9a06a,#9c7a4e)",season:"Summer",region:"South Asia",tastes:["Sweet","Tart","Earthy"],tagline:"A hard shell you crack open for tangy, aromatic pulp.",about:"Bael has a woody rind you literally break. Inside is fragrant, sticky pulp — tart, sweet and slightly funky — usually turned into a drink.",nutrition:["Fibre","Vitamin C","B vitamins"],eat:"Crack the shell, scoop the pulp, strain out seeds and fibres, and blend into sharbat.",fun:"The bael tree is sacred in Hinduism — its leaves are offered to Lord Shiva."},
+  {id:"phalsa",name:"Phalsa",local:"Falsa · फालसा",art:"phalsa",bg:"linear-gradient(135deg,#8a4aac,#4a1a5c)",season:"Summer",region:"South Asia",tastes:["Tart","Sweet"],tagline:"Tiny purple berries that make the drink of the hot season.",about:"Pea-sized, deep-purple berries with a sweet-sour, cranberry-like tang. Too delicate to travel — a fleeting early-summer specialty.",nutrition:["Vitamin C","Antioxidants","Iron"],eat:"Eat by the handful with a sprinkle of salt, or crush and strain into a chilled sharbat.",fun:"Phalsa sharbat is a classic Ayurvedic cooling drink for peak summer heat."},
+  {id:"tamarind",name:"Tamarind",local:"Imli · इमली",art:"tamarind",bg:"linear-gradient(135deg,#a5713a,#5a3418)",season:"Winter",region:"Tropical (pod)",tastes:["Sour","Sweet"],tagline:"The sticky brown pod behind every great chutney.",about:"A legume, not a berry. The brittle pod holds sticky pulp around hard seeds — intensely sour with a date-like sweetness.",nutrition:["Tartaric acid","Magnesium","Potassium"],eat:"Peel the pod and eat the pulp with salt and chilli, or soak and squeeze it into chutney and sambar.",fun:"Its name comes from Arabic 'tamr hindi' — 'date of India'."},
+  {id:"amla",name:"Amla",local:"Indian Gooseberry · आंवला",art:"amla",bg:"linear-gradient(135deg,#cfe07a,#b5c94a)",season:"Winter",region:"South Asia",tastes:["Sour","Tart"],tagline:"So sour it loops back to sweet — the health tonic in fruit form.",about:"A pale-green, ridged fruit that's fiercely sour and astringent raw, with a sweet aftertaste. Usually pickled, candied or juiced.",nutrition:["Vitamin C (very high)","Antioxidants","Fibre"],eat:"Brave a raw bite with salt for the sweet finish, or have it as murabba, pickle, or a morning juice shot.",fun:"A cornerstone of Ayurveda and one of the richest natural sources of vitamin C."},
+  {id:"starfruit",name:"Starfruit",local:"Kamrakh · कमरख",art:"starfruit",bg:"linear-gradient(135deg,#f2e08a,#e8c93a)",season:"Winter",region:"South & SE Asia",tastes:["Tart","Sweet"],tagline:"Slice it and every piece is a perfect star.",about:"Carambola has five ridges, so cross-sections are star-shaped. Crisp and juicy, from lemon-tart to mild and sweet, with edible skin.",nutrition:["Vitamin C","Fibre","Potassium"],eat:"Wash, trim any brown ridge edges, and slice crosswise into stars — eat skin and all.",fun:"People with kidney problems are advised to avoid it — it contains a neurotoxin they can't clear."},
+  {id:"muskmelon",name:"Muskmelon",local:"Kharbooja · खरबूजा",art:"muskmelon",bg:"linear-gradient(135deg,#e8c06a,#d9a441)",season:"Summer",region:"South & Central Asia",tastes:["Sweet","Creamy"],tagline:"Netted skin, orange flesh, and the smell of summer.",about:"The classic desi summer melon — netted tan rind, fragrant salmon-orange flesh. Its seeds (magaz) are dried and used in cooking too.",nutrition:["Vitamin A","Vitamin C","Potassium"],eat:"Halve, scoop the seeds, and slice into wedges. Blended with milk, sugar and ice it's a summer cooler.",fun:"The dried seeds are a prized ingredient in rich Mughlai gravies and sweets."},
+  {id:"karonda",name:"Karonda",local:"Bengal Currant · करौंदा",art:"karonda",bg:"linear-gradient(135deg,#ff7aa0,#d0356a)",season:"Monsoon",region:"South Asia",tastes:["Sour","Tart"],tagline:"Sharp pink-white berries that pickle beautifully.",about:"Small oval berries, pinkish-white to dark purple, with a bracing sourness. They shine in pickles, chutneys and tart curries.",nutrition:["Vitamin C","Iron","Antioxidants"],eat:"Rarely eaten straight — turn into achar, add to sabzi for tang, or candy them.",fun:"The hardy shrub is often grown as a thorny hedge that doubles as a fruit source."},
+  {id:"passionfruit",name:"Passion Fruit",local:"Krishna Phal",art:"passionfruit",bg:"linear-gradient(135deg,#8a4aac,#42204e)",season:"Monsoon",region:"Tropical",tastes:["Tart","Tropical","Floral"],tagline:"Wrinkly outside; a burst of perfume inside.",about:"A hard shell holds golden, jelly-like pulp packed with crunchy edible seeds — wildly aromatic, intensely tart-sweet.",nutrition:["Vitamin C","Vitamin A","Fibre"],eat:"Halve it and spoon out the pulp, seeds and all. Stir into yoghurt, drinks and desserts.",fun:"Missionaries named its flower after the Passion of Christ — hence 'passion' fruit."},
+  {id:"mosambi",name:"Sweet Lime",local:"Mosambi · मौसंबी",art:"mosambi",bg:"linear-gradient(135deg,#c5dd6a,#a8c93a)",season:"Winter",region:"South Asia",tastes:["Sweet","Sour"],tagline:"The gentle citrus juiced at every street corner.",about:"A greenish-yellow citrus that's mild, low-acid and sweetly refreshing — nothing like a sour lime. The go-to fresh street juice.",nutrition:["Vitamin C","Folate","Potassium"],eat:"Mostly juiced fresh with a pinch of black salt. Also peeled and segmented like an orange.",fun:"Often the first fresh juice given to people recovering from illness."},
+  {id:"wax_jambu",name:"Water Apple",local:"Jamrul · जामरूल",art:"wax_jambu",bg:"linear-gradient(135deg,#ff8aab,#c50f45)",season:"Summer",region:"South & SE Asia",tastes:["Sweet","Tart"],tagline:"Bell-shaped, crisp and watery — the crunch of a cool summer.",about:"Rose apple / java apple. A glossy, bell-shaped fruit with crisp, spongy, very watery flesh and a faint rose sweetness.",nutrition:["Vitamin C","Fibre","Water"],eat:"Wash and bite straight in — skin and all. Avoid the small seeds in the hollow core. Best cold.",fun:"Unrelated to the syrupy dessert gulab jamun — it just shares a name root."}
 ];
 
-/* =========================================================
-   RENDER + INTERACTIVITY
-   ========================================================= */
+let VENDORS=[], GENERATED_AT=null;
+let state={q:"",season:null,taste:null,region:"all",onlyAvail:false};
+
 const grid=document.getElementById('grid');
 const searchEl=document.getElementById('search');
 const countPill=document.getElementById('countPill');
 const filterGroups=document.getElementById('filterGroups');
-document.getElementById('statCount').textContent=FRUITS.length;
+const regionNote=document.getElementById('regionNote');
+const dataNote=document.getElementById('dataNote');
+document.getElementById('statFruit').textContent=FRUITS.length;
 
-const SEASONS=["Summer","Monsoon","Winter","Year-round"];
-const REGIONS=[...new Set(FRUITS.map(f=>f.region))];
+const SEASONS=["Summer","Monsoon","Winter"];
 const TASTES=[...new Set(FRUITS.flatMap(f=>f.tastes))];
 
-let state={q:"",season:null,taste:null,region:null};
+function vendorInRegion(v,region){
+  if(region==='all') return true;
+  if(region==='ships') return v.region==='ships-statewide';
+  if(region==='norcal') return v.region==='norcal'||v.region==='both-ca';
+  if(region==='socal') return v.region==='socal'||v.region==='both-ca';
+  return true;
+}
+function vendorsFor(fruitName){
+  return VENDORS.filter(v=>v.fruits.includes(fruitName) && vendorInRegion(v,state.region));
+}
+
+const STATUS_RANK={in_stock:5,pre_order:4,manual:3,unknown:3,error:2,sold_out:1,season_ended:0};
+function summaryFor(fruitName){
+  const vs=vendorsFor(fruitName);
+  if(!vs.length) return {kind:"none",label:"No tracked vendors yet",count:0};
+  let best=vs[0], bestRank=-1;
+  vs.forEach(v=>{const r=STATUS_RANK[v.status]??3; if(r>bestRank){bestRank=r;best=v;}});
+  const n=vs.length, plural=n===1?"vendor":"vendors";
+  if(best.status==='in_stock') return {kind:"in",label:`Available at ${n} ${plural}`,count:n};
+  if(best.status==='pre_order') return {kind:"pre",label:`Pre-order at ${n} ${plural}`,count:n};
+  if(best.status==='sold_out'||best.status==='season_ended') return {kind:"out",label:`Out of season · ${n} ${plural}`,count:n};
+  return {kind:"check",label:`Check ${n} ${plural}`,count:n};
+}
 
 function buildFilters(){
-  const grp=(label,key,items,useColor)=>{
+  const grp=(label,key,items,color)=>{
     const chips=items.map(it=>{
-      const dot=useColor==='season'?`<span class="dot" style="background:${SEASON_COLORS[it]||'#999'}"></span>`
-               :useColor==='taste'?`<span class="dot" style="background:${TASTE_COLORS[it]||'#999'}"></span>`:'';
+      const dot=color?`<span class="dot" style="background:${(color==='season'?SEASON_COLORS:TASTE_COLORS)[it]||'#999'}"></span>`:'';
       return `<button class="chip" data-key="${key}" data-val="${it}">${dot}${it}</button>`;
     }).join('');
     return `<div class="fg"><span class="lab">${label}</span><div class="chips">${chips}</div></div>`;
   };
   filterGroups.innerHTML =
-    grp("Season","season",SEASONS.filter(s=>FRUITS.some(f=>f.season===s)),"season")
+    grp("Season","season",SEASONS,"season")
     + grp("Taste","taste",TASTES,"taste")
-    + grp("Where it grows","region",REGIONS,null)
+    + `<div class="fg"><span class="lab">Availability</span><label class="toggle-avail"><input type="checkbox" id="availToggle"><span class="sw"></span>Only where I can buy it now</label></div>`
     + `<button class="reset" id="reset">Clear all</button>`;
-
   filterGroups.querySelectorAll('.chip').forEach(ch=>{
-    ch.addEventListener('click',()=>{
-      const {key,val}=ch.dataset;
-      state[key]=state[key]===val?null:val;
-      syncChips();render();
-    });
+    ch.addEventListener('click',()=>{const {key,val}=ch.dataset;state[key]=state[key]===val?null:val;syncChips();render();});
   });
+  document.getElementById('availToggle').addEventListener('change',e=>{state.onlyAvail=e.target.checked;render();});
   document.getElementById('reset').addEventListener('click',()=>{
-    searchEl.value="";
-    state={q:"",season:null,taste:null,region:null};
-    syncChips();render();
+    searchEl.value="";state.q="";state.season=null;state.taste=null;state.onlyAvail=false;
+    document.getElementById('availToggle').checked=false;syncChips();render();
   });
 }
-function syncChips(){
-  filterGroups.querySelectorAll('.chip').forEach(ch=>{
-    ch.classList.toggle('on',state[ch.dataset.key]===ch.dataset.val);
-  });
-}
+function syncChips(){filterGroups.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('on',state[ch.dataset.key]===ch.dataset.val));}
 
 function matches(f){
   if(state.season && f.season!==state.season) return false;
-  if(state.region && f.region!==state.region) return false;
   if(state.taste && !f.tastes.includes(state.taste)) return false;
+  if(state.onlyAvail){
+    const s=summaryFor(f.name);
+    if(!(s.kind==='in'||s.kind==='pre'||s.kind==='check')) return false;
+  }
   if(state.q){
     const hay=(f.name+" "+f.local+" "+f.tastes.join(" ")+" "+f.season+" "+f.region+" "+f.about+" "+f.tagline).toLowerCase();
     if(!hay.includes(state.q)) return false;
@@ -537,6 +443,7 @@ function matches(f){
 }
 
 function card(f){
+  const s=summaryFor(f.name);
   const seasonDot=SEASON_COLORS[f.season]||'#999';
   return `<button class="card" data-id="${f.id}">
     <div class="art" style="background:${f.bg}">
@@ -545,29 +452,65 @@ function card(f){
     </div>
     <h3>${f.name}</h3>
     <div class="local">${f.local}</div>
-    <div class="tastes">${f.tastes.map(t=>`<span class="taste-tag">${t}</span>`).join('')}</div>
+    <div class="avail ${s.kind}"><span class="adot"></span>${s.label}</div>
   </button>`;
 }
 
 function render(){
-  const list=FRUITS.filter(matches);
+  const list=FRUITS.filter(matches).sort((a,b)=>{
+    const order={in:3,pre:2,check:1,out:0,none:-1};
+    return order[summaryFor(b.name).kind]-order[summaryFor(a.name).kind];
+  });
   countPill.textContent=`${list.length} of ${FRUITS.length}`;
-  if(list.length===0){
-    grid.innerHTML=`<div class="no-results"><b>No fruit matches that.</b>Try clearing a filter or searching something else.</div>`;
+  if(!list.length){
+    grid.innerHTML=`<div class="no-results"><b>No fruit matches that.</b>Try clearing a filter, switching region, or searching something else.</div>`;
     return;
   }
   grid.innerHTML=list.map(card).join('');
-  grid.querySelectorAll('.card').forEach(c=>{
-    c.addEventListener('click',()=>openModal(c.dataset.id));
-  });
+  grid.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>openModal(c.dataset.id)));
 }
 
-/* ---- Modal ---- */
 const scrim=document.getElementById('scrim');
 const modal=document.getElementById('modal');
-
+const REGION_LABEL={all:"all regions",norcal:"NorCal",socal:"SoCal",ships:"shipped to you"};
+const STATUS_INFO={
+  in_stock:{cls:"sb-in",label:"In stock"}, pre_order:{cls:"sb-pre",label:"Pre-order"},
+  sold_out:{cls:"sb-out",label:"Sold out"}, season_ended:{cls:"sb-ended",label:"Season ended"},
+  manual:{cls:"sb-check",label:"Check directly"}, unknown:{cls:"sb-check",label:"Check stock"},
+  error:{cls:"sb-check",label:"Check directly"}
+};
+function relTime(iso){
+  if(!iso) return "";
+  const then=new Date(iso), now=new Date(), diff=(now-then)/1000;
+  if(isNaN(diff)) return "";
+  if(diff<3600) return `checked ${Math.max(1,Math.round(diff/60))} min ago`;
+  if(diff<86400) return `checked ${Math.round(diff/3600)} hr ago`;
+  return `checked ${Math.round(diff/86400)} day(s) ago`;
+}
+function vendorRow(v){
+  const si=STATUS_INFO[v.status]||STATUS_INFO.manual;
+  const link=v.check_url||v.url;
+  const linkLabel=(v.status==='manual'||v.status==='unknown'||v.status==='error')?"Check stock →":"Visit site →";
+  return `<div class="vendor">
+    <div class="vendor-top">
+      <div class="vendor-name">${v.name}</div>
+      <span class="status-badge ${si.cls}"><span class="sd"></span>${si.label}</span>
+    </div>
+    <div class="vendor-loc">${v.location}</div>
+    ${v.note?`<div class="vendor-note">${v.note}</div>`:""}
+    ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
+    <div class="vendor-foot">
+      <span class="checked">${v.auto_checked&&v.last_checked?relTime(v.last_checked):(v.auto_checked?"auto-checked":"manually curated")}</span>
+      <a class="visit" href="${link}" target="_blank" rel="noopener">${linkLabel}</a>
+    </div>
+  </div>`;
+}
 function openModal(id){
   const f=FRUITS.find(x=>x.id===id);if(!f)return;
+  const vs=vendorsFor(f.name);
+  const buyBody = vs.length
+    ? `<div class="vendor-list">${vs.map(vendorRow).join('')}</div>`
+    : `<div class="no-vendors"><b>No tracked vendors carry ${f.name} in ${REGION_LABEL[state.region]} yet.</b><br>Try switching to <b>All regions</b> or <b>Ships to me</b> — vendor coverage keeps growing.</div>`;
   modal.innerHTML=`
     <button class="close-x" aria-label="Close">✕</button>
     <div class="m-hero">
@@ -578,58 +521,75 @@ function openModal(id){
         <div class="tastes">${f.tastes.map(t=>`<span class="taste-tag" style="background:${(TASTE_COLORS[t]||'#eee')}22;color:${TASTE_COLORS[t]||'#666'}">${t}</span>`).join('')}</div>
       </div>
     </div>
-    <div class="m-tagline">“${f.tagline}”</div>
     <div class="m-body">
+      <div class="buy-head">
+        <h4>Where to buy</h4>
+        <span class="ctx">Showing ${REGION_LABEL[state.region]} · ${vs.length} vendor${vs.length===1?"":"s"}</span>
+      </div>
+      ${buyBody}
+      <hr class="m-divider">
       <div class="m-facts">
         <div class="fact"><div class="k">Season</div><div class="v">${f.season}</div></div>
-        <div class="fact"><div class="k">Where it grows</div><div class="v">${f.region}</div></div>
-        <div class="fact"><div class="k">Tastes like</div><div class="v">${f.tastes.join(", ")}</div></div>
+        <div class="fact"><div class="k">Grows in</div><div class="v">${f.region}</div></div>
+        <div class="fact"><div class="k">Tastes</div><div class="v">${f.tastes.join(", ")}</div></div>
       </div>
-      <div class="m-section">
-        <h4><span class="ic" style="background:${f.bg}">✽</span>The story</h4>
-        <p>${f.about}</p>
-      </div>
-      <div class="m-section">
-        <h4><span class="ic" style="background:${f.bg}">◎</span>How to eat it</h4>
-        <p>${f.eat}</p>
-      </div>
-      <div class="m-section">
-        <h4><span class="ic" style="background:${f.bg}">☼</span>Where to find it</h4>
-        <p>${f.find}</p>
-      </div>
-      <div class="m-section">
-        <h4><span class="ic" style="background:${f.bg}">✦</span>Good to know</h4>
-        <div class="nutri">${f.nutrition.map(n=>`<span>${n}</span>`).join('')}</div>
-        <p style="margin-top:10px">${f.fun}</p>
+      <button class="enc-toggle" id="encToggle">Read the full fruit guide ↓</button>
+      <div class="enc" id="enc" hidden style="margin-top:18px">
+        <div class="m-section"><h4><span class="ic" style="background:${f.bg}">✽</span>The story</h4><p>${f.about}</p></div>
+        <div class="m-section"><h4><span class="ic" style="background:${f.bg}">◎</span>How to eat it</h4><p>${f.eat}</p></div>
+        <div class="m-section"><h4><span class="ic" style="background:${f.bg}">✦</span>Good to know</h4><div class="nutri">${f.nutrition.map(n=>`<span>${n}</span>`).join('')}</div><p style="margin-top:10px">${f.fun}</p></div>
       </div>
     </div>`;
   scrim.classList.add('open');
   document.body.style.overflow='hidden';
   modal.querySelector('.close-x').addEventListener('click',closeModal);
+  const enc=modal.querySelector('#enc'), encBtn=modal.querySelector('#encToggle');
+  encBtn.addEventListener('click',()=>{const h=enc.hasAttribute('hidden');if(h){enc.removeAttribute('hidden');encBtn.textContent="Hide the full fruit guide ↑";}else{enc.setAttribute('hidden','');encBtn.textContent="Read the full fruit guide ↓";}});
   modal.scrollTop=0;
 }
 function closeModal(){scrim.classList.remove('open');document.body.style.overflow='';}
 scrim.addEventListener('click',e=>{if(e.target===scrim)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-/* ---- Search ---- */
+const REGION_HINT={
+  all:"Every vendor: California stores + nationwide shipping.",
+  norcal:"Bay Area & Northern California stores, plus shippers.",
+  socal:"LA & Southern California stores, plus shippers.",
+  ships:"Online sellers that ship straight to your door."
+};
+document.getElementById('regionToggle').querySelectorAll('button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.getElementById('regionToggle').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');state.region=b.dataset.region;regionNote.textContent=REGION_HINT[state.region];render();
+  });
+});
+
 searchEl.addEventListener('input',()=>{state.q=searchEl.value.trim().toLowerCase();render();});
 
-/* ---- Hero floating chips ---- */
-const heroArt=document.getElementById('heroArt');
-const heroPicks=["mango","mangosteen","dragonfruit","lychee"];
-const heroPos=["h-a","h-b","h-c","h-d"];
-heroArt.innerHTML=heroPicks.map((id,i)=>{
-  const f=FRUITS.find(x=>x.id===id);
-  return `<div class="fchip ${heroPos[i]}">${ART[f.art]}</div>`;
+document.getElementById('heroArt').innerHTML=["mango","mangosteen","dragonfruit","lychee"].map((id,i)=>{
+  const f=FRUITS.find(x=>x.id===id);return `<div class="fchip ${["h-a","h-b","h-c","h-d"][i]}">${ART[f.art]}</div>`;
 }).join('');
 
-/* ---- Back to top ---- */
 const toTop=document.getElementById('toTop');
-window.addEventListener('scroll',()=>{toTop.classList.toggle('show',window.scrollY>600);});
+window.addEventListener('scroll',()=>toTop.classList.toggle('show',window.scrollY>600));
 toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-buildFilters();render();
+function fmtDate(iso){try{return new Date(iso).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}catch(e){return "recently";}}
+function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();}
+fetch('data.json')
+  .then(r=>r.json())
+  .then(d=>{
+    VENDORS=d.vendors||[];GENERATED_AT=d.generated_at||null;
+    document.getElementById('statVendor').textContent=VENDORS.length;
+    const upd=GENERATED_AT?fmtDate(GENERATED_AT):"recently";
+    document.getElementById('footUpdated').textContent=upd;
+    dataNote.textContent=`Vendor stock last refreshed ${upd}. Online-store badges are automated; grocery stores say “check directly.” Always confirm before you go.`;
+    boot();
+  })
+  .catch(()=>{
+    dataNote.textContent="Vendor data couldn't load here — open the published site to see live stock. The fruit guide still works.";
+    boot();
+  });
 </script>
 </body>
 </html>
