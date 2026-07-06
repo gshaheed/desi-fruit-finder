@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Desi Fruit Finder — Regional Indian Fruit Availability, NorCal &amp; SoCal</title>
+<meta name="description" content="Track where imported, region-specific Indian fruits (Alphonso mango, jamun, chikoo, sitaphal) are landing in Northern and Southern California before they sell out." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🥭</text></svg>" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <h1>🥭 Desi Fruit Finder</h1>
+    <p class="tagline">Regional Indian fruits, tracked before they're gone — Northern &amp; Southern California</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p>
+      Alphonso mangoes, jamun, chikoo, sitaphal — these fruits fly in from India for a few short weeks a year,
+      and stock at Bay Area and LA-area vendors disappears fast. This page tracks known vendors and, where
+      possible, checks their live stock status automatically every day. See <a href="#how-it-works">how it works</a>.
+    </p>
+  </section>
+
+  <section class="controls">
+    <div class="control-group" role="group" aria-label="Filter by region">
+      <button class="chip active" data-region="all">All Regions</button>
+      <button class="chip" data-region="norcal">NorCal</button>
+      <button class="chip" data-region="socal">SoCal</button>
+      <button class="chip" data-region="ships-statewide">Ships to You</button>
+    </div>
+    <div class="control-group">
+      <select id="fruit-filter" aria-label="Filter by fruit">
+        <option value="all">All fruits</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <input id="search" type="search" placeholder="Search vendors..." aria-label="Search vendors" />
+    </div>
+  </section>
+
+  <p class="meta-line" id="last-generated"></p>
+
+  <section id="vendor-grid" class="vendor-grid" aria-live="polite">
+    <!-- cards injected by script.js -->
+  </section>
+
+  <section class="calendar-section">
+    <h2>Typical Season Calendar</h2>
+    <p class="muted">General seasonal windows for these fruits when imported from India. Actual arrival dates shift year to year — the live status above is the more reliable signal.</p>
+    <div id="fruit-calendar" class="fruit-calendar"></div>
+  </section>
+
+  <section id="how-it-works" class="how-it-works">
+    <h2>How this works</h2>
+    <p>
+      Vendor listings are hand-researched. For online sellers with a public product page, a small script
+      (<code>scraper.py</code>) runs automatically once a day via GitHub Actions, reads the page text, and
+      flags whether it looks in stock, pre-order, or sold out/season-ended — the "Last checked" timestamp on
+      each card shows when that last ran. Vendors marked "check directly" (physical stores, marketplaces)
+      don't have a reliably scrapeable stock signal, so call ahead or check their site.
+    </p>
+    <p class="muted">
+      This is a best-effort heuristic based on public page text, not a guarantee of real-time inventory.
+      Always confirm with the vendor before making a special trip.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Built for the Bay Area &amp; SoCal desi community. Data sources linked on each card. Not affiliated with any vendor listed.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
