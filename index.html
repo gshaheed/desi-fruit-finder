@@ -576,7 +576,7 @@ toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
 function fmtDate(iso){try{return new Date(iso).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}catch(e){return "recently";}}
 function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();}
-fetch('data.json')
+fetch('data.json?t='+Date.now(),{cache:'no-store'})
   .then(r=>r.json())
   .then(d=>{
     VENDORS=d.vendors||[];GENERATED_AT=d.generated_at||null;
