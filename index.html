@@ -157,6 +157,10 @@
   .season-signal{font-size:11.5px;font-weight:600;margin-top:8px;padding:5px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:6px}
   .season-signal.yes{background:var(--in-bg);color:var(--in)}
   .season-signal.no{background:var(--muted-bg);color:var(--muted)}
+  .check-live-btn{font-size:12px;font-weight:700;color:var(--leaf);background:var(--in-bg);border:none;border-radius:100px;padding:6px 13px;transition:opacity .15s}
+  .check-live-btn:hover{opacity:.8}
+  .check-live-btn:disabled{opacity:.6;cursor:default}
+  .check-live-msg{font-size:12px;color:var(--muted);margin-top:6px}
   .no-vendors{border:1px dashed var(--line);border-radius:16px;padding:18px;text-align:center;color:var(--ink-soft);font-size:14px;background:var(--paper)}
   .no-vendors b{color:var(--ink)}
   .m-divider{height:1px;background:var(--line);margin:26px 0 22px;border:none}
@@ -274,7 +278,7 @@
   <div class="wrap about-grid">
     <div>
       <h2>How the stock check works</h2>
-      <p>For online vendors, a script checks each store's public product page every few hours and reads its stock signal — so a badge like <b>In stock</b>, <b>Pre-order</b> or <b>Sold out</b> reflects the last automated check, with the time shown on each listing.</p>
+      <p>For online vendors, a script checks each store's public product page every 15 minutes and reads its stock signal — so a badge like <b>In stock</b>, <b>Pre-order</b> or <b>Sold out</b> reflects the last automated check, with the time shown on each listing. Hit the <b>⚡ Check live</b> button on any of those listings to trigger a fresh, on-the-spot check instead of waiting for the next scheduled run.</p>
       <p>Grocery stores don't publish live inventory, so those are marked <b>Check directly</b>. For those, the site also computes a <b>typically in/out of season</b> signal from each fruit's harvest calendar and today's date — so you get an automatic read without visiting the store, though it's an estimate, not a live count. Every listing still has a direct link so you can verify before you go.</p>
     </div>
     <div class="mini">
@@ -506,7 +510,8 @@ function vendorRow(v,fruitName){
     if(inSeason===true) seasonNote=`<div class="season-signal yes">🌱 Typically in season right now</div>`;
     else if(inSeason===false) seasonNote=`<div class="season-signal no">⚪ Typically out of season right now</div>`;
   }
-  return `<div class="vendor">
+  const canCheckLive=v.auto_checked && v.check_url;
+  return `<div class="vendor" data-vendor-id="${v.id}">
     <div class="vendor-top">
       <div class="vendor-name">${v.name}</div>
       <span class="status-badge ${si.cls}"><span class="sd"></span>${si.label}</span>
@@ -517,9 +522,44 @@ function vendorRow(v,fruitName){
     ${seasonNote}
     <div class="vendor-foot">
       <span class="checked">${v.auto_checked&&v.last_checked?relTime(v.last_checked):(v.auto_checked?"auto-checked":"manually curated")}</span>
-      <a class="visit" href="${link}" target="_blank" rel="noopener">${linkLabel}</a>
+      <span style="display:flex;gap:8px;align-items:center">
+        ${canCheckLive?`<button class="check-live-btn" data-check-url="${v.check_url}">⚡ Check live</button>`:""}
+        <a class="visit" href="${link}" target="_blank" rel="noopener">${linkLabel}</a>
+      </span>
     </div>
+    <div class="check-live-msg" hidden></div>
   </div>`;
+}
+const CHECK_LIVE_ENDPOINT=""; // paste your deployed Cloudflare Worker URL here, e.g. "https://desi-fruit-check.YOURNAME.workers.dev"
+async function onCheckLive(e){
+  const btn=e.currentTarget;
+  const row=btn.closest('.vendor');
+  const msg=row.querySelector('.check-live-msg');
+  const id=row.dataset.vendorId;
+  const url=btn.dataset.checkUrl;
+  if(!CHECK_LIVE_ENDPOINT){
+    msg.hidden=false;
+    msg.textContent="Live check isn't set up on this site yet — see worker/check-stock.js in the repo.";
+    return;
+  }
+  btn.disabled=true;btn.textContent="Checking…";msg.hidden=true;
+  try{
+    const res=await fetch(`${CHECK_LIVE_ENDPOINT}?url=${encodeURIComponent(url)}`);
+    const data=await res.json();
+    const v=VENDORS.find(x=>x.id===id);
+    if(v){
+      v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;
+      const si=STATUS_INFO[v.status]||STATUS_INFO.manual;
+      const badge=row.querySelector('.status-badge');
+      badge.className=`status-badge ${si.cls}`;
+      badge.innerHTML=`<span class="sd"></span>${si.label}`;
+      row.querySelector('.checked').textContent="checked just now";
+    }
+    btn.textContent="⚡ Check live";btn.disabled=false;
+  }catch(err){
+    msg.hidden=false;msg.textContent="Couldn't reach the live checker — try again shortly.";
+    btn.textContent="⚡ Check live";btn.disabled=false;
+  }
 }
 function openModal(id){
   const f=FRUITS.find(x=>x.id===id);if(!f)return;
@@ -559,6 +599,7 @@ function openModal(id){
   scrim.classList.add('open');
   document.body.style.overflow='hidden';
   modal.querySelector('.close-x').addEventListener('click',closeModal);
+  modal.querySelectorAll('.check-live-btn').forEach(b=>b.addEventListener('click',onCheckLive));
   const enc=modal.querySelector('#enc'), encBtn=modal.querySelector('#encToggle');
   encBtn.addEventListener('click',()=>{const h=enc.hasAttribute('hidden');if(h){enc.removeAttribute('hidden');encBtn.textContent="Hide the full fruit guide ↑";}else{enc.setAttribute('hidden','');encBtn.textContent="Read the full fruit guide ↓";}});
   modal.scrollTop=0;
