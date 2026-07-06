@@ -530,7 +530,7 @@ function vendorRow(v,fruitName){
     <div class="check-live-msg" hidden></div>
   </div>`;
 }
-const CHECK_LIVE_ENDPOINT=""; // paste your deployed Cloudflare Worker URL here, e.g. "https://desi-fruit-check.YOURNAME.workers.dev"
+const CHECK_LIVE_ENDPOINT="https://desi-fruit-check-stock.gurneetsshaheed.workers.dev";
 async function onCheckLive(e){
   const btn=e.currentTarget;
   const row=btn.closest('.vendor');
