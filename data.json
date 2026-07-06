@@ -8,7 +8,14 @@
         "Aam"
       ],
       "typical_season": "March – July (Indian imports peak Apr – Jun)",
-      "source_regions": "Maharashtra, Gujarat, Andhra Pradesh (India); Mexico/Florida for domestic"
+      "source_regions": "Maharashtra, Gujarat, Andhra Pradesh (India); Mexico/Florida for domestic",
+      "season_months": [
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
     },
     {
       "name": "Lychee",
@@ -16,13 +23,24 @@
         "Litchi"
       ],
       "typical_season": "May – July",
-      "source_regions": "Florida, imports from SE Asia"
+      "source_regions": "Florida, imports from SE Asia",
+      "season_months": [
+        5,
+        6,
+        7
+      ]
     },
     {
       "name": "Mangosteen",
       "hindi_names": [],
       "typical_season": "June – September",
-      "source_regions": "Thailand, Southeast Asia (imported)"
+      "source_regions": "Thailand, Southeast Asia (imported)",
+      "season_months": [
+        6,
+        7,
+        8,
+        9
+      ]
     },
     {
       "name": "Jackfruit",
@@ -30,7 +48,15 @@
         "Kathal"
       ],
       "typical_season": "March – August",
-      "source_regions": "Mexico, SE Asia; green jackfruit canned year-round"
+      "source_regions": "Mexico, SE Asia; green jackfruit canned year-round",
+      "season_months": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
     },
     {
       "name": "Custard Apple",
@@ -39,7 +65,13 @@
         "Sharifa"
       ],
       "typical_season": "August – November",
-      "source_regions": "Maharashtra (India); cherimoya from California/Spain"
+      "source_regions": "Maharashtra (India); cherimoya from California/Spain",
+      "season_months": [
+        8,
+        9,
+        10,
+        11
+      ]
     },
     {
       "name": "Chikoo",
@@ -48,7 +80,16 @@
         "Sapodilla"
       ],
       "typical_season": "Nov – Feb and Jun – Aug",
-      "source_regions": "Gujarat & Maharashtra (India); Mexico"
+      "source_regions": "Gujarat & Maharashtra (India); Mexico",
+      "season_months": [
+        11,
+        12,
+        1,
+        2,
+        6,
+        7,
+        8
+      ]
     },
     {
       "name": "Jamun",
@@ -56,7 +97,12 @@
         "Java Plum"
       ],
       "typical_season": "May – July (short window)",
-      "source_regions": "India; mostly frozen in the US"
+      "source_regions": "India; mostly frozen in the US",
+      "season_months": [
+        5,
+        6,
+        7
+      ]
     },
     {
       "name": "Guava",
@@ -64,7 +110,21 @@
         "Amrood"
       ],
       "typical_season": "Year-round, peak winter",
-      "source_regions": "Mexico, Florida, California"
+      "source_regions": "Mexico, Florida, California",
+      "season_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
     },
     {
       "name": "Pomegranate",
@@ -72,7 +132,14 @@
         "Anar"
       ],
       "typical_season": "September – January",
-      "source_regions": "California, India, imports"
+      "source_regions": "California, India, imports",
+      "season_months": [
+        9,
+        10,
+        11,
+        12,
+        1
+      ]
     },
     {
       "name": "Dragon Fruit",
@@ -80,13 +147,26 @@
         "Pitaya"
       ],
       "typical_season": "Summer – Fall",
-      "source_regions": "California, Mexico, SE Asia"
+      "source_regions": "California, Mexico, SE Asia",
+      "season_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
     },
     {
       "name": "Rambutan",
       "hindi_names": [],
       "typical_season": "June – September",
-      "source_regions": "Guatemala, SE Asia (imported)"
+      "source_regions": "Guatemala, SE Asia (imported)",
+      "season_months": [
+        6,
+        7,
+        8,
+        9
+      ]
     },
     {
       "name": "Longan",
@@ -94,7 +174,12 @@
         "Dragon's Eye"
       ],
       "typical_season": "July – September",
-      "source_regions": "Florida, SE Asia"
+      "source_regions": "Florida, SE Asia",
+      "season_months": [
+        7,
+        8,
+        9
+      ]
     },
     {
       "name": "Ber",
@@ -102,7 +187,13 @@
         "Indian Jujube"
       ],
       "typical_season": "December – March",
-      "source_regions": "India; fresh Chinese jujube in US"
+      "source_regions": "India; fresh Chinese jujube in US",
+      "season_months": [
+        12,
+        1,
+        2,
+        3
+      ]
     },
     {
       "name": "Wood Apple",
@@ -110,7 +201,12 @@
         "Bael"
       ],
       "typical_season": "April – June",
-      "source_regions": "India (mostly as pulp/sharbat in US)"
+      "source_regions": "India (mostly as pulp/sharbat in US)",
+      "season_months": [
+        4,
+        5,
+        6
+      ]
     },
     {
       "name": "Phalsa",
@@ -118,7 +214,11 @@
         "Falsa"
       ],
       "typical_season": "May – June (very short)",
-      "source_regions": "India (rare fresh in US)"
+      "source_regions": "India (rare fresh in US)",
+      "season_months": [
+        5,
+        6
+      ]
     },
     {
       "name": "Tamarind",
@@ -126,7 +226,21 @@
         "Imli"
       ],
       "typical_season": "Year-round (harvest winter)",
-      "source_regions": "Mexico, India; blocks & paste year-round"
+      "source_regions": "Mexico, India; blocks & paste year-round",
+      "season_months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
     },
     {
       "name": "Amla",
@@ -134,7 +248,14 @@
         "Indian Gooseberry"
       ],
       "typical_season": "October – February",
-      "source_regions": "India; fresh, frozen, candied in US"
+      "source_regions": "India; fresh, frozen, candied in US",
+      "season_months": [
+        10,
+        11,
+        12,
+        1,
+        2
+      ]
     },
     {
       "name": "Starfruit",
@@ -143,7 +264,15 @@
         "Carambola"
       ],
       "typical_season": "Fall – Winter",
-      "source_regions": "Florida, Mexico, SE Asia"
+      "source_regions": "Florida, Mexico, SE Asia",
+      "season_months": [
+        9,
+        10,
+        11,
+        12,
+        1,
+        2
+      ]
     },
     {
       "name": "Muskmelon",
@@ -151,7 +280,13 @@
         "Kharbooja"
       ],
       "typical_season": "May – August",
-      "source_regions": "California, Mexico"
+      "source_regions": "California, Mexico",
+      "season_months": [
+        5,
+        6,
+        7,
+        8
+      ]
     },
     {
       "name": "Karonda",
@@ -159,7 +294,12 @@
         "Bengal Currant"
       ],
       "typical_season": "July – September",
-      "source_regions": "India (rare fresh in US; often pickled)"
+      "source_regions": "India (rare fresh in US; often pickled)",
+      "season_months": [
+        7,
+        8,
+        9
+      ]
     },
     {
       "name": "Passion Fruit",
@@ -167,7 +307,14 @@
         "Krishna Phal"
       ],
       "typical_season": "Summer – Fall",
-      "source_regions": "California, Colombia, SE Asia"
+      "source_regions": "California, Colombia, SE Asia",
+      "season_months": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
     },
     {
       "name": "Sweet Lime",
@@ -175,7 +322,15 @@
         "Mosambi"
       ],
       "typical_season": "Winter – Spring",
-      "source_regions": "India, Mexico"
+      "source_regions": "India, Mexico",
+      "season_months": [
+        11,
+        12,
+        1,
+        2,
+        3,
+        4
+      ]
     },
     {
       "name": "Water Apple",
@@ -184,7 +339,12 @@
         "Rose Apple"
       ],
       "typical_season": "Summer",
-      "source_regions": "SE Asia, Florida (rare fresh in US)"
+      "source_regions": "SE Asia, Florida (rare fresh in US)",
+      "season_months": [
+        6,
+        7,
+        8
+      ]
     }
   ],
   "vendors": [
@@ -577,6 +737,127 @@
       "auto_checked": false,
       "status": "manual",
       "status_text": "Seasonal warehouse stock — check your local Costco.",
+      "last_checked": null
+    },
+    {
+      "id": "melissas-produce",
+      "name": "Melissa's Produce",
+      "region": "ships-statewide",
+      "location": "Los Angeles, CA based; ships nationwide",
+      "url": "https://www.melissas.com",
+      "check_url": "https://www.melissas.com/products/cherimoya",
+      "fruits": [
+        "Custard Apple",
+        "Passion Fruit",
+        "Starfruit",
+        "Guava",
+        "Dragon Fruit",
+        "Rambutan",
+        "Lychee",
+        "Tamarind"
+      ],
+      "note": "Major specialty produce brand; wide exotic-fruit lineup shipped nationwide, sold in many supermarkets too.",
+      "contact": null,
+      "auto_checked": true,
+      "status": "unknown",
+      "status_text": "Not yet checked — awaiting next scheduled scrape.",
+      "last_checked": null
+    },
+    {
+      "id": "exotic-fruits-usa",
+      "name": "Exotic Fruits USA",
+      "region": "ships-statewide",
+      "location": "Ships nationwide",
+      "url": "https://www.exoticfruitsusa.com",
+      "check_url": "https://www.exoticfruitsusa.com/Mangosteen-Fruits-Buy-Mangosteen-Fresh-Mangosteen-p/mangosteen--2-pounds--9-16.htm",
+      "fruits": [
+        "Mangosteen",
+        "Rambutan",
+        "Dragon Fruit",
+        "Lychee",
+        "Mango"
+      ],
+      "note": "Family-run online exotic fruit shipper with a money-back freshness guarantee.",
+      "contact": null,
+      "auto_checked": true,
+      "status": "unknown",
+      "status_text": "Not yet checked — awaiting next scheduled scrape.",
+      "last_checked": null
+    },
+    {
+      "id": "mango-mania-us",
+      "name": "Mango Mania US",
+      "region": "ships-statewide",
+      "location": "Boston, MA based; ships nationwide",
+      "url": "https://mangomaniaus.com",
+      "check_url": "https://mangomaniaus.com/products/alphonsus-mangoes",
+      "fruits": [
+        "Mango"
+      ],
+      "note": "Alphonso mango sourced from Gir, Ratnagiri and Andhra Pradesh farms.",
+      "contact": null,
+      "auto_checked": true,
+      "status": "unknown",
+      "status_text": "Not yet checked — awaiting next scheduled scrape.",
+      "last_checked": null
+    },
+    {
+      "id": "ishopindian",
+      "name": "iShopIndian",
+      "region": "ships-statewide",
+      "location": "Ships nationwide (free shipping over $109)",
+      "url": "https://www.ishopindian.com",
+      "check_url": "https://www.ishopindian.com/deep-jamun-indian-black-plum-frozen-pr-26306",
+      "fruits": [
+        "Jamun"
+      ],
+      "note": "Large Indian grocery site since 2000; jamun is sold frozen, not fresh.",
+      "contact": null,
+      "auto_checked": true,
+      "status": "unknown",
+      "status_text": "Not yet checked — awaiting next scheduled scrape.",
+      "last_checked": null
+    },
+    {
+      "id": "new-india-bazar",
+      "name": "New India Bazar",
+      "region": "norcal",
+      "location": "5 Bay Area locations (Santa Clara, Sunnyvale, Fremont, Milpitas, San Francisco)",
+      "url": "https://www.newindiabazar.com",
+      "check_url": null,
+      "fruits": [
+        "Mango",
+        "Chikoo",
+        "Guava",
+        "Custard Apple",
+        "Jamun",
+        "Tamarind"
+      ],
+      "note": "Family-owned Indian/Pakistani/Sri Lankan grocery chain serving the Bay Area since 1992. Check in store.",
+      "contact": null,
+      "auto_checked": false,
+      "status": "manual",
+      "status_text": "Seasonal in-store stock — check in person.",
+      "last_checked": null
+    },
+    {
+      "id": "bombay-bazaar",
+      "name": "Bombay Bazaar",
+      "region": "socal",
+      "location": "Corona & San Diego, CA",
+      "url": "https://www.bbaybazaar.com",
+      "check_url": null,
+      "fruits": [
+        "Mango",
+        "Guava",
+        "Chikoo",
+        "Custard Apple"
+      ],
+      "note": "Indian grocery, produce & halal meat store in Southern California. Check in store.",
+      "contact": null,
+      "auto_checked": false,
+      "status": "manual",
+      "status_text": "Seasonal in-store stock — check in person.",
       "last_checked": null
     }
   ]
