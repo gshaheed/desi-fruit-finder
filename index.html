@@ -154,6 +154,9 @@
   .visit{font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:100px;padding:7px 14px;transition:all .15s;white-space:nowrap}
   .visit:hover{background:var(--ink);color:var(--paper)}
   .vendor-contact{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+  .season-signal{font-size:11.5px;font-weight:600;margin-top:8px;padding:5px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:6px}
+  .season-signal.yes{background:var(--in-bg);color:var(--in)}
+  .season-signal.no{background:var(--muted-bg);color:var(--muted)}
   .no-vendors{border:1px dashed var(--line);border-radius:16px;padding:18px;text-align:center;color:var(--ink-soft);font-size:14px;background:var(--paper)}
   .no-vendors b{color:var(--ink)}
   .m-divider{height:1px;background:var(--line);margin:26px 0 22px;border:none}
@@ -226,7 +229,7 @@
       </div>
       <div class="stat-strip">
         <div class="stat"><b id="statFruit">23</b><span>fruits</span></div>
-        <div class="stat"><b id="statVendor">18</b><span>vendors tracked</span></div>
+        <div class="stat"><b id="statVendor">24</b><span>vendors tracked</span></div>
         <div class="stat"><b>3</b><span>regions + shipping</span></div>
       </div>
     </div>
@@ -272,7 +275,7 @@
     <div>
       <h2>How the stock check works</h2>
       <p>For online vendors, a script checks each store's public product page every few hours and reads its stock signal — so a badge like <b>In stock</b>, <b>Pre-order</b> or <b>Sold out</b> reflects the last automated check, with the time shown on each listing.</p>
-      <p>Grocery stores don't publish live inventory, so those are marked <b>Check directly</b> — the finder points you to the right store and aisle, and you confirm by phone, app, or in person. Every listing has a direct link so you can verify before you go.</p>
+      <p>Grocery stores don't publish live inventory, so those are marked <b>Check directly</b>. For those, the site also computes a <b>typically in/out of season</b> signal from each fruit's harvest calendar and today's date — so you get an automatic read without visiting the store, though it's an estimate, not a live count. Every listing still has a direct link so you can verify before you go.</p>
     </div>
     <div class="mini">
       <div class="m"><b>Near you</b><span>Filter by NorCal, SoCal, or vendors that ship to your door.</span></div>
@@ -366,7 +369,12 @@ const FRUITS=[
   {id:"wax_jambu",name:"Water Apple",local:"Jamrul · जामरूल",art:"wax_jambu",bg:"linear-gradient(135deg,#ff8aab,#c50f45)",season:"Summer",region:"South & SE Asia",tastes:["Sweet","Tart"],tagline:"Bell-shaped, crisp and watery — the crunch of a cool summer.",about:"Rose apple / java apple. A glossy, bell-shaped fruit with crisp, spongy, very watery flesh and a faint rose sweetness.",nutrition:["Vitamin C","Fibre","Water"],eat:"Wash and bite straight in — skin and all. Avoid the small seeds in the hollow core. Best cold.",fun:"Unrelated to the syrupy dessert gulab jamun — it just shares a name root."}
 ];
 
-let VENDORS=[], GENERATED_AT=null;
+let VENDORS=[], GENERATED_AT=null, SEASON_MONTHS={};
+function inSeasonNow(fruitName){
+  const months=SEASON_MONTHS[fruitName];
+  if(!months||!months.length) return null;
+  return months.includes(new Date().getMonth()+1);
+}
 let state={q:"",season:null,taste:null,region:"all",onlyAvail:false};
 
 const grid=document.getElementById('grid');
@@ -487,10 +495,17 @@ function relTime(iso){
   if(diff<86400) return `checked ${Math.round(diff/3600)} hr ago`;
   return `checked ${Math.round(diff/86400)} day(s) ago`;
 }
-function vendorRow(v){
+function vendorRow(v,fruitName){
   const si=STATUS_INFO[v.status]||STATUS_INFO.manual;
   const link=v.check_url||v.url;
-  const linkLabel=(v.status==='manual'||v.status==='unknown'||v.status==='error')?"Check stock →":"Visit site →";
+  const isLive=!(v.status==='manual'||v.status==='unknown'||v.status==='error');
+  const linkLabel=isLive?"Visit site →":"Check stock →";
+  let seasonNote="";
+  if(!isLive){
+    const inSeason=inSeasonNow(fruitName);
+    if(inSeason===true) seasonNote=`<div class="season-signal yes">🌱 Typically in season right now</div>`;
+    else if(inSeason===false) seasonNote=`<div class="season-signal no">⚪ Typically out of season right now</div>`;
+  }
   return `<div class="vendor">
     <div class="vendor-top">
       <div class="vendor-name">${v.name}</div>
@@ -499,6 +514,7 @@ function vendorRow(v){
     <div class="vendor-loc">${v.location}</div>
     ${v.note?`<div class="vendor-note">${v.note}</div>`:""}
     ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
+    ${seasonNote}
     <div class="vendor-foot">
       <span class="checked">${v.auto_checked&&v.last_checked?relTime(v.last_checked):(v.auto_checked?"auto-checked":"manually curated")}</span>
       <a class="visit" href="${link}" target="_blank" rel="noopener">${linkLabel}</a>
@@ -509,7 +525,7 @@ function openModal(id){
   const f=FRUITS.find(x=>x.id===id);if(!f)return;
   const vs=vendorsFor(f.name);
   const buyBody = vs.length
-    ? `<div class="vendor-list">${vs.map(vendorRow).join('')}</div>`
+    ? `<div class="vendor-list">${vs.map(v=>vendorRow(v,f.name)).join('')}</div>`
     : `<div class="no-vendors"><b>No tracked vendors carry ${f.name} in ${REGION_LABEL[state.region]} yet.</b><br>Try switching to <b>All regions</b> or <b>Ships to me</b> — vendor coverage keeps growing.</div>`;
   modal.innerHTML=`
     <button class="close-x" aria-label="Close">✕</button>
@@ -580,6 +596,7 @@ fetch('data.json?t='+Date.now(),{cache:'no-store'})
   .then(r=>r.json())
   .then(d=>{
     VENDORS=d.vendors||[];GENERATED_AT=d.generated_at||null;
+    (d.fruits||[]).forEach(f=>{if(f.season_months) SEASON_MONTHS[f.name]=f.season_months;});
     document.getElementById('statVendor').textContent=VENDORS.length;
     const upd=GENERATED_AT?fmtDate(GENERATED_AT):"recently";
     document.getElementById('footUpdated').textContent=upd;
