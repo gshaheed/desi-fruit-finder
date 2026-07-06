@@ -1,38 +1,41 @@
 # Desi Fruit Finder
 
-A hand-built field guide to the fruits of South Asia and the tropics — from the alphonso mango of Ratnagiri to the purple armour of a mangosteen. Search a fruit, filter by season, taste and where it grows, and learn how to open it, how to eat it, and where to find it.
+Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen, jamun, chikoo and more — near you in California or shipped to your door, and see whether it looks **in stock right now**.
 
 **Live site:** https://gshaheed.github.io/desi-fruit-finder/
 
-## What's inside
+## What it does
 
-- **A searchable finder** — type a name (or a taste like "sour", or a season like "monsoon") and the grid filters instantly.
-- **Filters** — narrow by season (summer / monsoon / winter), taste (sweet, tart, tropical, floral, earthy, sour, creamy) and growing region.
-- **Detail pages** — click any fruit for its story, how to eat it, where to find it, a nutrition snapshot and a fun fact.
-- **23 fruits and counting**, including mango, lychee, mangosteen, jackfruit, custard apple, chikoo, jamun, guava, pomegranate, dragon fruit, rambutan, longan, ber, wood apple (bael), phalsa, tamarind, amla, starfruit, muskmelon, karonda, passion fruit, sweet lime and water apple.
-- **Custom illustrations** — every fruit is drawn from scratch as inline SVG. No stock photos, no templates.
+- **Where to buy, per fruit** — open any fruit to see the vendors that carry it, each with a stock badge (in stock / pre-order / sold out / check directly), location, notes and a direct link.
+- **Shop by region** — filter to NorCal, SoCal, or vendors that ship nationwide to your door.
+- **Live-ish stock** — for online stores, a scheduled scraper checks each vendor's product page every few hours and records the result, with a "last checked" time on every listing. Grocery stores don't publish live inventory, so they're marked *check directly* with a link to confirm.
+- **"Only where I can buy it now"** — one toggle to hide fruits with nothing available in your region.
+- **A full guide for every fruit** — season, how to eat it, nutrition and a fun fact, behind each fruit's *Where to buy* panel.
+- **23 fruits and 18 vendors tracked**, and growing — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
 
-## Design
+## How stock checking works
 
-Bold and vibrant, built to feel handmade rather than generated: warm paper tones, a Fraunces + Space Grotesk type pairing, custom SVG art, and a subtle paper grain.
+`scraper.py` runs on a schedule via GitHub Actions (`.github/workflows/update-data.yml`). For every vendor in `data.json` marked `auto_checked`, it fetches the vendor's public product page and reads the stock signal — first the structured `og:availability` / schema.org `availability` field, then a text heuristic (sold out / pre-order / add to cart). It writes the status and a timestamp back to `data.json` and commits the change.
 
-## How it's built
+This is a **best-effort** signal, not a guaranteed real-time inventory feed. Storefronts change, and a store-wide page can be noisy — so every listing links straight to the vendor for you to confirm before you buy or drive.
 
-The entire site is a single self-contained `index.html` — HTML, CSS and vanilla JavaScript, with the fruit data and SVG illustrations inline. No build step, no dependencies (only Google Fonts loaded from a CDN).
+## Files
+
+- `index.html` — the whole site (HTML, CSS, vanilla JS, inline SVG illustrations). No build step; only Google Fonts from a CDN.
+- `data.json` — the fruit and vendor dataset, and the file the scraper updates.
+- `scraper.py` — the stock checker (standard library only).
+- `.github/workflows/update-data.yml` — the schedule that runs the scraper.
 
 ## Running it locally
-
-Just open `index.html` in any browser, or serve the folder:
 
 ```bash
 python3 -m http.server
 # then visit http://localhost:8000
 ```
 
-## Deployment
+Opening `index.html` directly also works, but `data.json` only loads over http(s), so run a local server to see vendor data.
 
-Published with GitHub Pages from the `main` branch (root). Any push to `main` updates the live site automatically.
+## Adding a vendor or fruit
 
-## Adding a fruit
-
-Open `index.html`, add an entry to the `FRUITS` array (id, name, local name, season, region, tastes, tagline, story, how-to-eat, where-to-find, nutrition, fun fact), add a matching SVG to the `ART` object, and commit. The finder, filters and detail page pick it up automatically.
+- **Vendor:** add an entry to the `vendors` array in `data.json` — set `region` (`norcal`, `socal`, `both-ca`, or `ships-statewide`), list the `fruits` it carries (names must match the fruit names in `index.html`), and set `auto_checked` + a `check_url` if it has a scrapeable product page (otherwise `auto_checked: false` and a `manual` status).
+- **Fruit:** add an entry to the `FRUITS` array and a matching SVG to the `ART` object in `index.html`. The finder, filters and detail panel pick it up automatically.
