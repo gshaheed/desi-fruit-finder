@@ -1,55 +1,39 @@
 {
-  "generated_at": "2026-07-06T02:50:13.372635+00:00",
+  "generated_at": "2026-07-05T00:00:00Z",
   "fruits": [
     {
       "name": "Alphonso Mango",
-      "hindi_names": [
-        "Hapus"
-      ],
+      "hindi_names": ["Hapus"],
       "typical_season": "March – June (peak: April – May)",
       "source_regions": "Devgad & Ratnagiri, Maharashtra, India"
     },
     {
       "name": "Kesar Mango",
-      "hindi_names": [
-        "Kesar"
-      ],
+      "hindi_names": ["Kesar"],
       "typical_season": "April – July",
       "source_regions": "Talala (Gir), Junagadh, Gujarat, India"
     },
     {
       "name": "Banganpalle Mango",
-      "hindi_names": [
-        "Banganpalli",
-        "Safeda"
-      ],
+      "hindi_names": ["Banganpalli", "Safeda"],
       "typical_season": "April – June",
       "source_regions": "Banaganapalli, Andhra Pradesh, India"
     },
     {
       "name": "Jamun",
-      "hindi_names": [
-        "Jamun",
-        "Indian Blackberry"
-      ],
+      "hindi_names": ["Jamun", "Indian Blackberry"],
       "typical_season": "May – July (short window)",
       "source_regions": "Various, India"
     },
     {
       "name": "Chikoo",
-      "hindi_names": [
-        "Sapodilla",
-        "Chiku"
-      ],
+      "hindi_names": ["Sapodilla", "Chiku"],
       "typical_season": "Varies — two windows, roughly Nov – Feb and Jun – Aug",
       "source_regions": "Gujarat & Maharashtra, India"
     },
     {
       "name": "Sitaphal (Custard Apple)",
-      "hindi_names": [
-        "Sitaphal",
-        "Sugar Apple"
-      ],
+      "hindi_names": ["Sitaphal", "Sugar Apple"],
       "typical_season": "August – November",
       "source_regions": "Maharashtra, India (some US vendors substitute Florida/Thailand-grown)"
     }
@@ -62,16 +46,12 @@
       "location": "Bay Area, CA — free local delivery, ships nationwide",
       "url": "https://aumpi.com",
       "check_url": "https://aumpi.com/products/alphonso",
-      "fruits": [
-        "Alphonso Mango",
-        "Kesar Mango",
-        "Banganpalle Mango"
-      ],
+      "fruits": ["Alphonso Mango", "Kesar Mango", "Banganpalle Mango"],
       "contact": "WhatsApp: +1 510-270-0969",
       "auto_checked": true,
-      "status": "sold_out",
-      "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T02:50:13.372635+00:00"
+      "status": "unknown",
+      "status_text": "Not yet checked",
+      "last_checked": null
     },
     {
       "id": "bhanu-natural-products",
@@ -80,14 +60,12 @@
       "location": "Delivers to San Francisco, San Jose, Fremont, CA",
       "url": "https://bhanunaturalproducts.com/us/buy-mangoes-in-bay-area",
       "check_url": "https://bhanunaturalproducts.com/us/buy-mangoes-in-bay-area",
-      "fruits": [
-        "Alphonso Mango"
-      ],
+      "fruits": ["Alphonso Mango"],
       "contact": null,
       "auto_checked": true,
-      "status": "pre_order",
-      "status_text": "june, depending on harvest conditions. pre-orders are recommended as stock sells out qui",
-      "last_checked": "2026-07-06T02:50:13.372635+00:00"
+      "status": "unknown",
+      "status_text": "Not yet checked",
+      "last_checked": null
     },
     {
       "id": "patel-brothers-norcal",
@@ -96,13 +74,7 @@
       "location": "2039 El Camino Real, Santa Clara, CA + other Bay Area locations",
       "url": "https://www.patelbros.com/locations",
       "check_url": null,
-      "fruits": [
-        "Alphonso Mango",
-        "Kesar Mango",
-        "Jamun",
-        "Chikoo",
-        "Sitaphal (Custard Apple)"
-      ],
+      "fruits": ["Alphonso Mango", "Kesar Mango", "Jamun", "Chikoo", "Sitaphal (Custard Apple)"],
       "contact": null,
       "auto_checked": false,
       "status": "manual",
@@ -116,13 +88,7 @@
       "location": "Artesia, CA (Little India) + Greater LA locations",
       "url": "https://www.patelbros.com/locations",
       "check_url": null,
-      "fruits": [
-        "Alphonso Mango",
-        "Kesar Mango",
-        "Jamun",
-        "Chikoo",
-        "Sitaphal (Custard Apple)"
-      ],
+      "fruits": ["Alphonso Mango", "Kesar Mango", "Jamun", "Chikoo", "Sitaphal (Custard Apple)"],
       "contact": null,
       "auto_checked": false,
       "status": "manual",
@@ -136,17 +102,12 @@
       "location": "Ships nationwide via air cargo — Virginia based",
       "url": "https://freshmangoes.us",
       "check_url": "https://freshmangoes.us/products/pre-order-2025-season-ratnagiri-devgad-alphonso-mangoes",
-      "fruits": [
-        "Alphonso Mango",
-        "Kesar Mango",
-        "Banganpalle Mango",
-        "Sitaphal (Custard Apple)"
-      ],
+      "fruits": ["Alphonso Mango", "Kesar Mango", "Banganpalle Mango", "Sitaphal (Custard Apple)"],
       "contact": null,
       "auto_checked": true,
-      "status": "sold_out",
-      "status_text": "0 usd unit price / &nbsp;per&nbsp; sale sold out shipping calculated at checkout. quanti",
-      "last_checked": "2026-07-06T02:50:13.372635+00:00"
+      "status": "unknown",
+      "status_text": "Not yet checked",
+      "last_checked": null
     },
     {
       "id": "a1mangos",
@@ -155,30 +116,26 @@
       "location": "Ships nationwide",
       "url": "https://www.a1mangos.com",
       "check_url": "https://www.a1mangos.com/products/indian-mangos-in-usa",
-      "fruits": [
-        "Alphonso Mango"
-      ],
+      "fruits": ["Alphonso Mango"],
       "contact": null,
       "auto_checked": true,
-      "status": "sold_out",
-      "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T02:50:13.372635+00:00"
+      "status": "unknown",
+      "status_text": "Not yet checked",
+      "last_checked": null
     },
     {
       "id": "mangozz",
-      "name": "MangoZZ",
+      "name": "MangoZZ (zzmango.com)",
       "region": "ships-statewide",
       "location": "Ships nationwide",
-      "url": "https://mangozz.com",
-      "check_url": "https://mangozz.com/product/box-of-alphonso-mangoes/",
-      "fruits": [
-        "Alphonso Mango"
-      ],
+      "url": "https://zzmango.com/product-category/alphonso/",
+      "check_url": null,
+      "fruits": ["Alphonso Mango"],
       "contact": null,
-      "auto_checked": true,
-      "status": "error",
-      "status_text": "Fetch failed: HTTP Error 404: Not Found",
-      "last_checked": "2026-07-06T02:50:13.372635+00:00"
+      "auto_checked": false,
+      "status": "manual",
+      "status_text": "Site moved from mangozz.com to zzmango.com and their product lineup changed — check the category page directly",
+      "last_checked": null
     },
     {
       "id": "ar4mangoes",
@@ -187,14 +144,12 @@
       "location": "Ships nationwide",
       "url": "https://www.ar4mangoes.com",
       "check_url": "https://www.ar4mangoes.com/product-page/alphonso-deliveredinusa",
-      "fruits": [
-        "Alphonso Mango"
-      ],
+      "fruits": ["Alphonso Mango"],
       "contact": null,
       "auto_checked": true,
-      "status": "sold_out",
-      "status_text": "og:availability = \"out of stock\"",
-      "last_checked": "2026-07-06T02:50:13.372635+00:00"
+      "status": "unknown",
+      "status_text": "Not yet checked",
+      "last_checked": null
     },
     {
       "id": "weee",
@@ -203,11 +158,7 @@
       "location": "Online Asian-American grocery, delivers across CA metro areas",
       "url": "https://www.sayweee.com",
       "check_url": null,
-      "fruits": [
-        "Alphonso Mango",
-        "Sitaphal (Custard Apple)",
-        "Jamun"
-      ],
+      "fruits": ["Alphonso Mango", "Sitaphal (Custard Apple)", "Jamun"],
       "contact": null,
       "auto_checked": false,
       "status": "manual",
