@@ -1,68 +1,38 @@
 # Desi Fruit Finder
 
-A small site that tracks where region-specific Indian fruits (Alphonso mango, Kesar mango,
-jamun, chikoo, sitaphal/custard apple) are showing up at vendors in Northern and Southern
-California, so buyers can get to good stock before it sells out or expires.
+A hand-built field guide to the fruits of South Asia and the tropics — from the alphonso mango of Ratnagiri to the purple armour of a mangosteen. Search a fruit, filter by season, taste and where it grows, and learn how to open it, how to eat it, and where to find it.
 
-**Live site:** enable GitHub Pages on this repo (Settings → Pages → Deploy from branch → `main` / `/root`) and it will be published at `https://<your-username>.github.io/desi-fruit-finder/`.
+**Live site:** https://gshaheed.github.io/desi-fruit-finder/
 
-## What's here
+## What's inside
 
-- `index.html`, `style.css`, `script.js` — the static site. It reads `data.json` and renders
-  filterable vendor cards (by region: NorCal / SoCal / Ships to You, and by fruit) plus a
-  general season calendar.
-- `data.json` — the vendor + fruit database. Hand-researched to start; see sources below.
-- `scraper.py` — an availability checker. For vendors with a public product page
-  (`auto_checked: true` in `data.json`), it first looks for a structured signal (an
-  `og:availability` meta tag or schema.org `"availability"` field — reliable when present),
-  and falls back to scanning the visible page text for phrases like "sold out," "season has
-  ended," "pre-order," or "add to cart" (script/style content is stripped first so CSS/JS
-  doesn't produce false matches).
-- `.github/workflows/update-data.yml` — a GitHub Actions workflow that runs `scraper.py`
-  every 4 hours (and on manual trigger) and commits any changes to `data.json`. This is
-  the "algorithm" that keeps the live-status badges current without anyone touching the repo.
+- **A searchable finder** — type a name (or a taste like "sour", or a season like "monsoon") and the grid filters instantly.
+- **Filters** — narrow by season (summer / monsoon / winter), taste (sweet, tart, tropical, floral, earthy, sour, creamy) and growing region.
+- **Detail pages** — click any fruit for its story, how to eat it, where to find it, a nutrition snapshot and a fun fact.
+- **23 fruits and counting**, including mango, lychee, mangosteen, jackfruit, custard apple, chikoo, jamun, guava, pomegranate, dragon fruit, rambutan, longan, ber, wood apple (bael), phalsa, tamarind, amla, starfruit, muskmelon, karonda, passion fruit, sweet lime and water apple.
+- **Custom illustrations** — every fruit is drawn from scratch as inline SVG. No stock photos, no templates.
 
-## Known limitations (read before trusting a badge)
+## Design
 
-- There is no public, structured API for "which Indian fruit vendor has stock right now" —
-  this doesn't exist anywhere, so the auto-checker is a text heuristic against each vendor's
-  own webpage, not a guaranteed real-time inventory feed.
-- Vendors without a scrapeable product page (physical stores like Patel Brothers, marketplaces
-  like Weee!) are marked `"auto_checked": false` and show "check directly" — call or visit.
-- Season windows in the calendar are general estimates for India-grown fruit, not vendor-confirmed
-  dates for this year.
-- Always confirm with the vendor before a special trip, especially for a store location — hours
-  and even whether a location is still open can change.
+Bold and vibrant, built to feel handmade rather than generated: warm paper tones, a Fraunces + Space Grotesk type pairing, custom SVG art, and a subtle paper grain.
 
-## Adding or fixing a vendor
+## How it's built
 
-Edit `data.json`. Each vendor entry:
+The entire site is a single self-contained `index.html` — HTML, CSS and vanilla JavaScript, with the fruit data and SVG illustrations inline. No build step, no dependencies (only Google Fonts loaded from a CDN).
 
-```json
-{
-  "id": "unique-slug",
-  "name": "Vendor Name",
-  "region": "norcal | socal | ships-statewide",
-  "location": "Human-readable location/delivery area",
-  "url": "https://vendor-homepage",
-  "check_url": "https://vendor-product-page-or-null",
-  "fruits": ["Alphonso Mango"],
-  "auto_checked": true,
-  "status": "unknown",
-  "status_text": "",
-  "last_checked": null
-}
+## Running it locally
+
+Just open `index.html` in any browser, or serve the folder:
+
+```bash
+python3 -m http.server
+# then visit http://localhost:8000
 ```
 
-Set `auto_checked: false` and `check_url: null` if there's no reliable page to scrape.
+## Deployment
 
-## Sources used for initial data
+Published with GitHub Pages from the `main` branch (root). Any push to `main` updates the live site automatically.
 
-- [AumPi](https://aumpi.com/) — Bay Area Alphonso/Kesar/Banganpalle mango delivery
-- [Bhanu Natural Products](https://bhanunaturalproducts.com/us/buy-mangoes-in-bay-area)
-- [Patel Brothers locations](https://www.patelbros.com/locations)
-- [Fresh Mangoes](https://freshmangoes.us/) — nationwide air-cargo mango/custard apple shipping
-- [A1 Mangos](https://www.a1mangos.com/)
-- [MangoZZ](https://mangozz.com/)
-- [AR4 Mangoes](https://www.ar4mangoes.com/)
-- [Weee!](https://www.sayweee.com/) — Asian-American grocery marketplace
+## Adding a fruit
+
+Open `index.html`, add an entry to the `FRUITS` array (id, name, local name, season, region, tastes, tagline, story, how-to-eat, where-to-find, nutrition, fun fact), add a matching SVG to the `ART` object, and commit. The finder, filters and detail page pick it up automatically.
