@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T03:53:29.617664+00:00",
+  "generated_at": "2026-07-06T16:31:43.721367+00:00",
   "note": "Vendor stock is refreshed by scraper.py via GitHub Actions. 'last_checked' shows when each auto-checked vendor was last verified. In-store vendors are marked manual — call ahead or check in person.",
   "fruits": [
     {
@@ -214,7 +214,7 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "ellow dragon fruit box while they last! sold out kumquat fruit box from $69.00 kumquats",
-      "last_checked": "2026-07-06T03:53:29.617664+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00"
     },
     {
       "id": "miami-fruit",
@@ -241,7 +241,7 @@
       "auto_checked": true,
       "status": "in_stock",
       "status_text": "schema availability = \"https://schema.org/InStock\"",
-      "last_checked": "2026-07-06T03:53:29.617664+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00"
     },
     {
       "id": "weee",
@@ -284,7 +284,7 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T03:53:29.617664+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00"
     },
     {
       "id": "bhanu-natural-products",
@@ -301,7 +301,7 @@
       "auto_checked": true,
       "status": "pre_order",
       "status_text": "june, depending on harvest conditions. pre-orders are recommended as stock sells out qui",
-      "last_checked": "2026-07-06T03:53:29.617664+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00"
     },
     {
       "id": "fresh-mangoes",
@@ -319,7 +319,7 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "0 usd unit price / &nbsp;per&nbsp; sale sold out shipping calculated at checkout. quanti",
-      "last_checked": "2026-07-06T03:53:29.617664+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00"
     },
     {
       "id": "a1mangos",
@@ -336,7 +336,7 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T03:53:29.617664+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00"
     },
     {
       "id": "ar4mangoes",
@@ -353,7 +353,7 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "og:availability = \"out of stock\"",
-      "last_checked": "2026-07-06T03:53:29.617664+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00"
     },
     {
       "id": "zzmango",
