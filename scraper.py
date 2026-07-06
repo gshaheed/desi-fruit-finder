@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 """
-Daily availability checker for Desi Fruit Finder.
+Availability checker for Desi Fruit Finder.
 
 For every vendor in data.json with "auto_checked": true, fetches the vendor's
-public product/collection page and applies a best-effort text heuristic to
-guess whether the fruit looks in stock, pre-order, sold out, or season-ended.
+public product page and figures out whether the fruit looks in stock,
+pre-order, sold out, or season-ended.
 
-This is intentionally simple (regex/keyword matching over page text) rather
-than a full headless-browser scraper, so it only works for vendors whose
-status is expressed in plain HTML text (true for the Shopify-style stores
-currently in data.json). Vendors marked "auto_checked": false are left alone
-and keep their manual status_text.
+Two layers of signal, checked in order:
+  1. Structured signal: an Open Graph `og:availability` meta tag or a
+     schema.org Product `"availability"` field embedded in the page. These
+     are far more reliable than scanning body text, when present.
+  2. Heuristic fallback: strip <script>/<style> blocks (so CSS/JS variable
+     names like "preordermessagecolor" can't masquerade as real text), then
+     regex/keyword-match the visible text for phrases like "sold out",
+     "season has ended", "pre-order", "add to cart".
 
-Run via GitHub Actions on a daily cron (see .github/workflows/update-data.yml).
+This is still a best-effort heuristic, not a guaranteed real-time inventory
+feed -- see README.md for the known limitations.
+
+Run via GitHub Actions on a schedule (see .github/workflows/update-data.yml).
 """
 
 import json
@@ -24,8 +30,17 @@ from pathlib import Path
 
 DATA_PATH = Path(__file__).parent / "data.json"
 TIMEOUT = 20
+
+# Look like an ordinary browser. Some storefronts (Wordfence/WooCommerce,
+# certain Shopify apps) 403/404 requests from generic script user agents
+# even though the page is public.
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (compatible; DesiFruitFinderBot/1.0; +https://github.com/)"
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+    ),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
 }
 
 # Ordered: first match wins.
@@ -36,15 +51,15 @@ STATUS_RULES = [
         r"season is over",
         r"see you next season",
     ]),
-    ("pre_order", [
-        r"pre[\s-]?order",
-        r"coming soon",
-        r"notify me when available",
-    ]),
     ("sold_out", [
         r"sold out",
         r"out of stock",
         r"currently unavailable",
+    ]),
+    ("pre_order", [
+        r"pre[\s-]?order",
+        r"coming soon",
+        r"notify me when available",
     ]),
     ("in_stock", [
         r"add to cart",
@@ -52,6 +67,24 @@ STATUS_RULES = [
         r"in stock",
     ]),
 ]
+
+# Maps values seen in og:availability / schema.org availability fields.
+STRUCTURED_AVAILABILITY_MAP = {
+    "instock": "in_stock",
+    "in stock": "in_stock",
+    "http://schema.org/instock": "in_stock",
+    "https://schema.org/instock": "in_stock",
+    "outofstock": "sold_out",
+    "out of stock": "sold_out",
+    "http://schema.org/outofstock": "sold_out",
+    "https://schema.org/outofstock": "sold_out",
+    "preorder": "pre_order",
+    "pre-order": "pre_order",
+    "http://schema.org/preorder": "pre_order",
+    "https://schema.org/preorder": "pre_order",
+    "discontinued": "season_ended",
+    "http://schema.org/discontinued": "pre_order",
+}
 
 
 def fetch(url: str) -> str:
@@ -61,10 +94,50 @@ def fetch(url: str) -> str:
     return raw.decode("utf-8", errors="ignore")
 
 
-def classify(html: str) -> tuple[str, str]:
-    text = re.sub(r"<[^>]+>", " ", html).lower()
+def strip_noise(html: str) -> str:
+    """Remove <script> and <style> blocks (contents included), then tags."""
+    html = re.sub(r"<script[^>]*>.*?</script>", " ", html, flags=re.DOTALL | re.IGNORECASE)
+    html = re.sub(r"<style[^>]*>.*?</style>", " ", html, flags=re.DOTALL | re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", " ", html)
     text = re.sub(r"\s+", " ", text)
+    return text.lower()
 
+
+def check_structured_availability(html: str):
+    # Open Graph: <meta property="og:availability" content="out of stock">
+    m = re.search(
+        r'<meta[^>]+property=["\']og:availability["\'][^>]+content=["\']([^"\']+)["\']',
+        html, re.IGNORECASE,
+    )
+    if not m:
+        # attribute order can be reversed
+        m = re.search(
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:availability["\']',
+            html, re.IGNORECASE,
+        )
+    if m:
+        value = m.group(1).strip().lower()
+        mapped = STRUCTURED_AVAILABILITY_MAP.get(value)
+        if mapped:
+            return mapped, 'og:availability = "%s"' % m.group(1)
+
+    # schema.org JSON-LD or microdata: "availability": "https://schema.org/InStock"
+    m = re.search(r'"availability"\s*:\s*"([^"]+)"', html, re.IGNORECASE)
+    if m:
+        value = m.group(1).strip().lower()
+        mapped = STRUCTURED_AVAILABILITY_MAP.get(value)
+        if mapped:
+            return mapped, 'schema availability = "%s"' % m.group(1)
+
+    return None
+
+
+def classify(html: str):
+    structured = check_structured_availability(html)
+    if structured:
+        return structured
+
+    text = strip_noise(html)
     for status, patterns in STATUS_RULES:
         for pat in patterns:
             m = re.search(pat, text)
@@ -93,7 +166,7 @@ def main() -> int:
             html = fetch(url)
             status, snippet = classify(html)
         except Exception as exc:  # noqa: BLE001 - best effort, keep going
-            status, snippet = "error", f"Fetch failed: {exc}"
+            status, snippet = "error", "Fetch failed: %s" % exc
 
         if vendor.get("status") != status or vendor.get("status_text") != snippet:
             changed = True
@@ -106,7 +179,7 @@ def main() -> int:
 
     DATA_PATH.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
 
-    print(f"Checked vendors. Data changed: {changed}")
+    print("Checked vendors. Data changed: %s" % changed)
     return 0
 
 

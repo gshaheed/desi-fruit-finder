@@ -12,12 +12,15 @@ California, so buyers can get to good stock before it sells out or expires.
   filterable vendor cards (by region: NorCal / SoCal / Ships to You, and by fruit) plus a
   general season calendar.
 - `data.json` — the vendor + fruit database. Hand-researched to start; see sources below.
-- `scraper.py` — a small heuristic checker. For vendors with a public Shopify-style product
-  page (`auto_checked: true` in `data.json`), it fetches the page and looks for phrases like
-  "sold out," "season has ended," "pre-order," or "add to cart" to guess current status.
+- `scraper.py` — an availability checker. For vendors with a public product page
+  (`auto_checked: true` in `data.json`), it first looks for a structured signal (an
+  `og:availability` meta tag or schema.org `"availability"` field — reliable when present),
+  and falls back to scanning the visible page text for phrases like "sold out," "season has
+  ended," "pre-order," or "add to cart" (script/style content is stripped first so CSS/JS
+  doesn't produce false matches).
 - `.github/workflows/update-data.yml` — a GitHub Actions workflow that runs `scraper.py`
-  once a day (and on manual trigger) and commits any changes to `data.json`. This is the
-  "algorithm" that keeps the live-status badges current without anyone touching the repo.
+  every 4 hours (and on manual trigger) and commits any changes to `data.json`. This is
+  the "algorithm" that keeps the live-status badges current without anyone touching the repo.
 
 ## Known limitations (read before trusting a badge)
 
