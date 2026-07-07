@@ -21,6 +21,14 @@ Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen
 
 This is a **best-effort** signal, not a guaranteed real-time inventory feed. Storefronts change, and a store-wide page can be noisy — so every listing links straight to the vendor for you to confirm before you buy or drive.
 
+### Vendors that carry more than one fruit
+
+A vendor's `check_url` can only describe *one* page. If a vendor carries several fruits behind a single shared page (a collection/category page, or one product page being reused for others), scraping that one page and applying the result to every fruit is actively misleading — text about one product (e.g. "sold out" near an unrelated item) can get misattributed to a completely different fruit the vendor also carries.
+
+Instead, such vendors get a `fruit_urls` map — `{"Dragon Fruit": "https://.../dragon-fruit-box", "Mango": "https://.../mango-box", ...}` — pointing each fruit at its own specific product page. The scraper checks each one independently and writes results into a parallel `fruit_status` map (same shape as the vendor-level `status`/`status_text`/`last_checked`, just keyed by fruit name). The vendor's own top-level `status` becomes a static placeholder ("Carries multiple fruits — see each fruit's own status below.") since it's no longer scraped.
+
+Any fruit that vendor carries but isn't in `fruit_urls` shows "Check directly" (plus the seasonal signal) instead of a shared/ambiguous status — coverage is intentionally traded for accuracy. Extending coverage later is additive: just add another verified URL to `fruit_urls`, no other change needed. Never guess a URL — verify it's a real, single-product page first, or leave that fruit uncovered.
+
 ## Live checks (the "⚡ Check live" button)
 
 GitHub Pages only serves static files, and browsers block client-side JS from fetching most vendor sites directly (CORS) — so an on-demand, in-page check needs a tiny server-side proxy. `worker/check-stock.js` is that proxy: a [Cloudflare Worker](https://workers.cloudflare.com/) (free tier) that fetches a vendor's page server-side and runs the same classification logic as `scraper.py`, then returns the result to the browser with CORS enabled. It only fetches hosts on its `ALLOWED_HOSTS` allowlist, so it can't be used as an open proxy for arbitrary URLs.
@@ -52,5 +60,5 @@ Opening `index.html` directly also works, but `data.json` only loads over http(s
 
 ## Adding a vendor or fruit
 
-- **Vendor:** add an entry to the `vendors` array in `data.json` — set `region` (`norcal`, `socal`, `both-ca`, or `ships-statewide`), list the `fruits` it carries (names must match the fruit names in `index.html`), and set `auto_checked` + a `check_url` if it has a scrapeable product page (otherwise `auto_checked: false` and a `manual` status).
+- **Vendor:** add an entry to the `vendors` array in `data.json` — set `region` (`norcal`, `socal`, `both-ca`, or `ships-statewide`), list the `fruits` it carries (names must match the fruit names in `index.html`), and set `auto_checked` + a `check_url` if it has one scrapeable product page (otherwise `auto_checked: false` and a `manual` status). If the vendor carries more than one fruit, use `fruit_urls` instead (see "Vendors that carry more than one fruit" above) rather than pointing `check_url` at a shared page.
 - **Fruit:** add an entry to the `FRUITS` array and a matching SVG to the `ART` object in `index.html`, plus a matching entry (with `season_months`, the 1–12 months it's typically available) to the `fruits` array in `data.json`. The finder, filters and detail panel pick it up automatically.

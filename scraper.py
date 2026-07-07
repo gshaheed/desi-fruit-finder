@@ -6,6 +6,14 @@ For every vendor in data.json with "auto_checked": true, fetches the vendor's
 public product page and figures out whether the fruit looks in stock,
 pre-order, sold out, or season-ended.
 
+Vendors that carry multiple fruits behind one shared page instead get a
+"fruit_urls" map (fruit name -> its own specific product page), so each
+fruit is checked against a page that's actually about that fruit, not a
+collection page whose text could belong to a different product entirely.
+Results for those go into a parallel "fruit_status" map; the vendor's own
+top-level status/status_text stay a static placeholder instead of being
+overwritten by a shared/ambiguous page's status.
+
 Two layers of signal, checked in order:
   1. Structured signal: an Open Graph `og:availability` meta tag or a
      schema.org Product `"availability"` field embedded in the page. These
@@ -156,24 +164,44 @@ def main() -> int:
     changed = False
 
     for vendor in data.get("vendors", []):
-        if not vendor.get("auto_checked"):
-            continue
-        url = vendor.get("check_url")
-        if not url:
-            continue
+        fruit_urls = vendor.get("fruit_urls") or {}
 
-        try:
-            html = fetch(url)
-            status, snippet = classify(html)
-        except Exception as exc:  # noqa: BLE001 - best effort, keep going
-            status, snippet = "error", "Fetch failed: %s" % exc
+        if fruit_urls:
+            # Multi-fruit vendor: a single shared page can't represent every
+            # fruit it carries, so don't scrape it as one vendor-wide status.
+            # Scrape each fruit's own verified URL instead.
+            fruit_status = vendor.setdefault("fruit_status", {})
+            for fruit_name, url in fruit_urls.items():
+                try:
+                    html = fetch(url)
+                    status, snippet = classify(html)
+                except Exception as exc:  # noqa: BLE001 - best effort, keep going
+                    status, snippet = "error", "Fetch failed: %s" % exc
 
-        if vendor.get("status") != status or vendor.get("status_text") != snippet:
-            changed = True
+                prev = fruit_status.get(fruit_name) or {}
+                if prev.get("status") != status or prev.get("status_text") != snippet:
+                    changed = True
 
-        vendor["status"] = status
-        vendor["status_text"] = snippet
-        vendor["last_checked"] = now
+                fruit_status[fruit_name] = {
+                    "status": status,
+                    "status_text": snippet,
+                    "last_checked": now,
+                }
+
+        elif vendor.get("auto_checked") and vendor.get("check_url"):
+            url = vendor["check_url"]
+            try:
+                html = fetch(url)
+                status, snippet = classify(html)
+            except Exception as exc:  # noqa: BLE001 - best effort, keep going
+                status, snippet = "error", "Fetch failed: %s" % exc
+
+            if vendor.get("status") != status or vendor.get("status_text") != snippet:
+                changed = True
+
+            vendor["status"] = status
+            vendor["status_text"] = snippet
+            vendor["last_checked"] = now
 
     data["generated_at"] = now
 

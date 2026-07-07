@@ -372,9 +372,24 @@
       "note": "Single-fruit and build-your-own exotic boxes; carries rare Asian fruit when in season.",
       "contact": null,
       "auto_checked": true,
-      "status": "sold_out",
-      "status_text": "ellow dragon fruit box while they last! sold out kumquat fruit box from $69.00 kumquats",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00"
+      "status": "manual",
+      "status_text": "Carries multiple fruits — see each fruit's own status below.",
+      "last_checked": null,
+      "fruit_urls": {
+        "Mango": "https://tropicalfruitbox.com/products/tropical-mango-box",
+        "Mangosteen": "https://tropicalfruitbox.com/products/mangosteen-fruit-box",
+        "Rambutan": "https://tropicalfruitbox.com/products/rambutan-box",
+        "Lychee": "https://tropicalfruitbox.com/products/fresh-lychee-box",
+        "Longan": "https://tropicalfruitbox.com/products/longan-fruit-box",
+        "Dragon Fruit": "https://tropicalfruitbox.com/products/dragon-fruit-box",
+        "Jackfruit": "https://tropicalfruitbox.com/products/jackfruit-in-a-box",
+        "Starfruit": "https://tropicalfruitbox.com/products/star-fruit-carambola-box",
+        "Chikoo": "https://tropicalfruitbox.com/products/fresh-sapodilla-nispero",
+        "Passion Fruit": "https://tropicalfruitbox.com/products/passionfruit-box",
+        "Guava": "https://tropicalfruitbox.com/products/tropical-guava-box",
+        "Custard Apple": "https://tropicalfruitbox.com/products/cherimoya-fruit"
+      },
+      "fruit_status": {}
     },
     {
       "id": "miami-fruit",
@@ -399,9 +414,22 @@
       "note": "Tropical-fruit hub; mangosteen, durian and jackfruit boxes sourced from farm partners. Highly perishable — eat on arrival.",
       "contact": null,
       "auto_checked": true,
-      "status": "in_stock",
-      "status_text": "schema availability = \"https://schema.org/InStock\"",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00"
+      "status": "manual",
+      "status_text": "Carries multiple fruits — see each fruit's own status below.",
+      "last_checked": null,
+      "fruit_urls": {
+        "Mangosteen": "https://miamifruit.org/products/mangosteen-box",
+        "Dragon Fruit": "https://miamifruit.org/products/white-pitaya-dragonfruit-box",
+        "Rambutan": "https://miamifruit.org/products/rambutan",
+        "Longan": "https://miamifruit.org/products/longan-box",
+        "Lychee": "https://miamifruit.org/products/lychees",
+        "Passion Fruit": "https://miamifruit.org/products/passionfruit-lilikoi",
+        "Guava": "https://miamifruit.org/products/pink-guava",
+        "Jackfruit": "https://miamifruit.org/products/mushy-jackfruit",
+        "Mango": "https://miamifruit.org/products/kiett-mango-box",
+        "Custard Apple": "https://miamifruit.org/products/custard-apple"
+      },
+      "fruit_status": {}
     },
     {
       "id": "weee",
@@ -427,7 +455,13 @@
       "auto_checked": false,
       "status": "manual",
       "status_text": "Marketplace — search app/site for current stock in your area.",
-      "last_checked": null
+      "last_checked": null,
+      "fruit_urls": {
+        "Lychee": "https://www.sayweee.com/en/products/Royal-Smile-Lychee/96083",
+        "Mango": "https://www.sayweee.com/en/product/Air-shipped-Alphonso-Mangoes/103134",
+        "Dragon Fruit": "https://www.sayweee.com/en/product/Yellow-Dragon-Fruit/97403"
+      },
+      "fruit_status": {}
     },
     {
       "id": "aumpi",
@@ -477,9 +511,14 @@
       "note": "Ratnagiri & Devgad Alphonso, Kesar and Banganapalli mangoes.",
       "contact": null,
       "auto_checked": true,
-      "status": "sold_out",
-      "status_text": "0 usd unit price / &nbsp;per&nbsp; sale sold out shipping calculated at checkout. quanti",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00"
+      "status": "manual",
+      "status_text": "Carries multiple fruits — see each fruit's own status below.",
+      "last_checked": null,
+      "fruit_urls": {
+        "Mango": "https://freshmangoes.us/products/pre-order-2025-season-ratnagiri-devgad-alphonso-mangoes",
+        "Custard Apple": "https://freshmangoes.us/products/pre-order-for-2023-season-sitaphal-custard-apple-sugar-apple"
+      },
+      "fruit_status": {}
     },
     {
       "id": "a1mangos",
@@ -759,9 +798,20 @@
       "note": "Major specialty produce brand; wide exotic-fruit lineup shipped nationwide, sold in many supermarkets too.",
       "contact": null,
       "auto_checked": true,
-      "status": "unknown",
-      "status_text": "Not yet checked — awaiting next scheduled scrape.",
-      "last_checked": null
+      "status": "manual",
+      "status_text": "Carries multiple fruits — see each fruit's own status below.",
+      "last_checked": null,
+      "fruit_urls": {
+        "Custard Apple": "https://www.melissas.com/products/cherimoya",
+        "Passion Fruit": "https://www.melissas.com/products/passion-fruit",
+        "Starfruit": "https://www.melissas.com/products/starfruit",
+        "Rambutan": "https://www.melissas.com/products/rambutans",
+        "Tamarind": "https://www.melissas.com/products/sweet-tamarind",
+        "Guava": "https://www.melissas.com/products/guavas",
+        "Dragon Fruit": "https://www.melissas.com/products/dragon-fruit-red",
+        "Lychee": "https://www.melissas.com/products/lychee"
+      },
+      "fruit_status": {}
     },
     {
       "id": "exotic-fruits-usa",
@@ -780,9 +830,14 @@
       "note": "Family-run online exotic fruit shipper with a money-back freshness guarantee.",
       "contact": null,
       "auto_checked": true,
-      "status": "unknown",
-      "status_text": "Not yet checked — awaiting next scheduled scrape.",
-      "last_checked": null
+      "status": "manual",
+      "status_text": "Carries multiple fruits — see each fruit's own status below.",
+      "last_checked": null,
+      "fruit_urls": {
+        "Mangosteen": "https://www.exoticfruitsusa.com/Mangosteen-Fruits-Buy-Mangosteen-Fresh-Mangosteen-p/mangosteen--2-pounds--9-16.htm",
+        "Mango": "https://www.exoticfruitsusa.com/Honey-Mangoes-buy-Honey-Mangoes-p/h2018.htm"
+      },
+      "fruit_status": {}
     },
     {
       "id": "mango-mania-us",

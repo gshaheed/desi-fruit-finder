@@ -8,8 +8,8 @@
  * *.workers.dev URL.
  *
  * Only fetches hosts in ALLOWED_HOSTS below — keep this in sync with the
- * `check_url` hosts of auto_checked vendors in data.json, so this can't be
- * used as an open proxy for arbitrary URLs.
+ * `check_url` AND `fruit_urls` hosts of vendors in data.json, so this can't
+ * be used as an open proxy for arbitrary URLs.
  */
 
 const ALLOWED_HOSTS = new Set([
@@ -24,6 +24,7 @@ const ALLOWED_HOSTS = new Set([
   "www.exoticfruitsusa.com",
   "www.ishopindian.com",
   "www.melissas.com",
+  "www.sayweee.com",
 ]);
 
 const FETCH_TIMEOUT_MS = 15000;

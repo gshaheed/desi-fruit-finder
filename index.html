@@ -404,11 +404,38 @@ function vendorsFor(fruitName){
 }
 
 const STATUS_RANK={in_stock:5,pre_order:4,manual:3,unknown:3,error:2,sold_out:1,season_ended:0};
+
+// A vendor's top-level status/check_url can't represent every fruit it
+// carries once it has fruit_urls (per-fruit product pages) — resolve the
+// view that's actually specific to the fruit being shown, instead of
+// falling back to a shared/ambiguous vendor-wide status.
+function resolveVendorFruitView(v,fruitName){
+  const fu=v.fruit_urls;
+  if(fu && Object.prototype.hasOwnProperty.call(fu,fruitName)){
+    const fs=(v.fruit_status && v.fruit_status[fruitName])||{};
+    return {
+      status:fs.status||"unknown",
+      status_text:fs.status_text||"Not yet checked — awaiting next scheduled scrape.",
+      last_checked:fs.last_checked||null,
+      check_url:fu[fruitName],
+      canCheckLive:true,
+      autoChecked:true
+    };
+  }
+  if(fu){
+    return {status:"manual",status_text:null,last_checked:null,check_url:v.url,canCheckLive:false,autoChecked:false};
+  }
+  return {
+    status:v.status,status_text:v.status_text,last_checked:v.last_checked,
+    check_url:v.check_url,canCheckLive:!!(v.auto_checked&&v.check_url),autoChecked:!!v.auto_checked
+  };
+}
+
 function summaryFor(fruitName){
   const vs=vendorsFor(fruitName);
   if(!vs.length) return {kind:"none",label:"No tracked vendors yet",count:0};
-  let best=vs[0], bestRank=-1;
-  vs.forEach(v=>{const r=STATUS_RANK[v.status]??3; if(r>bestRank){bestRank=r;best=v;}});
+  let best=resolveVendorFruitView(vs[0],fruitName), bestRank=-1;
+  vs.forEach(v=>{const view=resolveVendorFruitView(v,fruitName);const r=STATUS_RANK[view.status]??3; if(r>bestRank){bestRank=r;best=view;}});
   const n=vs.length, plural=n===1?"vendor":"vendors";
   if(best.status==='in_stock') return {kind:"in",label:`Available at ${n} ${plural}`,count:n};
   if(best.status==='pre_order') return {kind:"pre",label:`Pre-order at ${n} ${plural}`,count:n};
@@ -500,9 +527,10 @@ function relTime(iso){
   return `checked ${Math.round(diff/86400)} day(s) ago`;
 }
 function vendorRow(v,fruitName){
-  const si=STATUS_INFO[v.status]||STATUS_INFO.manual;
-  const link=v.check_url||v.url;
-  const isLive=!(v.status==='manual'||v.status==='unknown'||v.status==='error');
+  const view=resolveVendorFruitView(v,fruitName);
+  const si=STATUS_INFO[view.status]||STATUS_INFO.manual;
+  const link=view.check_url||v.url;
+  const isLive=!(view.status==='manual'||view.status==='unknown'||view.status==='error');
   const linkLabel=isLive?"Visit site →":"Check stock →";
   let seasonNote="";
   if(!isLive){
@@ -510,8 +538,8 @@ function vendorRow(v,fruitName){
     if(inSeason===true) seasonNote=`<div class="season-signal yes">🌱 Typically in season right now</div>`;
     else if(inSeason===false) seasonNote=`<div class="season-signal no">⚪ Typically out of season right now</div>`;
   }
-  const canCheckLive=v.auto_checked && v.check_url;
-  return `<div class="vendor" data-vendor-id="${v.id}">
+  const canCheckLive=view.canCheckLive;
+  return `<div class="vendor" data-vendor-id="${v.id}" data-fruit-name="${fruitName}">
     <div class="vendor-top">
       <div class="vendor-name">${v.name}</div>
       <span class="status-badge ${si.cls}"><span class="sd"></span>${si.label}</span>
@@ -521,9 +549,9 @@ function vendorRow(v,fruitName){
     ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
     ${seasonNote}
     <div class="vendor-foot">
-      <span class="checked">${v.auto_checked&&v.last_checked?relTime(v.last_checked):(v.auto_checked?"auto-checked":"manually curated")}</span>
+      <span class="checked">${view.autoChecked&&view.last_checked?relTime(view.last_checked):(view.autoChecked?"auto-checked":"manually curated")}</span>
       <span style="display:flex;gap:8px;align-items:center">
-        ${canCheckLive?`<button class="check-live-btn" data-check-url="${v.check_url}">⚡ Check live</button>`:""}
+        ${canCheckLive?`<button class="check-live-btn" data-check-url="${view.check_url}" data-fruit-name="${fruitName}">⚡ Check live</button>`:""}
         <a class="visit" href="${link}" target="_blank" rel="noopener">${linkLabel}</a>
       </span>
     </div>
@@ -536,6 +564,7 @@ async function onCheckLive(e){
   const row=btn.closest('.vendor');
   const msg=row.querySelector('.check-live-msg');
   const id=row.dataset.vendorId;
+  const fruitName=row.dataset.fruitName;
   const url=btn.dataset.checkUrl;
   if(!CHECK_LIVE_ENDPOINT){
     msg.hidden=false;
@@ -546,14 +575,26 @@ async function onCheckLive(e){
   try{
     const res=await fetch(`${CHECK_LIVE_ENDPOINT}?url=${encodeURIComponent(url)}`);
     const data=await res.json();
+    if(!res.ok||data.error){
+      msg.hidden=false;msg.textContent="Couldn't reach the live checker — try again shortly.";
+      btn.textContent="⚡ Check live";btn.disabled=false;
+      return;
+    }
     const v=VENDORS.find(x=>x.id===id);
     if(v){
-      v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;
-      const si=STATUS_INFO[v.status]||STATUS_INFO.manual;
+      if(v.fruit_urls && Object.prototype.hasOwnProperty.call(v.fruit_urls,fruitName)){
+        v.fruit_status=v.fruit_status||{};
+        v.fruit_status[fruitName]={status:data.status,status_text:data.status_text,last_checked:data.checked_at};
+      } else {
+        v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;
+      }
+      const view=resolveVendorFruitView(v,fruitName);
+      const si=STATUS_INFO[view.status]||STATUS_INFO.manual;
       const badge=row.querySelector('.status-badge');
       badge.className=`status-badge ${si.cls}`;
       badge.innerHTML=`<span class="sd"></span>${si.label}`;
       row.querySelector('.checked').textContent="checked just now";
+      render();
     }
     btn.textContent="⚡ Check live";btn.disabled=false;
   }catch(err){
