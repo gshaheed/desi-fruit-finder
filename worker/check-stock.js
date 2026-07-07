@@ -144,16 +144,20 @@ function findProductPrice(node, depth) {
 }
 
 // Best-effort real price, or null if no reliable signal is found. Priority:
-// og:price:amount meta tag first (simple, standard, scoped to this page),
-// then JSON-LD Product.offers.price. No text-heuristic fallback -- an
-// unlabelled dollar amount could belong to any product on the page.
+// og:price:amount / product:price:amount meta tags first (both part of the
+// same Open Graph "product" object type, ogp.me/#type_product -- different
+// Shopify themes/apps emit one or the other), then JSON-LD
+// Product.offers.price. No text-heuristic fallback -- an unlabelled dollar
+// amount could belong to any product on the page.
 function extractPrice(html) {
-  let m =
-    html.match(/<meta[^>]+property=["']og:price:amount["'][^>]+content=["']([^"']+)["']/i) ||
-    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:price:amount["']/i);
-  if (m) {
-    const value = parseFloat(m[1]);
-    if (!isNaN(value) && value > 0) return value;
+  for (const prop of ["og:price:amount", "product:price:amount"]) {
+    const m =
+      html.match(new RegExp(`<meta[^>]+property=["']${prop}["'][^>]+content=["']([^"']+)["']`, "i")) ||
+      html.match(new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+property=["']${prop}["']`, "i"));
+    if (m) {
+      const value = parseFloat(m[1]);
+      if (!isNaN(value) && value > 0) return value;
+    }
   }
 
   const scriptRe = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;

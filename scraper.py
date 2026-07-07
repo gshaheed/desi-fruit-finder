@@ -213,29 +213,33 @@ def extract_price(html: str):
 
     Priority order (most to least reliable), mirroring the structured-first
     approach used for stock status:
-      1. og:price:amount meta tag -- simple, standard, scoped to this page.
+      1. og:price:amount / product:price:amount meta tags -- both are part of
+         the same Open Graph "product" object type (ogp.me/#type_product);
+         different Shopify themes/apps emit one or the other, so both are
+         checked.
       2. JSON-LD Product.offers.price -- scoped to a node that explicitly
          declares itself a Product, not just any "price" text on the page.
     No text-heuristic fallback: an unlabelled dollar amount on the page could
     belong to any product, so showing nothing is better than showing a
     possibly-wrong price with false confidence.
     """
-    m = re.search(
-        r'<meta[^>]+property=["\']og:price:amount["\'][^>]+content=["\']([^"\']+)["\']',
-        html, re.IGNORECASE,
-    )
-    if not m:
+    for prop in ("og:price:amount", "product:price:amount"):
         m = re.search(
-            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:price:amount["\']',
+            r'<meta[^>]+property=["\']%s["\'][^>]+content=["\']([^"\']+)["\']' % re.escape(prop),
             html, re.IGNORECASE,
         )
-    if m:
-        try:
-            value = float(m.group(1))
-            if value > 0:
-                return value
-        except ValueError:
-            pass
+        if not m:
+            m = re.search(
+                r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']%s["\']' % re.escape(prop),
+                html, re.IGNORECASE,
+            )
+        if m:
+            try:
+                value = float(m.group(1))
+                if value > 0:
+                    return value
+            except ValueError:
+                pass
 
     for script in re.finditer(
         r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
