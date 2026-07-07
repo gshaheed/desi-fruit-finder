@@ -26,13 +26,14 @@
   button{font-family:inherit;cursor:pointer}
 
   header.top{position:sticky;top:0;z-index:40;background:rgba(255,246,234,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .top-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .top-inner{display:flex;align-items:center;justify-content:space-between;height:66px;gap:12px}
+  .top-actions{display:flex;align-items:center;gap:12px}
   .brand{display:flex;align-items:center;gap:11px;font-family:"Fraunces",serif;font-weight:900;font-size:20px;letter-spacing:-.01em}
   .brand .mark{width:34px;height:34px;flex:none}
   .top nav{display:flex;gap:26px;font-weight:500;font-size:14.5px}
   .top nav a{text-decoration:none;opacity:.75;transition:opacity .2s}
   .top nav a:hover{opacity:1}
-  @media(max-width:720px){.top nav{display:none}}
+  @media(max-width:720px){.top nav{display:none}.cart-toggle{padding:8px 12px;font-size:12px}}
 
   .hero{position:relative;padding:70px 0 34px;overflow:hidden}
   .hero .blob{position:absolute;border-radius:50%;filter:blur(6px);z-index:0}
@@ -185,6 +186,40 @@
   .request-result.show{display:block}
   .request-result textarea{width:100%;min-height:110px;margin-top:6px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:12.5px;font-family:inherit;background:var(--card);color:var(--ink)}
   .request-copied-note{color:var(--in);font-weight:700}
+  .buy-btn{font-size:12px;font-weight:700;color:#fff;background:var(--leaf);border:none;border-radius:100px;padding:6px 13px;transition:opacity .15s}
+  .buy-btn:hover{opacity:.88}
+  .buy-btn:disabled{opacity:.45;cursor:default}
+  .price-breakdown{font-size:11.5px;color:var(--ink-soft);margin-top:4px}
+  .price-breakdown b{color:var(--ink)}
+  .cart-toggle{position:relative;border:none;background:var(--paper);border:1.5px solid var(--line);border-radius:100px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
+  .cart-toggle .cart-count{min-width:20px;height:20px;border-radius:50%;background:var(--guava);color:#fff;font-size:11px;display:inline-flex;align-items:center;justify-content:center;padding:0 5px}
+  .cart-scrim{position:fixed;inset:0;background:rgba(36,26,18,.45);z-index:90;opacity:0;pointer-events:none;transition:opacity .25s}
+  .cart-scrim.open{opacity:1;pointer-events:auto}
+  .cart-drawer{position:fixed;top:0;right:0;width:min(420px,100vw);height:100vh;background:var(--card);border-left:1px solid var(--line);z-index:91;transform:translateX(100%);transition:transform .28s ease;display:flex;flex-direction:column;box-shadow:-12px 0 40px var(--shadow)}
+  .cart-scrim.open .cart-drawer{transform:translateX(0)}
+  .cart-head{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--line)}
+  .cart-head h3{margin:0;font-family:"Fraunces",serif;font-size:22px}
+  .cart-close{border:none;background:transparent;font-size:20px;cursor:pointer;color:var(--ink-soft)}
+  .cart-body{flex:1;overflow:auto;padding:16px 22px}
+  .cart-empty{color:var(--ink-soft);font-size:14px;text-align:center;padding:40px 10px}
+  .cart-item{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;background:var(--paper)}
+  .cart-item h4{margin:0 0 4px;font-size:15px;font-family:"Fraunces",serif}
+  .cart-item .ci-vendor{font-size:12.5px;color:var(--ink-soft);margin-bottom:8px}
+  .cart-item .ci-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px}
+  .cart-qty{display:flex;align-items:center;gap:6px}
+  .cart-qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-weight:700}
+  .cart-foot{padding:18px 22px 24px;border-top:1px solid var(--line);background:var(--paper-2)}
+  .cart-totals{font-size:13.5px;color:var(--ink-soft);margin-bottom:12px}
+  .cart-totals .grand{font-size:18px;font-weight:800;color:var(--ink);margin-top:6px}
+  .cart-note{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:10px;font-family:inherit;font-size:13px;margin-bottom:12px;min-height:56px;resize:vertical;background:var(--card)}
+  .cart-checkout{width:100%;border:none;border-radius:100px;padding:14px;font-size:15px;font-weight:700;background:var(--leaf);color:#fff}
+  .cart-checkout:disabled{opacity:.5;cursor:default}
+  .cart-msg{font-size:12.5px;margin-top:10px;color:var(--muted)}
+  .cart-msg.err{color:var(--out)}
+  .order-terms{padding:60px 0;background:var(--paper-2);border-top:1px solid var(--line)}
+  .order-terms h2{font-family:"Fraunces",serif;font-size:clamp(24px,3.5vw,32px);margin:0 0 14px}
+  .order-terms p,.order-terms li{color:var(--ink-soft);font-size:14.5px;max-width:52em}
+  .order-terms ul{padding-left:20px}
   .no-vendors{border:1px dashed var(--line);border-radius:16px;padding:18px;text-align:center;color:var(--ink-soft);font-size:14px;background:var(--paper)}
   .no-vendors b{color:var(--ink)}
   .m-divider{height:1px;background:var(--line);margin:26px 0 22px;border:none}
@@ -298,12 +333,16 @@
       </svg>
       Desi Fruit Finder
     </a>
-    <nav>
-      <a href="#finder">Find fruit</a>
-      <a href="#" id="navSwipe">🔥 Fruit Swipe</a>
-      <a href="#how">How it works</a>
-      <a href="#about">About</a>
-    </nav>
+    <div class="top-actions">
+      <nav>
+        <a href="#finder">Find fruit</a>
+        <a href="#" id="navSwipe">🔥 Fruit Swipe</a>
+        <a href="#how">How it works</a>
+        <a href="#order-terms">Order on site</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="cart-toggle" id="cartToggle" type="button" aria-label="Open cart">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    </div>
   </div>
 </header>
 
@@ -313,7 +352,7 @@
     <div>
       <span class="eyebrow">Where to buy desi &amp; tropical fruit</span>
       <h1 class="display">Find the fruit.<br>See <em>who's got it.</em></h1>
-      <p class="lead">Mango, lychee, mangosteen, jamun, chikoo and more — this finder shows you which vendors carry each fruit near you in California or shipped to your door, and whether it looks in stock right now.</p>
+      <p class="lead">Mango, lychee, mangosteen, jamun, chikoo and more — find which vendors carry each fruit, see whether it looks in stock, and <b>buy on site</b> at the vendor's price plus a 5% brokerage fee.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#finder">Find fruit near me →</a>
         <button class="btn btn-ghost" id="heroSwipeBtn">🔥 Swipe fruit near you</button>
@@ -367,6 +406,7 @@
       <h2>How the stock check works</h2>
       <p>For online vendors, a script checks each store's public product page every 15 minutes and reads its stock signal — so a badge like <b>In stock</b>, <b>Pre-order</b> or <b>Sold out</b> reflects the last automated check, with the time shown on each listing. Hit the <b>⚡ Check live</b> button on any of those listings to trigger a fresh, on-the-spot check instead of waiting for the next scheduled run.</p>
       <p>Grocery stores don't publish live inventory, so those are marked <b>Check directly</b>. For those, the site also computes a <b>typically in/out of season</b> signal from each fruit's harvest calendar and today's date — so you get an automatic read without visiting the store, though it's an estimate, not a live count. Every listing still has a direct link so you can verify before you go.</p>
+      <p>Listings with a real price and an <b>in stock</b> or <b>pre-order</b> badge can be added to your cart and purchased on site at the vendor price plus a <b>5% brokerage fee</b> — see <a href="#order-terms" style="color:var(--sun)">Order on site</a> for details.</p>
     </div>
     <div class="mini">
       <div class="m"><b>Near you</b><span>Filter by NorCal, SoCal, or vendors that ship to your door.</span></div>
@@ -374,6 +414,20 @@
       <div class="m"><b>Every source</b><span>Desi, Asian and Latin groceries, specialty shippers and corporate stores.</span></div>
       <div class="m"><b>Know the fruit</b><span>Each fruit also has a full guide: season, how to eat, nutrition.</span></div>
     </div>
+  </div>
+</section>
+
+<section class="order-terms" id="order-terms">
+  <div class="wrap">
+    <h2>Buy on site — how it works</h2>
+    <p>When a vendor listing shows a real price and is <b>in stock</b> or <b>pre-order</b>, you can add it to your cart and pay here. We charge the vendor's listed price plus a <b>5% brokerage fee</b> for placing and coordinating the order.</p>
+    <ul>
+      <li><b>You pay once</b> through Stripe (card, Apple Pay, Google Pay where available).</li>
+      <li><b>We broker the sale</b> — after payment we order from the vendor at their listed price and pass along your shipping details.</li>
+      <li><b>Fulfillment is by the vendor</b> — shipping times, pickup, and perishable handling follow their policies. Always confirm availability before travel for in-store vendors.</li>
+      <li><b>No price on the listing?</b> Use <b>Request order</b> to message the vendor yourself — we don't guess prices.</li>
+    </ul>
+    <p style="margin-top:14px;font-size:13px">Desi Fruit Finder is an order facilitator, not the merchant of record for vendor inventory. Perishable food sales may be subject to local regulations.</p>
   </div>
 </section>
 
@@ -391,8 +445,8 @@
 
 <footer>
   <div class="wrap foot-inner">
-    <div>Desi Fruit Finder — a small love letter to good fruit. Stock is best-effort, not guaranteed; always confirm with the vendor.</div>
-    <div>Data updated <span id="footUpdated">recently</span> · <a href="#finder">Back to the finder</a></div>
+    <div>Desi Fruit Finder — find fruit, check stock, buy on site (5% brokerage). Stock is best-effort; always confirm with the vendor.</div>
+    <div>Data updated <span id="footUpdated">recently</span> · <a href="#order-terms">Order terms</a> · <a href="#finder">Back to the finder</a></div>
   </div>
 </footer>
 
@@ -415,6 +469,22 @@
 </div>
 
 <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+<div class="cart-scrim" id="cartScrim" aria-hidden="true">
+  <div class="cart-drawer" role="dialog" aria-label="Shopping cart">
+    <div class="cart-head">
+      <h3>Your cart</h3>
+      <button class="cart-close" id="cartClose" type="button" aria-label="Close cart">✕</button>
+    </div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-foot">
+      <div class="cart-totals" id="cartTotals"></div>
+      <textarea class="cart-note" id="cartNote" placeholder="Order notes (pickup window, gift message, etc.)"></textarea>
+      <button class="cart-checkout" id="cartCheckout" type="button" disabled>Pay securely with Stripe →</button>
+      <div class="cart-msg" id="cartMsg" hidden></div>
+    </div>
+  </div>
+</div>
 
 <button class="chat-bubble" id="chatBubble" aria-label="Contact us">💬</button>
 <div class="chat-panel" id="chatPanel">
@@ -617,7 +687,7 @@ function card(f){
     <h3>${f.name}</h3>
     <div class="local">${f.local}</div>
     <div class="avail ${s.kind}"><span class="adot"></span>${s.label}</div>
-    ${s.lowestPrice!=null?`<div class="card-price">From $${s.lowestPrice.toFixed(2)}</div>`:""}
+    ${s.lowestPrice!=null?`<div class="card-price">From $${(s.lowestPrice+serviceFee(s.lowestPrice)).toFixed(2)} on site</div>`:""}
   </button>`;
 }
 
@@ -666,6 +736,9 @@ function vendorRow(v,fruitName){
   }
   const canCheckLive=view.canCheckLive;
   const varieties=v.variety_names&&v.variety_names[fruitName];
+  const canPurchase=canBuy(view);
+  const fee=view.price!=null?serviceFee(view.price):null;
+  const total=view.price!=null?view.price+fee:null;
   return `<div class="vendor" data-vendor-id="${v.id}" data-fruit-name="${fruitName}">
     <div class="vendor-top">
       <div class="vendor-name">${v.name}</div>
@@ -675,19 +748,21 @@ function vendorRow(v,fruitName){
     ${v.note?`<div class="vendor-note">${v.note}</div>`:""}
     ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
     ${varieties?`<div class="vendor-varieties"><span class="vv-label">Varieties carried:</span> ${varieties.map(n=>`<span class="vv-tag">${n}</span>`).join('')}</div>`:""}
-    <div class="vendor-price">${view.price!=null?`$${view.price.toFixed(2)}`:"Price: check vendor"}</div>
+    <div class="vendor-price">${view.price!=null?`$${view.price.toFixed(2)} vendor price`:"Price: check vendor"}</div>
+    ${canPurchase?`<div class="price-breakdown"><b>$${total.toFixed(2)}</b> on site (incl. 5% brokerage fee of $${fee.toFixed(2)})</div>`:""}
     ${seasonNote}
     <div class="vendor-foot">
       <span class="checked">${view.autoChecked&&view.last_checked?relTime(view.last_checked):(view.autoChecked?"auto-checked":"manually curated")}</span>
-      <span style="display:flex;gap:8px;align-items:center">
+      <span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
         ${canCheckLive?`<button class="check-live-btn" data-check-url="${view.check_url}" data-fruit-name="${fruitName}">⚡ Check live</button>`:""}
+        ${canPurchase?`<button class="buy-btn" type="button">🛒 Buy on site</button>`:""}
         <button class="request-btn" data-fruit-name="${fruitName}">📝 Request order</button>
         <a class="visit" href="${link}" target="_blank" rel="noopener">${linkLabel}</a>
       </span>
     </div>
     <div class="check-live-msg" hidden></div>
     <div class="request-form" hidden>
-      <p class="hint">We don't process orders or payment — this puts your request into a message you send the vendor yourself, by whatever contact method they offer${v.contact?` (${v.contact})`:""}.</p>
+      <p class="hint">Prefer to contact the vendor yourself? This puts your request into a message you send them directly${v.contact?` (${v.contact})`:""}. Or use <b>Buy on site</b> above to pay through Desi Fruit Finder.</p>
       <div class="rf-row">
         <input type="text" class="rf-name" placeholder="Your name" autocomplete="name">
         <input type="text" class="rf-contact" placeholder="Your email or phone" autocomplete="email">
@@ -747,7 +822,12 @@ async function onCheckLive(e){
       badge.className=`status-badge ${si.cls}`;
       badge.innerHTML=`<span class="sd"></span>${si.label}`;
       row.querySelector('.checked').textContent="checked just now";
-      row.querySelector('.vendor-price').textContent=view.price!=null?`$${view.price.toFixed(2)}`:"Price: check vendor";
+      row.querySelector('.vendor-price').textContent=view.price!=null?`$${view.price.toFixed(2)} vendor price`:"Price: check vendor";
+      const breakdown=row.querySelector('.price-breakdown');
+      if(breakdown&&canBuy(view)){
+        const f=serviceFee(view.price);
+        breakdown.innerHTML=`<b>$${(view.price+f).toFixed(2)}</b> on site (incl. 5% brokerage fee of $${f.toFixed(2)})`;
+      }
       render();
     }
     btn.textContent="⚡ Check live";btn.disabled=false;
@@ -835,6 +915,7 @@ function openModal(id){
   document.body.style.overflow='hidden';
   modal.querySelector('.close-x').addEventListener('click',closeModal);
   modal.querySelectorAll('.check-live-btn').forEach(b=>b.addEventListener('click',onCheckLive));
+  modal.querySelectorAll('.buy-btn').forEach(b=>b.addEventListener('click',onBuyClick));
   modal.querySelectorAll('.request-btn').forEach(b=>b.addEventListener('click',onToggleRequestForm));
   modal.querySelectorAll('.request-copy-btn').forEach(b=>b.addEventListener('click',onPrepareRequest));
   const enc=modal.querySelector('#enc'), encBtn=modal.querySelector('#encToggle');
