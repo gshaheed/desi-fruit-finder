@@ -306,7 +306,11 @@ def main() -> int:
                 if prev.get("status") != status or prev.get("status_text") != snippet or prev.get("price") != price:
                     changed = True
 
+                # Merge rather than replace -- preserves hand-researched fields
+                # (e.g. unit_lbs, used to sanity-check price-per-pound) that
+                # this scraper doesn't know about and shouldn't erase.
                 fruit_status[fruit_name] = {
+                    **prev,
                     "status": status,
                     "status_text": snippet,
                     "last_checked": now,
