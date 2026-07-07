@@ -166,6 +166,20 @@
   .check-live-btn:hover{opacity:.8}
   .check-live-btn:disabled{opacity:.6;cursor:default}
   .check-live-msg{font-size:12px;color:var(--muted);margin-top:6px}
+  .request-btn{font-size:12px;font-weight:700;color:var(--plum);background:#f1e6fa;border:none;border-radius:100px;padding:6px 13px;transition:opacity .15s}
+  .request-btn:hover{opacity:.8}
+  .request-form{margin-top:12px;padding:14px;border:1px dashed var(--line);border-radius:14px;background:var(--paper)}
+  .request-form p.hint{margin:0 0 10px;font-size:12.5px;color:var(--ink-soft)}
+  .request-form .rf-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .request-form input,.request-form textarea{flex:1;min-width:140px;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-family:inherit;font-size:13px;color:var(--ink);background:var(--card)}
+  .request-form textarea{width:100%;min-height:50px;resize:vertical}
+  .request-form .rf-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:4px}
+  .request-copy-btn{background:var(--ink);color:var(--paper);border:none;border-radius:100px;padding:8px 16px;font-size:13px;font-weight:600}
+  .request-copy-btn:hover{opacity:.88}
+  .request-result{font-size:12.5px;color:var(--ink-soft);margin-top:8px;display:none}
+  .request-result.show{display:block}
+  .request-result textarea{width:100%;min-height:110px;margin-top:6px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:12.5px;font-family:inherit;background:var(--card);color:var(--ink)}
+  .request-copied-note{color:var(--in);font-weight:700}
   .no-vendors{border:1px dashed var(--line);border-radius:16px;padding:18px;text-align:center;color:var(--ink-soft);font-size:14px;background:var(--paper)}
   .no-vendors b{color:var(--ink)}
   .m-divider{height:1px;background:var(--line);margin:26px 0 22px;border:none}
@@ -562,10 +576,29 @@ function vendorRow(v,fruitName){
       <span class="checked">${view.autoChecked&&view.last_checked?relTime(view.last_checked):(view.autoChecked?"auto-checked":"manually curated")}</span>
       <span style="display:flex;gap:8px;align-items:center">
         ${canCheckLive?`<button class="check-live-btn" data-check-url="${view.check_url}" data-fruit-name="${fruitName}">⚡ Check live</button>`:""}
+        <button class="request-btn" data-fruit-name="${fruitName}">📝 Request order</button>
         <a class="visit" href="${link}" target="_blank" rel="noopener">${linkLabel}</a>
       </span>
     </div>
     <div class="check-live-msg" hidden></div>
+    <div class="request-form" hidden>
+      <p class="hint">We don't process orders or payment — this puts your request into a message you send the vendor yourself, by whatever contact method they offer${v.contact?` (${v.contact})`:""}.</p>
+      <div class="rf-row">
+        <input type="text" class="rf-name" placeholder="Your name" autocomplete="name">
+        <input type="text" class="rf-contact" placeholder="Your email or phone" autocomplete="email">
+      </div>
+      <div class="rf-row">
+        <textarea class="rf-notes" placeholder="Quantity / notes (e.g. &quot;2 boxes, pickup preferred&quot;)"></textarea>
+      </div>
+      <div class="rf-actions">
+        <button class="request-copy-btn">Prepare request</button>
+        <a class="visit" href="${link}" target="_blank" rel="noopener">Go to ${v.name} →</a>
+      </div>
+      <div class="request-result">
+        <span class="request-copied-note" hidden>✓ Copied to clipboard —</span> paste this into an email, text, or the vendor's contact form:
+        <textarea class="request-text" readonly onclick="this.select()"></textarea>
+      </div>
+    </div>
   </div>`;
 }
 const CHECK_LIVE_ENDPOINT="https://desi-fruit-check-stock.gurneetsshaheed.workers.dev";
@@ -612,6 +645,42 @@ async function onCheckLive(e){
     btn.textContent="⚡ Check live";btn.disabled=false;
   }
 }
+function onToggleRequestForm(e){
+  const row=e.currentTarget.closest('.vendor');
+  const form=row.querySelector('.request-form');
+  form.hidden=!form.hidden;
+}
+function onPrepareRequest(e){
+  const row=e.currentTarget.closest('.vendor');
+  const vendorId=row.dataset.vendorId;
+  const fruitName=row.dataset.fruitName;
+  const v=VENDORS.find(x=>x.id===vendorId);
+  const name=row.querySelector('.rf-name').value.trim();
+  const contact=row.querySelector('.rf-contact').value.trim();
+  const notes=row.querySelector('.rf-notes').value.trim();
+  const lines=[
+    `Hi ${v?v.name:'there'},`,
+    ``,
+    `I'd like to order ${fruitName} if it's available.`,
+    ``,
+    name?`Name: ${name}`:null,
+    contact?`Email/phone: ${contact}`:null,
+    notes?`Notes: ${notes}`:null,
+    ``,
+    `(Sent via Desi Fruit Finder — this is a request, not a confirmed order; please reply to let me know availability and next steps.)`
+  ].filter(l=>l!==null).join('\n');
+
+  const result=row.querySelector('.request-result');
+  const textarea=row.querySelector('.request-text');
+  const copiedNote=row.querySelector('.request-copied-note');
+  textarea.value=lines;
+  result.classList.add('show');
+  navigator.clipboard?.writeText(lines).then(()=>{
+    copiedNote.hidden=false;
+  }).catch(()=>{
+    copiedNote.hidden=true;
+  });
+}
 function openModal(id){
   const f=FRUITS.find(x=>x.id===id);if(!f)return;
   const vs=vendorsFor(f.name);
@@ -655,6 +724,8 @@ function openModal(id){
   document.body.style.overflow='hidden';
   modal.querySelector('.close-x').addEventListener('click',closeModal);
   modal.querySelectorAll('.check-live-btn').forEach(b=>b.addEventListener('click',onCheckLive));
+  modal.querySelectorAll('.request-btn').forEach(b=>b.addEventListener('click',onToggleRequestForm));
+  modal.querySelectorAll('.request-copy-btn').forEach(b=>b.addEventListener('click',onPrepareRequest));
   const enc=modal.querySelector('#enc'), encBtn=modal.querySelector('#encToggle');
   encBtn.addEventListener('click',()=>{const h=enc.hasAttribute('hidden');if(h){enc.removeAttribute('hidden');encBtn.textContent="Hide the full fruit guide ↑";}else{enc.setAttribute('hidden','');encBtn.textContent="Read the full fruit guide ↓";}});
   modal.scrollTop=0;

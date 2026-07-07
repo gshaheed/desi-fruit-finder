@@ -14,6 +14,7 @@ Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen
 - **"Only where I can buy it now"** — one toggle to hide fruits with nothing available in your region.
 - **A full guide for every fruit** — season, how to eat it, nutrition and a fun fact, behind each fruit's *Where to buy* panel. Several fruits (Mango, Lychee, Guava, Custard Apple) also list popular named varieties (Alphonso, Kesar, Totapuri, Chausa...).
 - **Real photos** — every fruit card and detail panel shows an actual photo (`images/fruit/`), not just the illustrated art. The inline SVG illustrations still render as a fallback if a photo fails to load.
+- **📝 Request order** — every vendor listing has a small form (name, contact, notes) that prepares a ready-to-send message and copies it to your clipboard. This site never takes payment or places orders itself — it just saves you writing the message, which you send to the vendor yourself however they're reachable (their own contact info, if we have it, is shown right there; otherwise use their site/WhatsApp/phone).
 - **23 fruits and 24 vendors tracked**, and growing — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
 
 ## How stock checking works
