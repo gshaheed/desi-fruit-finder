@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T16:31:43.721367+00:00",
+  "generated_at": "2026-07-07T10:33:42.373573+00:00",
   "note": "Vendor stock is refreshed by scraper.py via GitHub Actions. 'last_checked' shows when each auto-checked vendor was last verified. In-store vendors are marked manual — call ahead or check in person.",
   "fruits": [
     {
@@ -391,39 +391,75 @@
       },
       "fruit_status": {
         "Mango": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Mangosteen": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Rambutan": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Lychee": {
+          "status": "sold_out",
+          "status_text": "og:availability = \"outofstock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Longan": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Dragon Fruit": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Jackfruit": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Starfruit": {
+          "status": "sold_out",
+          "status_text": "og:availability = \"outofstock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Chikoo": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Passion Fruit": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Guava": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Custard Apple": {
+          "status": "in_stock",
+          "status_text": "og:availability = \"instock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         }
       },
@@ -485,34 +521,64 @@
       },
       "fruit_status": {
         "Mangosteen": {
-          "price": 77
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 77.0
         },
         "Dragon Fruit": {
-          "price": 67
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 67.0
         },
         "Rambutan": {
-          "price": 87
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 87.0
         },
         "Longan": {
-          "price": 77
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 77.0
         },
         "Lychee": {
-          "price": 127
+          "status": "sold_out",
+          "status_text": "schema availability = \"https://schema.org/OutOfStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 127.0
         },
         "Passion Fruit": {
-          "price": 27
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 27.0
         },
         "Guava": {
-          "price": 37
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 37.0
         },
         "Jackfruit": {
-          "price": 197
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 197.0
         },
         "Mango": {
-          "price": 197
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 197.0
         },
         "Custard Apple": {
-          "price": 97
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 97.0
         }
       },
       "variety_names": {
@@ -565,12 +631,21 @@
       },
       "fruit_status": {
         "Lychee": {
+          "status": "unknown",
+          "status_text": "Could not find a clear stock signal on the page.",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Mango": {
+          "status": "unknown",
+          "status_text": "Could not find a clear stock signal on the page.",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Dragon Fruit": {
+          "status": "unknown",
+          "status_text": "Could not find a clear stock signal on the page.",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         }
       }
@@ -590,7 +665,7 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "last_checked": "2026-07-07T10:33:42.373573+00:00",
       "variety_names": {
         "Mango": [
           "Alphonso",
@@ -615,7 +690,7 @@
       "auto_checked": true,
       "status": "pre_order",
       "status_text": "june, depending on harvest conditions. pre-orders are recommended as stock sells out qui",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "last_checked": "2026-07-07T10:33:42.373573+00:00",
       "variety_names": {
         "Mango": [
           "Alphonso"
@@ -646,10 +721,16 @@
       },
       "fruit_status": {
         "Mango": {
-          "price": 74
+          "status": "sold_out",
+          "status_text": "0 usd unit price / &nbsp;per&nbsp; sale sold out shipping calculated at checkout. quanti",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 74.0
         },
         "Custard Apple": {
-          "price": 62
+          "status": "sold_out",
+          "status_text": "0 usd unit price / &nbsp;per&nbsp; sale sold out shipping calculated at checkout. quanti",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
+          "price": 62.0
         }
       },
       "variety_names": {
@@ -675,13 +756,13 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "last_checked": "2026-07-07T10:33:42.373573+00:00",
       "variety_names": {
         "Mango": [
           "Alphonso"
         ]
       },
-      "price": 50
+      "price": 50.0
     },
     {
       "id": "ar4mangoes",
@@ -698,7 +779,7 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "og:availability = \"out of stock\"",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "last_checked": "2026-07-07T10:33:42.373573+00:00",
       "variety_names": {
         "Mango": [
           "Alphonso"
@@ -826,12 +907,21 @@
       },
       "fruit_status": {
         "Dragon Fruit": {
+          "status": "error",
+          "status_text": "Fetch failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'fresh.99ranch.com'. (_ssl.c:1010)>",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Mango": {
+          "status": "error",
+          "status_text": "Fetch failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'fresh.99ranch.com'. (_ssl.c:1010)>",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Lychee": {
+          "status": "error",
+          "status_text": "Fetch failed: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'fresh.99ranch.com'. (_ssl.c:1010)>",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         }
       }
@@ -868,18 +958,33 @@
       },
       "fruit_status": {
         "Mango": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 2.99
         },
         "Lychee": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 3.44
         },
         "Longan": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 10.42
         },
         "Rambutan": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 12.08
         },
         "Dragon Fruit": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"https://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 4.49
         }
       }
@@ -1011,27 +1116,51 @@
       },
       "fruit_status": {
         "Custard Apple": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"http://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 43.59
         },
         "Passion Fruit": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"http://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 32.39
         },
         "Starfruit": {
+          "status": "sold_out",
+          "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Rambutan": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"http://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 22.79
         },
         "Tamarind": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"http://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 19.29
         },
         "Guava": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"http://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 19.69
         },
         "Dragon Fruit": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"http://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 48.19
         },
         "Lychee": {
+          "status": "in_stock",
+          "status_text": "schema availability = \"http://schema.org/InStock\"",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": 32.79
         }
       },
@@ -1070,9 +1199,15 @@
       },
       "fruit_status": {
         "Mangosteen": {
+          "status": "unknown",
+          "status_text": "Could not find a clear stock signal on the page.",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         },
         "Mango": {
+          "status": "unknown",
+          "status_text": "Could not find a clear stock signal on the page.",
+          "last_checked": "2026-07-07T10:33:42.373573+00:00",
           "price": null
         }
       }
@@ -1090,9 +1225,9 @@
       "note": "Alphonso mango sourced from Gir, Ratnagiri and Andhra Pradesh farms.",
       "contact": null,
       "auto_checked": true,
-      "status": "unknown",
-      "status_text": "Not yet checked — awaiting next scheduled scrape.",
-      "last_checked": null,
+      "status": "sold_out",
+      "status_text": "sourced sustainably carbide & gmo free sold out view full details skip to product infor",
+      "last_checked": "2026-07-07T10:33:42.373573+00:00",
       "variety_names": {
         "Mango": [
           "Alphonso"
@@ -1113,9 +1248,9 @@
       "note": "Large Indian grocery site since 2000; jamun is sold frozen, not fresh.",
       "contact": null,
       "auto_checked": true,
-      "status": "unknown",
-      "status_text": "Not yet checked — awaiting next scheduled scrape.",
-      "last_checked": null,
+      "status": "sold_out",
+      "status_text": "an black plum) (frozen) $5.49 12 oz bag out of stock not rated yet 0 share tweet pin $5.49 1",
+      "last_checked": "2026-07-07T10:33:42.373573+00:00",
       "price": null
     },
     {
