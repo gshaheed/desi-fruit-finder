@@ -570,6 +570,156 @@ function inSeasonNow(fruitName){
 }
 let state={q:"",season:null,taste:null,region:"all",onlyAvail:false};
 
+const BROKER_RATE=0.05;
+const CART_KEY="dff_cart_v1";
+const CHECKOUT_ENDPOINT="https://desi-fruit-check-stock.gurneetsshaheed.workers.dev/create-checkout";
+
+function canBuy(view){
+  return view.price!=null&&view.price>0&&(view.status==="in_stock"||view.status==="pre_order");
+}
+function serviceFee(vendorPrice){return Math.round(vendorPrice*BROKER_RATE*100)/100;}
+function lineTotal(vendorPrice,qty){return Math.round((vendorPrice+serviceFee(vendorPrice))*qty*100)/100;}
+
+function loadCart(){
+  try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]");}catch(e){return [];}
+}
+function saveCart(items){localStorage.setItem(CART_KEY,JSON.stringify(items));updateCartUI();}
+function cartKey(vendorId,fruitName){return `${vendorId}::${fruitName}`;}
+
+function addToCart(vendorId,fruitName){
+  const v=VENDORS.find(x=>x.id===vendorId);
+  if(!v)return;
+  const view=resolveVendorFruitView(v,fruitName);
+  if(!canBuy(view))return;
+  const items=loadCart();
+  const key=cartKey(vendorId,fruitName);
+  const existing=items.find(i=>cartKey(i.vendorId,i.fruitName)===key);
+  if(existing){existing.quantity=Math.min(10,existing.quantity+1);}
+  else{items.push({vendorId,fruitName,vendorName:v.name,vendorPrice:view.price,quantity:1});}
+  saveCart(items);
+  openCart();
+}
+
+function setCartQty(vendorId,fruitName,delta){
+  const items=loadCart();
+  const key=cartKey(vendorId,fruitName);
+  const item=items.find(i=>cartKey(i.vendorId,i.fruitName)===key);
+  if(!item)return;
+  item.quantity+=delta;
+  if(item.quantity<=0) saveCart(items.filter(i=>cartKey(i.vendorId,i.fruitName)!==key));
+  else saveCart(items);
+}
+
+function removeFromCart(vendorId,fruitName){
+  const key=cartKey(vendorId,fruitName);
+  saveCart(loadCart().filter(i=>cartKey(i.vendorId,i.fruitName)!==key));
+}
+
+function cartSummary(items){
+  let vendorSub=0,feeSub=0;
+  items.forEach(i=>{
+    vendorSub+=i.vendorPrice*i.quantity;
+    feeSub+=serviceFee(i.vendorPrice)*i.quantity;
+  });
+  return {vendorSub,feeSub,grand:Math.round((vendorSub+feeSub)*100)/100};
+}
+
+function updateCartUI(){
+  const items=loadCart();
+  const countEl=document.getElementById('cartCount');
+  const body=document.getElementById('cartBody');
+  const totals=document.getElementById('cartTotals');
+  const checkoutBtn=document.getElementById('cartCheckout');
+  const totalQty=items.reduce((n,i)=>n+i.quantity,0);
+  countEl.textContent=String(totalQty);
+  countEl.hidden=totalQty===0;
+
+  if(!items.length){
+    body.innerHTML='<div class="cart-empty">Your cart is empty. Open a fruit and tap <b>Buy on site</b> on any in-stock listing with a price.</div>';
+    totals.innerHTML="";
+    checkoutBtn.disabled=true;
+    return;
+  }
+
+  body.innerHTML=items.map(i=>`
+    <div class="cart-item" data-vendor-id="${i.vendorId}" data-fruit-name="${i.fruitName}">
+      <h4>${i.fruitName}</h4>
+      <div class="ci-vendor">${i.vendorName}</div>
+      <div class="ci-row">
+        <div class="cart-qty">
+          <button type="button" class="cart-qty-minus" aria-label="Decrease quantity">−</button>
+          <span>${i.quantity}</span>
+          <button type="button" class="cart-qty-plus" aria-label="Increase quantity">+</button>
+        </div>
+        <div><b>$${lineTotal(i.vendorPrice,i.quantity).toFixed(2)}</b><br><span style="font-size:11.5px;color:var(--ink-soft)">incl. 5% fee</span></div>
+      </div>
+      <button type="button" class="reset cart-remove" style="margin-top:8px;font-size:12px">Remove</button>
+    </div>`).join('');
+
+  body.querySelectorAll('.cart-qty-minus').forEach(b=>b.addEventListener('click',e=>{
+    const row=e.target.closest('.cart-item');
+    setCartQty(row.dataset.vendorId,row.dataset.fruitName,-1);
+  }));
+  body.querySelectorAll('.cart-qty-plus').forEach(b=>b.addEventListener('click',e=>{
+    const row=e.target.closest('.cart-item');
+    setCartQty(row.dataset.vendorId,row.dataset.fruitName,1);
+  }));
+  body.querySelectorAll('.cart-remove').forEach(b=>b.addEventListener('click',e=>{
+    const row=e.target.closest('.cart-item');
+    removeFromCart(row.dataset.vendorId,row.dataset.fruitName);
+  }));
+
+  const s=cartSummary(items);
+  totals.innerHTML=`
+    <div>Vendor subtotal: $${s.vendorSub.toFixed(2)}</div>
+    <div>Brokerage (5%): $${s.feeSub.toFixed(2)}</div>
+    <div class="grand">Total: $${s.grand.toFixed(2)}</div>`;
+  checkoutBtn.disabled=false;
+}
+
+function openCart(){
+  document.getElementById('cartScrim').classList.add('open');
+  document.getElementById('cartScrim').setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+  updateCartUI();
+}
+function closeCart(){
+  document.getElementById('cartScrim').classList.remove('open');
+  document.getElementById('cartScrim').setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+
+async function onCheckout(){
+  const msg=document.getElementById('cartMsg');
+  const btn=document.getElementById('cartCheckout');
+  const items=loadCart();
+  msg.hidden=true;
+  if(!items.length)return;
+  btn.disabled=true;btn.textContent="Redirecting to Stripe…";
+  try{
+    const res=await fetch(CHECKOUT_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({items:items.map(i=>({vendorId:i.vendorId,fruitName:i.fruitName,quantity:i.quantity})),customerNote:document.getElementById('cartNote').value.trim()})
+    });
+    const data=await res.json();
+    if(!res.ok||!data.url) throw new Error(data.error||"Checkout failed");
+    window.location.href=data.url;
+  }catch(err){
+    msg.hidden=false;
+    msg.className='cart-msg err';
+    msg.textContent=err.message||"Couldn't start checkout — try again.";
+    btn.disabled=false;btn.textContent="Pay securely with Stripe →";
+  }
+}
+
+function onBuyClick(e){
+  const row=e.currentTarget.closest('.vendor');
+  addToCart(row.dataset.vendorId,row.dataset.fruitName);
+  e.currentTarget.textContent="Added ✓";
+  setTimeout(()=>{e.currentTarget.textContent="🛒 Buy on site";},1200);
+}
+
 const grid=document.getElementById('grid');
 const searchEl=document.getElementById('search');
 const countPill=document.getElementById('countPill');
@@ -1116,7 +1266,12 @@ document.getElementById('swipeLikeBtn').addEventListener('click',()=>programmati
 document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&swipeScrim.classList.contains('open'))closeSwipeView();});
 
 function fmtDate(iso){try{return new Date(iso).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}catch(e){return "recently";}}
-function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();}
+function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();updateCartUI();}
+document.getElementById('cartToggle').addEventListener('click',openCart);
+document.getElementById('cartClose').addEventListener('click',closeCart);
+document.getElementById('cartScrim').addEventListener('click',e=>{if(e.target===document.getElementById('cartScrim'))closeCart();});
+document.getElementById('cartCheckout').addEventListener('click',onCheckout);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('cartScrim').classList.contains('open'))closeCart();});
 fetch('data.json?t='+Date.now(),{cache:'no-store'})
   .then(r=>r.json())
   .then(d=>{

@@ -1,12 +1,12 @@
-name = "desi-fruit-checkout"
-main = "worker/create-checkout.js"
+name = "desi-fruit-check-stock"
+main = "worker/check-stock.js"
 compatibility_date = "2024-01-01"
 
-# After deploy, set secrets:
-#   wrangler secret put STRIPE_SECRET_KEY
-#   wrangler secret put STRIPE_WEBHOOK_SECRET
+# Secrets (set via dashboard or `wrangler secret put`):
+#   STRIPE_SECRET_KEY
+#   STRIPE_WEBHOOK_SECRET
 #
-# Optional vars in Cloudflare dashboard:
+# Optional vars:
 #   SITE_URL      = https://gshaheed.github.io/desi-fruit-finder
 #   DATA_JSON_URL = https://raw.githubusercontent.com/gshaheed/desi-fruit-finder/main/data.json
-#   ORDER_EMAIL   = your@email.com
+#   ORDER_EMAIL   = meanhacks@gmail.com
