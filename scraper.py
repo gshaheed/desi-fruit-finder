@@ -294,6 +294,11 @@ def main() -> int:
                     status, snippet = "error", "Fetch failed: %s" % exc
 
                 prev = fruit_status.get(fruit_name) or {}
+                # A check that finds no price this time must not erase a
+                # previously-known real price -- only overwrite when this
+                # check actually found one.
+                if price is None:
+                    price = prev.get("price")
                 if prev.get("status") != status or prev.get("status_text") != snippet or prev.get("price") != price:
                     changed = True
 
@@ -314,6 +319,8 @@ def main() -> int:
             except Exception as exc:  # noqa: BLE001 - best effort, keep going
                 status, snippet = "error", "Fetch failed: %s" % exc
 
+            if price is None:
+                price = vendor.get("price")
             if vendor.get("status") != status or vendor.get("status_text") != snippet or vendor.get("price") != price:
                 changed = True
 

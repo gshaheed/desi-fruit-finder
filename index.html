@@ -74,7 +74,7 @@
   .region-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding-bottom:14px;border-bottom:1px dashed var(--line)}
   .region-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);display:flex;align-items:center;gap:6px}
   .region-toggle{display:flex;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:4px}
-  .region-toggle button{border:none;background:transparent;border-radius:100px;padding:8px 16px;font-size:13.5px;font-weight:600;color:var(--ink-soft);transition:all .15s}
+  .region-toggle button{border:none;background:transparent;border-radius:100px;padding:8px 16px;font-size:13.5px;font-weight:600;color:var(--ink-soft);transition:all .15s;white-space:nowrap}
   .region-toggle button.on{background:var(--ink);color:var(--paper)}
   .region-note{font-size:12.5px;color:var(--muted);margin-left:auto}
   .search-row{display:flex;gap:12px;align-items:center}
@@ -118,6 +118,7 @@
   .avail.out{background:var(--out-bg);color:var(--out)} .avail.out .adot{background:var(--out)}
   .avail.check{background:var(--neutral-bg);color:var(--neutral)} .avail.check .adot{background:var(--neutral)}
   .avail.none{background:var(--muted-bg);color:var(--muted)} .avail.none .adot{background:var(--muted)}
+  .card-price{font-size:12.5px;font-weight:700;color:var(--leaf);margin-top:6px}
   .no-results{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--ink-soft)}
   .no-results b{font-family:"Fraunces",serif;font-size:22px;color:var(--ink);display:block;margin-bottom:6px}
   .data-note{font-size:12.5px;color:var(--muted);margin-top:16px;text-align:right}
@@ -209,6 +210,9 @@
     .m-body{padding-left:22px;padding-right:22px}
     .m-facts{grid-template-columns:1fr}
     .region-note{margin-left:0;width:100%}
+    .region-row{flex-direction:column;align-items:stretch;gap:8px}
+    .region-toggle{width:100%;flex-wrap:wrap}
+    .region-toggle button{flex:1 1 calc(50% - 6px);padding:8px 10px;font-size:12.5px;text-align:center}
   }
 
   .about{background:var(--ink);color:var(--paper);padding:74px 0;margin-top:20px;border-radius:40px 40px 0 0;position:relative;z-index:1}
@@ -226,6 +230,28 @@
   .to-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--paper);border:none;font-size:20px;box-shadow:0 8px 20px var(--shadow);z-index:30;opacity:0;pointer-events:none;transition:opacity .3s}
   .to-top.show{opacity:1;pointer-events:auto}
 
+  .chat-bubble{position:fixed;bottom:24px;left:24px;width:58px;height:58px;border-radius:50%;background:var(--guava);color:#fff;border:none;font-size:24px;box-shadow:0 10px 24px var(--shadow);z-index:80;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+  .chat-bubble:hover{transform:scale(1.06)}
+  .chat-panel{position:fixed;bottom:94px;left:24px;width:320px;max-width:calc(100vw - 48px);max-height:min(480px,70vh);background:var(--card);border-radius:20px;box-shadow:0 20px 50px rgba(36,26,18,.35);z-index:81;display:none;flex-direction:column;overflow:hidden;border:1px solid var(--line)}
+  .chat-panel.open{display:flex}
+  .chat-head{background:var(--ink);color:var(--paper);padding:16px 18px;display:flex;align-items:center;justify-content:space-between}
+  .chat-head b{font-family:"Fraunces",serif;font-size:16px}
+  .chat-head span{font-size:12px;color:#d8ccbb;display:block;margin-top:2px}
+  .chat-close{background:transparent;border:none;color:var(--paper);font-size:18px;opacity:.8}
+  .chat-close:hover{opacity:1}
+  .chat-body{padding:16px 18px;overflow-y:auto;flex:1}
+  .chat-body p.chat-intro{font-size:13px;color:var(--ink-soft);margin:0 0 14px}
+  .chat-field{margin-bottom:10px}
+  .chat-field input,.chat-field textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;font-family:inherit;font-size:13.5px;color:var(--ink);background:var(--paper)}
+  .chat-field textarea{min-height:80px;resize:vertical}
+  .chat-send{width:100%;background:var(--guava);color:#fff;border:none;border-radius:100px;padding:10px 16px;font-size:14px;font-weight:700;margin-top:4px}
+  .chat-send:hover{opacity:.9}
+  .chat-send:disabled{opacity:.6}
+  .chat-status{font-size:12.5px;margin-top:10px;text-align:center}
+  .chat-status.ok{color:var(--in)}
+  .chat-status.err{color:var(--out)}
+  @media(max-width:480px){.chat-panel{left:12px;bottom:82px}.chat-bubble{left:14px;bottom:14px}}
+
   .swipe-scrim{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#2a1a10,#120a06);display:none;flex-direction:column;align-items:center;padding:20px}
   .swipe-scrim.open{display:flex}
   .swipe-close{position:absolute;top:18px;right:20px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.12);color:#fff;font-size:18px;z-index:5}
@@ -233,7 +259,7 @@
   .swipe-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:380px;color:#fff;padding:10px 4px 16px;flex:none}
   .swipe-title{font-family:"Fraunces",serif;font-weight:900;font-size:20px}
   .swipe-tally{font-size:13px;background:rgba(255,255,255,.14);padding:5px 12px;border-radius:100px;font-weight:600}
-  .swipe-stack{position:relative;width:100%;max-width:380px;flex:1;min-height:0}
+  .swipe-stack{position:relative;width:100%;max-width:380px;aspect-ratio:3/4.3;max-height:min(70vh,600px);flex:0 0 auto;margin:0 auto}
   .swipe-card{position:absolute;inset:0;background:var(--card);border-radius:26px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;touch-action:none;user-select:none;cursor:grab}
   .swipe-card:active{cursor:grabbing}
   .swipe-card .sc-photo{position:relative;flex:1;min-height:0;overflow:hidden}
@@ -242,10 +268,11 @@
   .swipe-card .sc-stamp.like{right:20px;color:#2ecc71;border-color:#2ecc71}
   .swipe-card .sc-stamp.pass{left:20px;color:#e74c3c;border-color:#e74c3c;transform:rotate(18deg)}
   .swipe-card .sc-body{padding:16px 20px 20px;background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,.55) 60%,transparent);color:#fff;position:absolute;left:0;right:0;bottom:0}
-  .swipe-card .sc-toprow{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .swipe-card .sc-toprow{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
   .swipe-card .sc-name{font-family:"Fraunces",serif;font-weight:900;font-size:26px}
-  .swipe-card .sc-price{font-size:20px;font-weight:800;color:#ffd166;white-space:nowrap}
-  .swipe-card .sc-vendor{font-size:14px;font-weight:600;opacity:.92;margin-top:2px}
+  .swipe-card .sc-price{font-family:"Fraunces",serif;font-weight:900;font-size:26px;color:#ffd166;white-space:nowrap}
+  .swipe-card .sc-local{font-size:13px;font-style:italic;opacity:.8;margin-top:1px}
+  .swipe-card .sc-vendor{font-size:14px;font-weight:600;opacity:.92;margin-top:6px}
   .swipe-card .sc-loc{font-size:12.5px;opacity:.8;margin-top:2px}
   .swipe-card .sc-tastes{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
   .swipe-card .sc-tastes span{background:rgba(255,255,255,.18);padding:3px 10px;border-radius:100px;font-size:11.5px;font-weight:600}
@@ -389,6 +416,24 @@
 
 <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
 
+<button class="chat-bubble" id="chatBubble" aria-label="Contact us">💬</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <div><b>Message us</b><span>We'll reply by email</span></div>
+    <button class="chat-close" id="chatClose" aria-label="Close">✕</button>
+  </div>
+  <div class="chat-body">
+    <p class="chat-intro">Questions, a vendor tip, or something wrong on the site? Send it straight to our inbox.</p>
+    <form id="chatForm">
+      <div class="chat-field"><input type="text" id="chatName" placeholder="Your name" required></div>
+      <div class="chat-field"><input type="email" id="chatEmail" placeholder="Your email" required></div>
+      <div class="chat-field"><textarea id="chatMessage" placeholder="Your message" required></textarea></div>
+      <button type="submit" class="chat-send" id="chatSendBtn">Send message</button>
+      <div class="chat-status" id="chatStatus" hidden></div>
+    </form>
+  </div>
+</div>
+
 <script>
 const leaf=(x,y,r)=>`<path transform="translate(${x} ${y}) rotate(${r})" d="M0 0c8-10 22-11 30-6-6 8-20 12-30 6Z" fill="#128a5b"/>`;
 const stem=(x,y,h=14)=>`<rect x="${x-2}" y="${y}" width="4" height="${h}" rx="2" fill="#7a4a1e"/>`;
@@ -508,14 +553,18 @@ function resolveVendorFruitView(v,fruitName){
 
 function summaryFor(fruitName){
   const vs=vendorsFor(fruitName);
-  if(!vs.length) return {kind:"none",label:"No tracked vendors yet",count:0};
-  let best=resolveVendorFruitView(vs[0],fruitName), bestRank=-1;
-  vs.forEach(v=>{const view=resolveVendorFruitView(v,fruitName);const r=STATUS_RANK[view.status]??3; if(r>bestRank){bestRank=r;best=view;}});
+  if(!vs.length) return {kind:"none",label:"No tracked vendors yet",count:0,lowestPrice:null};
+  let best=resolveVendorFruitView(vs[0],fruitName), bestRank=-1, lowestPrice=null;
+  vs.forEach(v=>{
+    const view=resolveVendorFruitView(v,fruitName);
+    const r=STATUS_RANK[view.status]??3; if(r>bestRank){bestRank=r;best=view;}
+    if(view.price!=null && (lowestPrice===null || view.price<lowestPrice)) lowestPrice=view.price;
+  });
   const n=vs.length, plural=n===1?"vendor":"vendors";
-  if(best.status==='in_stock') return {kind:"in",label:`Available at ${n} ${plural}`,count:n};
-  if(best.status==='pre_order') return {kind:"pre",label:`Pre-order at ${n} ${plural}`,count:n};
-  if(best.status==='sold_out'||best.status==='season_ended') return {kind:"out",label:`Out of season · ${n} ${plural}`,count:n};
-  return {kind:"check",label:`Check ${n} ${plural}`,count:n};
+  if(best.status==='in_stock') return {kind:"in",label:`Available at ${n} ${plural}`,count:n,lowestPrice};
+  if(best.status==='pre_order') return {kind:"pre",label:`Pre-order at ${n} ${plural}`,count:n,lowestPrice};
+  if(best.status==='sold_out'||best.status==='season_ended') return {kind:"out",label:`Out of season · ${n} ${plural}`,count:n,lowestPrice};
+  return {kind:"check",label:`Check ${n} ${plural}`,count:n,lowestPrice};
 }
 
 function buildFilters(){
@@ -568,6 +617,7 @@ function card(f){
     <h3>${f.name}</h3>
     <div class="local">${f.local}</div>
     <div class="avail ${s.kind}"><span class="adot"></span>${s.label}</div>
+    ${s.lowestPrice!=null?`<div class="card-price">From $${s.lowestPrice.toFixed(2)}</div>`:""}
   </button>`;
 }
 
@@ -680,11 +730,16 @@ async function onCheckLive(e){
     }
     const v=VENDORS.find(x=>x.id===id);
     if(v){
+      // A live check that finds no price signal this time (data.price===null)
+      // must NOT erase a previously-known real price -- only overwrite when
+      // the fresh check actually found one.
       if(v.fruit_urls && Object.prototype.hasOwnProperty.call(v.fruit_urls,fruitName)){
         v.fruit_status=v.fruit_status||{};
-        v.fruit_status[fruitName]={status:data.status,status_text:data.status_text,last_checked:data.checked_at,price:data.price??null};
+        const prevPrice=(v.fruit_status[fruitName]||{}).price??null;
+        v.fruit_status[fruitName]={status:data.status,status_text:data.status_text,last_checked:data.checked_at,price:data.price??prevPrice};
       } else {
-        v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;v.price=data.price??null;
+        const prevPrice=v.price??null;
+        v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;v.price=data.price??prevPrice;
       }
       const view=resolveVendorFruitView(v,fruitName);
       const si=STATUS_INFO[view.status]||STATUS_INFO.manual;
@@ -813,6 +868,38 @@ const toTop=document.getElementById('toTop');
 window.addEventListener('scroll',()=>toTop.classList.toggle('show',window.scrollY>600));
 toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
+// ---- Contact chatbox: emails meanhacks@gmail.com via FormSubmit (no backend needed) ----
+const CHAT_EMAIL_ENDPOINT="https://formsubmit.co/ajax/meanhacks@gmail.com";
+const chatBubble=document.getElementById('chatBubble');
+const chatPanel=document.getElementById('chatPanel');
+chatBubble.addEventListener('click',()=>{
+  chatPanel.classList.toggle('open');
+  if(chatPanel.classList.contains('open')) document.getElementById('chatName').focus();
+});
+document.getElementById('chatClose').addEventListener('click',()=>chatPanel.classList.remove('open'));
+document.getElementById('chatForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const btn=document.getElementById('chatSendBtn');
+  const status=document.getElementById('chatStatus');
+  const name=document.getElementById('chatName').value.trim();
+  const email=document.getElementById('chatEmail').value.trim();
+  const message=document.getElementById('chatMessage').value.trim();
+  btn.disabled=true;btn.textContent="Sending…";status.hidden=true;
+  try{
+    const res=await fetch(CHAT_EMAIL_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json',Accept:'application/json'},
+      body:JSON.stringify({name,email,message,_subject:`Desi Fruit Finder message from ${name}`})
+    });
+    if(!res.ok) throw new Error('send failed');
+    status.hidden=false;status.className='chat-status ok';status.textContent="Sent! We'll get back to you by email.";
+    document.getElementById('chatForm').reset();
+  }catch(err){
+    status.hidden=false;status.className='chat-status err';status.textContent="Couldn't send — try again shortly.";
+  }
+  btn.disabled=false;btn.textContent="Send message";
+});
+
 // ---- Fruit Swipe: an endless Tinder-style deck of (fruit, vendor) profiles ----
 let swipeDeck=[], swipeLiked=0;
 const swipeScrim=document.getElementById('swipeScrim');
@@ -845,9 +932,10 @@ function swipeCardHtml(pair){
       <div class="sc-stamp pass">Passed</div>
       <div class="sc-body">
         <div class="sc-toprow">
-          <span class="sc-name">${f.name}, ${f.local.split(' ')[0]}</span>
+          <span class="sc-name">${f.name},</span>
           <span class="sc-price">${priceText}</span>
         </div>
+        <div class="sc-local">${f.local}</div>
         <div class="sc-vendor">📍 ${v.name}</div>
         <div class="sc-loc">${v.location}</div>
         <div class="sc-tastes">${f.tastes.map(t=>`<span>${t}</span>`).join('')}</div>
@@ -871,24 +959,29 @@ function bindTopSwipeCard(){
   let startX=0,startY=0,dx=0,dragging=false;
   const onDown=(e)=>{
     dragging=true;
-    const pt=e.touches?e.touches[0]:e;
-    startX=pt.clientX;startY=pt.clientY;
+    startX=e.clientX;startY=e.clientY;
     top.style.transition='none';
+    // Without this, a fast/large drag (exactly what a real swipe gesture is)
+    // moves the pointer past the card's on-screen bounds mid-gesture, and
+    // pointermove/pointerup stop being delivered to it entirely -- the card
+    // just goes dead. Capturing keeps every subsequent event routed to this
+    // element regardless of where the pointer physically ends up.
+    top.setPointerCapture(e.pointerId);
   };
   const onMove=(e)=>{
     if(!dragging) return;
-    const pt=e.touches?e.touches[0]:e;
-    dx=pt.clientX-startX;
-    const dy=pt.clientY-startY;
+    dx=e.clientX-startX;
+    const dy=e.clientY-startY;
     const rot=dx/14;
     top.style.transform=`translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
     const likeStamp=top.querySelector('.sc-stamp.like'), passStamp=top.querySelector('.sc-stamp.pass');
     likeStamp.style.opacity=Math.max(0,Math.min(1,dx/80));
     passStamp.style.opacity=Math.max(0,Math.min(1,-dx/80));
   };
-  const onUp=()=>{
+  const onUp=(e)=>{
     if(!dragging) return;
     dragging=false;
+    if(e&&top.hasPointerCapture&&top.hasPointerCapture(e.pointerId)) top.releasePointerCapture(e.pointerId);
     top.style.transition='transform .3s ease';
     if(Math.abs(dx)>100){
       finishSwipe(top,dx>0?'like':'pass');
@@ -902,7 +995,7 @@ function bindTopSwipeCard(){
   top.addEventListener('pointerdown',onDown);
   top.addEventListener('pointermove',onMove);
   top.addEventListener('pointerup',onUp);
-  top.addEventListener('pointerleave',()=>{if(dragging)onUp();});
+  top.addEventListener('pointercancel',onUp);
 }
 function finishSwipe(card,direction){
   const flyX=direction==='like'?900:-900;

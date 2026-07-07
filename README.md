@@ -17,7 +17,8 @@ Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen
 - **Real photos** — every fruit card and detail panel shows an actual photo (`images/fruit/`), not just the illustrated art. The inline SVG illustrations still render as a fallback if a photo fails to load.
 - **📝 Request order** — every vendor listing has a small form (name, contact, notes) that prepares a ready-to-send message and copies it to your clipboard. This site never takes payment or places orders itself — it just saves you writing the message, which you send to the vendor yourself however they're reachable (their own contact info, if we have it, is shown right there; otherwise use their site/WhatsApp/phone).
 - **Real prices** — where a vendor's page exposes structured price data (`og:price:amount` or a JSON-LD `Product.offers.price`), the scraper reads the real, current price and shows it right on the listing. No price signal found → shows "check vendor" instead of guessing.
-- **🔥 Fruit Swipe** — an endless Tinder-style card deck (nav bar or the hero button) of every tracked (fruit, vendor) pairing: photo, name, price where age would be, vendor + location, taste tags and a tagline. Drag or tap ❤️/✕ — it reshuffles forever, purely for fun browsing.
+- **🔥 Fruit Swipe** — an endless Tinder-style card deck (nav bar or the hero button) of every tracked (fruit, vendor) pairing: photo, "Fruit Name, $price" where "Name, Age" would be on a real profile, vendor + location, taste tags and a tagline. Drag or tap ❤️/✕ — it reshuffles forever, purely for fun browsing. Prices are also shown directly on every fruit's grid card ("From $X.XX"), not just inside the swipe deck or a vendor's detail row.
+- **💬 Message us** — a chat-style bubble (bottom-left) opens a small contact form that emails straight to the site owner, no account or backend needed.
 - **23 fruits and 24 vendors tracked**, and growing — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
 
 ## How stock checking works
@@ -55,6 +56,10 @@ To turn the button on:
 4. In `index.html`, set `CHECK_LIVE_ENDPOINT` (near the `vendorRow`/`onCheckLive` functions) to that URL, then commit and push.
 
 Until `CHECK_LIVE_ENDPOINT` is set, the button shows a message instead of failing silently. Keep `ALLOWED_HOSTS` in the worker in sync with the `check_url` hosts of `auto_checked` vendors in `data.json` whenever you add or remove one.
+
+## The "💬 Message us" chatbox
+
+The chat bubble posts to [FormSubmit](https://formsubmit.co/) (`CHAT_EMAIL_ENDPOINT` in `index.html`), which forwards submissions to `meanhacks@gmail.com` — no account, backend, or API key needed. **One-time setup:** the *first* message sent through the form triggers a confirmation email from FormSubmit to `meanhacks@gmail.com` — click the link in it once to activate the endpoint; every message after that delivers immediately. To point it at a different address, change the email in `CHAT_EMAIL_ENDPOINT` and repeat the one-time confirmation.
 
 ## Files
 
