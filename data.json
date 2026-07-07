@@ -389,7 +389,12 @@
         "Guava": "https://tropicalfruitbox.com/products/tropical-guava-box",
         "Custard Apple": "https://tropicalfruitbox.com/products/cherimoya-fruit"
       },
-      "fruit_status": {}
+      "fruit_status": {},
+      "variety_names": {
+        "Guava": ["Pink Guava", "White Guava", "Purple Guava", "Watermelon Guava"],
+        "Custard Apple": ["Cherimoya", "Red Custard Apple"],
+        "Dragon Fruit": ["Yellow", "Red-Flesh", "Red-White Flesh"]
+      }
     },
     {
       "id": "miami-fruit",
@@ -429,7 +434,13 @@
         "Mango": "https://miamifruit.org/products/kiett-mango-box",
         "Custard Apple": "https://miamifruit.org/products/custard-apple"
       },
-      "fruit_status": {}
+      "fruit_status": {},
+      "variety_names": {
+        "Lychee": ["Sweetheart", "Mauritius", "Emperor"],
+        "Guava": ["Pink Guava"],
+        "Mango": ["Kiett"],
+        "Dragon Fruit": ["White Pitaya"]
+      }
     },
     {
       "id": "weee",
@@ -479,7 +490,10 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "variety_names": {
+        "Mango": ["Alphonso", "Kesar", "Banganapalli"]
+      }
     },
     {
       "id": "bhanu-natural-products",
@@ -496,7 +510,10 @@
       "auto_checked": true,
       "status": "pre_order",
       "status_text": "june, depending on harvest conditions. pre-orders are recommended as stock sells out qui",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "variety_names": {
+        "Mango": ["Alphonso"]
+      }
     },
     {
       "id": "fresh-mangoes",
@@ -519,7 +536,10 @@
         "Mango": "https://freshmangoes.us/products/pre-order-2025-season-ratnagiri-devgad-alphonso-mangoes",
         "Custard Apple": "https://freshmangoes.us/products/pre-order-for-2023-season-sitaphal-custard-apple-sugar-apple"
       },
-      "fruit_status": {}
+      "fruit_status": {},
+      "variety_names": {
+        "Mango": ["Alphonso", "Kesar", "Banganapalli"]
+      }
     },
     {
       "id": "a1mangos",
@@ -536,7 +556,10 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "variety_names": {
+        "Mango": ["Alphonso"]
+      }
     },
     {
       "id": "ar4mangoes",
@@ -553,7 +576,10 @@
       "auto_checked": true,
       "status": "sold_out",
       "status_text": "og:availability = \"out of stock\"",
-      "last_checked": "2026-07-06T16:31:43.721367+00:00"
+      "last_checked": "2026-07-06T16:31:43.721367+00:00",
+      "variety_names": {
+        "Mango": ["Alphonso"]
+      }
     },
     {
       "id": "zzmango",
@@ -791,7 +817,10 @@
       "auto_checked": false,
       "status": "manual",
       "status_text": "Seasonal warehouse stock — check your local Costco.",
-      "last_checked": null
+      "last_checked": null,
+      "variety_names": {
+        "Mango": ["Ataulfo", "Champagne"]
+      }
     },
     {
       "id": "melissas-produce",
@@ -826,7 +855,10 @@
         "Dragon Fruit": "https://www.melissas.com/products/dragon-fruit-red",
         "Lychee": "https://www.melissas.com/products/lychee"
       },
-      "fruit_status": {}
+      "fruit_status": {},
+      "variety_names": {
+        "Dragon Fruit": ["White", "Yellow", "Red", "Organic"]
+      }
     },
     {
       "id": "exotic-fruits-usa",
@@ -869,7 +901,10 @@
       "auto_checked": true,
       "status": "unknown",
       "status_text": "Not yet checked — awaiting next scheduled scrape.",
-      "last_checked": null
+      "last_checked": null,
+      "variety_names": {
+        "Mango": ["Alphonso"]
+      }
     },
     {
       "id": "ishopindian",

@@ -159,6 +159,9 @@
   .visit{font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;border:1.5px solid var(--ink);border-radius:100px;padding:7px 14px;transition:all .15s;white-space:nowrap}
   .visit:hover{background:var(--ink);color:var(--paper)}
   .vendor-contact{font-size:12.5px;color:var(--ink-soft);margin-top:6px}
+  .vendor-varieties{margin-top:8px;font-size:12.5px}
+  .vv-label{color:var(--muted);margin-right:6px}
+  .vv-tag{display:inline-block;background:var(--paper-2);border-radius:100px;padding:3px 10px;font-size:12px;font-weight:600;margin:2px 3px 2px 0}
   .season-signal{font-size:11.5px;font-weight:600;margin-top:8px;padding:5px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:6px}
   .season-signal.yes{background:var(--in-bg);color:var(--in)}
   .season-signal.no{background:var(--muted-bg);color:var(--muted)}
@@ -563,6 +566,7 @@ function vendorRow(v,fruitName){
     else if(inSeason===false) seasonNote=`<div class="season-signal no">⚪ Typically out of season right now</div>`;
   }
   const canCheckLive=view.canCheckLive;
+  const varieties=v.variety_names&&v.variety_names[fruitName];
   return `<div class="vendor" data-vendor-id="${v.id}" data-fruit-name="${fruitName}">
     <div class="vendor-top">
       <div class="vendor-name">${v.name}</div>
@@ -571,6 +575,7 @@ function vendorRow(v,fruitName){
     <div class="vendor-loc">${v.location}</div>
     ${v.note?`<div class="vendor-note">${v.note}</div>`:""}
     ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
+    ${varieties?`<div class="vendor-varieties"><span class="vv-label">Varieties carried:</span> ${varieties.map(n=>`<span class="vv-tag">${n}</span>`).join('')}</div>`:""}
     ${seasonNote}
     <div class="vendor-foot">
       <span class="checked">${view.autoChecked&&view.last_checked?relTime(view.last_checked):(view.autoChecked?"auto-checked":"manually curated")}</span>
