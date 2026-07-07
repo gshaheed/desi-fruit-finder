@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DesiFruitFinder" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/mango</item>
+        <item name="colorPrimaryDark">@color/mango</item>
+        <item name="colorAccent">@color/guava</item>
+        <item name="android:windowBackground">@color/paper</item>
+        <item name="android:statusBarColor">@color/mango</item>
+    </style>
+</resources>
