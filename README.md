@@ -16,6 +16,8 @@ Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen
 - **Varieties tied to actual vendors** — where we have real evidence (a vendor's own listed specialty, or a specific product name like "Pink Guava"/"Sweetheart Lychee"), the vendor's "Where to buy" row shows exactly which named varieties they carry, not just a general encyclopedia entry.
 - **Real photos** — every fruit card and detail panel shows an actual photo (`images/fruit/`), not just the illustrated art. The inline SVG illustrations still render as a fallback if a photo fails to load.
 - **📝 Request order** — every vendor listing has a small form (name, contact, notes) that prepares a ready-to-send message and copies it to your clipboard. This site never takes payment or places orders itself — it just saves you writing the message, which you send to the vendor yourself however they're reachable (their own contact info, if we have it, is shown right there; otherwise use their site/WhatsApp/phone).
+- **Real prices** — where a vendor's page exposes structured price data (`og:price:amount` or a JSON-LD `Product.offers.price`), the scraper reads the real, current price and shows it right on the listing. No price signal found → shows "check vendor" instead of guessing.
+- **🔥 Fruit Swipe** — an endless Tinder-style card deck (nav bar or the hero button) of every tracked (fruit, vendor) pairing: photo, name, price where age would be, vendor + location, taste tags and a tagline. Drag or tap ❤️/✕ — it reshuffles forever, purely for fun browsing.
 - **23 fruits and 24 vendors tracked**, and growing — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
 
 ## How stock checking works
@@ -37,6 +39,10 @@ Any fruit that vendor carries but isn't in `fruit_urls` shows "Check directly" (
 Some sites (Weee! is the current example) don't put real stock status anywhere in the HTML a plain GET receives — it's fetched by the page's own JS after load and painted into the DOM afterward. Worse, their JS bundle can contain generic UI label strings like `"sold_out":"Sold Out"` (i18n dictionaries) that have nothing to do with any specific product, so text-scanning the raw response is actively unreliable, not just incomplete.
 
 A vendor marked `"needs_js_render": true` is fetched with a real headless browser instead (`fetch_rendered()` in `scraper.py`, via [Playwright](https://playwright.dev/)) — it waits for the page's JS to run, then reads the fully-rendered DOM, the same content a real visitor would see. This only runs in the scheduled GitHub Actions scraper (which installs Chromium; see the workflow's caching steps). The Cloudflare Worker behind the "⚡ Check live" button is a lightweight edge function with no browser available on the free tier, so for `needs_js_render` vendors it still does a plain fetch and will often honestly return `unknown` rather than a wrong answer — the scheduled scraper is the accurate source for those.
+
+### How real prices are found
+
+`extract_price()` (in both `scraper.py` and `worker/check-stock.js`) looks for, in order: an `og:price:amount` meta tag, then a JSON-LD node explicitly typed `"@type": "Product"` with an `offers.price` field (recursing into `{"@graph": [...]}` nesting, since WordPress/Yoast SEO sites nest schema that way). It deliberately does **not** fall back to scanning the page for any bare `"price"` value — a product page commonly has several (variants, a "you may also like" carousel), and grabbing the wrong one would be the same class of bug the multi-fruit stock contamination was. No structured signal found → the price field stays `null` and the UI shows "check vendor," never a guess.
 
 ## Live checks (the "⚡ Check live" button)
 

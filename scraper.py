@@ -170,6 +170,88 @@ def check_structured_availability(html: str):
     return None
 
 
+def _find_product_price(node, depth: int = 0):
+    """Recursively search parsed JSON-LD for a Product node's offers.price.
+
+    Handles a bare Product object, an array of nodes, or Yoast/WordPress-style
+    {"@graph": [...]} nesting. Never falls back to grabbing the first bare
+    "price" key in raw text -- that risks picking up an unrelated product's
+    price (e.g. from a "you may also like" carousel), the same class of bug
+    already fixed for stock status.
+    """
+    if depth > 6 or node is None or not isinstance(node, (dict, list)):
+        return None
+    if isinstance(node, list):
+        for item in node:
+            price = _find_product_price(item, depth + 1)
+            if price is not None:
+                return price
+        return None
+
+    node_type = node.get("@type")
+    is_product = node_type == "Product" or (isinstance(node_type, list) and "Product" in node_type)
+    if is_product and node.get("offers"):
+        offers = node["offers"]
+        offer = offers[0] if isinstance(offers, list) and offers else offers
+        if isinstance(offer, dict) and offer.get("price") is not None:
+            try:
+                value = float(offer["price"])
+                if value > 0:
+                    return value
+            except (TypeError, ValueError):
+                pass
+
+    for value in node.values():
+        price = _find_product_price(value, depth + 1)
+        if price is not None:
+            return price
+    return None
+
+
+def extract_price(html: str):
+    """Best-effort real price, or None if no reliable signal is found.
+
+    Priority order (most to least reliable), mirroring the structured-first
+    approach used for stock status:
+      1. og:price:amount meta tag -- simple, standard, scoped to this page.
+      2. JSON-LD Product.offers.price -- scoped to a node that explicitly
+         declares itself a Product, not just any "price" text on the page.
+    No text-heuristic fallback: an unlabelled dollar amount on the page could
+    belong to any product, so showing nothing is better than showing a
+    possibly-wrong price with false confidence.
+    """
+    m = re.search(
+        r'<meta[^>]+property=["\']og:price:amount["\'][^>]+content=["\']([^"\']+)["\']',
+        html, re.IGNORECASE,
+    )
+    if not m:
+        m = re.search(
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:price:amount["\']',
+            html, re.IGNORECASE,
+        )
+    if m:
+        try:
+            value = float(m.group(1))
+            if value > 0:
+                return value
+        except ValueError:
+            pass
+
+    for script in re.finditer(
+        r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+        html, re.DOTALL | re.IGNORECASE,
+    ):
+        try:
+            data = json.loads(script.group(1))
+        except (json.JSONDecodeError, ValueError):
+            continue
+        price = _find_product_price(data)
+        if price is not None:
+            return price
+
+    return None
+
+
 def classify(html: str):
     structured = check_structured_availability(html)
     if structured:
@@ -203,36 +285,42 @@ def main() -> int:
             fetch_fn = fetch_rendered if vendor.get("needs_js_render") else fetch
             fruit_status = vendor.setdefault("fruit_status", {})
             for fruit_name, url in fruit_urls.items():
+                price = None
                 try:
                     html = fetch_fn(url)
                     status, snippet = classify(html)
+                    price = extract_price(html)
                 except Exception as exc:  # noqa: BLE001 - best effort, keep going
                     status, snippet = "error", "Fetch failed: %s" % exc
 
                 prev = fruit_status.get(fruit_name) or {}
-                if prev.get("status") != status or prev.get("status_text") != snippet:
+                if prev.get("status") != status or prev.get("status_text") != snippet or prev.get("price") != price:
                     changed = True
 
                 fruit_status[fruit_name] = {
                     "status": status,
                     "status_text": snippet,
                     "last_checked": now,
+                    "price": price,
                 }
 
         elif vendor.get("auto_checked") and vendor.get("check_url"):
             url = vendor["check_url"]
+            price = None
             try:
                 html = fetch(url)
                 status, snippet = classify(html)
+                price = extract_price(html)
             except Exception as exc:  # noqa: BLE001 - best effort, keep going
                 status, snippet = "error", "Fetch failed: %s" % exc
 
-            if vendor.get("status") != status or vendor.get("status_text") != snippet:
+            if vendor.get("status") != status or vendor.get("status_text") != snippet or vendor.get("price") != price:
                 changed = True
 
             vendor["status"] = status
             vendor["status_text"] = snippet
             vendor["last_checked"] = now
+            vendor["price"] = price
 
     data["generated_at"] = now
 

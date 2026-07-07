@@ -111,6 +111,62 @@ function classify(html) {
   return ["unknown", "Could not find a clear stock signal on the page."];
 }
 
+// Recursively search parsed JSON-LD for a Product node's offers.price.
+// Handles a bare Product object, an array of nodes, or Yoast/WordPress-style
+// {"@graph": [...]} nesting. Mirrors scraper.py's _find_product_price --
+// never falls back to grabbing the first bare "price" in raw text, which
+// risks picking up an unrelated product's price (e.g. a recommendation
+// carousel), the same contamination class already fixed for stock status.
+function findProductPrice(node, depth) {
+  depth = depth || 0;
+  if (depth > 6 || node === null || typeof node !== "object") return null;
+  if (Array.isArray(node)) {
+    for (const item of node) {
+      const price = findProductPrice(item, depth + 1);
+      if (price !== null) return price;
+    }
+    return null;
+  }
+  const type = node["@type"];
+  const isProduct = type === "Product" || (Array.isArray(type) && type.includes("Product"));
+  if (isProduct && node.offers) {
+    const offer = Array.isArray(node.offers) ? node.offers[0] : node.offers;
+    if (offer && offer.price !== undefined) {
+      const value = parseFloat(offer.price);
+      if (!isNaN(value) && value > 0) return value;
+    }
+  }
+  for (const key of Object.keys(node)) {
+    const price = findProductPrice(node[key], depth + 1);
+    if (price !== null) return price;
+  }
+  return null;
+}
+
+// Best-effort real price, or null if no reliable signal is found. Priority:
+// og:price:amount meta tag first (simple, standard, scoped to this page),
+// then JSON-LD Product.offers.price. No text-heuristic fallback -- an
+// unlabelled dollar amount could belong to any product on the page.
+function extractPrice(html) {
+  let m =
+    html.match(/<meta[^>]+property=["']og:price:amount["'][^>]+content=["']([^"']+)["']/i) ||
+    html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:price:amount["']/i);
+  if (m) {
+    const value = parseFloat(m[1]);
+    if (!isNaN(value) && value > 0) return value;
+  }
+
+  const scriptRe = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let sm;
+  while ((sm = scriptRe.exec(html))) {
+    let data;
+    try { data = JSON.parse(sm[1]); } catch (e) { continue; }
+    const price = findProductPrice(data);
+    if (price !== null) return price;
+  }
+  return null;
+}
+
 function withCors(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -160,9 +216,11 @@ export default {
       clearTimeout(timer);
       const html = await resp.text();
       const [status, statusText] = classify(html);
+      const price = extractPrice(html);
       return withCors({
         status,
         status_text: statusText,
+        price,
         checked_at: new Date().toISOString(),
       });
     } catch (err) {

@@ -162,6 +162,7 @@
   .vendor-varieties{margin-top:8px;font-size:12.5px}
   .vv-label{color:var(--muted);margin-right:6px}
   .vv-tag{display:inline-block;background:var(--paper-2);border-radius:100px;padding:3px 10px;font-size:12px;font-weight:600;margin:2px 3px 2px 0}
+  .vendor-price{margin-top:8px;font-size:13.5px;font-weight:700;color:var(--leaf)}
   .season-signal{font-size:11.5px;font-weight:600;margin-top:8px;padding:5px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:6px}
   .season-signal.yes{background:var(--in-bg);color:var(--in)}
   .season-signal.no{background:var(--muted-bg);color:var(--muted)}
@@ -224,6 +225,38 @@
   footer a{color:var(--sun);text-decoration:none}
   .to-top{position:fixed;bottom:24px;right:24px;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--paper);border:none;font-size:20px;box-shadow:0 8px 20px var(--shadow);z-index:30;opacity:0;pointer-events:none;transition:opacity .3s}
   .to-top.show{opacity:1;pointer-events:auto}
+
+  .swipe-scrim{position:fixed;inset:0;z-index:70;background:linear-gradient(160deg,#2a1a10,#120a06);display:none;flex-direction:column;align-items:center;padding:20px}
+  .swipe-scrim.open{display:flex}
+  .swipe-close{position:absolute;top:18px;right:20px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.12);color:#fff;font-size:18px;z-index:5}
+  .swipe-close:hover{background:rgba(255,255,255,.22)}
+  .swipe-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:380px;color:#fff;padding:10px 4px 16px;flex:none}
+  .swipe-title{font-family:"Fraunces",serif;font-weight:900;font-size:20px}
+  .swipe-tally{font-size:13px;background:rgba(255,255,255,.14);padding:5px 12px;border-radius:100px;font-weight:600}
+  .swipe-stack{position:relative;width:100%;max-width:380px;flex:1;min-height:0}
+  .swipe-card{position:absolute;inset:0;background:var(--card);border-radius:26px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.4);display:flex;flex-direction:column;touch-action:none;user-select:none;cursor:grab}
+  .swipe-card:active{cursor:grabbing}
+  .swipe-card .sc-photo{position:relative;flex:1;min-height:0;overflow:hidden}
+  .swipe-card .sc-photo img{width:100%;height:100%;object-fit:cover;display:block}
+  .swipe-card .sc-stamp{position:absolute;top:26px;font-family:"Fraunces",serif;font-weight:900;font-size:34px;padding:6px 16px;border:5px solid;border-radius:14px;text-transform:uppercase;letter-spacing:.04em;opacity:0;transform:rotate(-18deg)}
+  .swipe-card .sc-stamp.like{right:20px;color:#2ecc71;border-color:#2ecc71}
+  .swipe-card .sc-stamp.pass{left:20px;color:#e74c3c;border-color:#e74c3c;transform:rotate(18deg)}
+  .swipe-card .sc-body{padding:16px 20px 20px;background:linear-gradient(0deg,rgba(0,0,0,.78),rgba(0,0,0,.55) 60%,transparent);color:#fff;position:absolute;left:0;right:0;bottom:0}
+  .swipe-card .sc-toprow{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .swipe-card .sc-name{font-family:"Fraunces",serif;font-weight:900;font-size:26px}
+  .swipe-card .sc-price{font-size:20px;font-weight:800;color:#ffd166;white-space:nowrap}
+  .swipe-card .sc-vendor{font-size:14px;font-weight:600;opacity:.92;margin-top:2px}
+  .swipe-card .sc-loc{font-size:12.5px;opacity:.8;margin-top:2px}
+  .swipe-card .sc-tastes{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .swipe-card .sc-tastes span{background:rgba(255,255,255,.18);padding:3px 10px;border-radius:100px;font-size:11.5px;font-weight:600}
+  .swipe-card .sc-tagline{font-size:12.5px;opacity:.85;margin-top:8px;font-style:italic}
+  .swipe-actions{display:flex;gap:26px;align-items:center;justify-content:center;padding:20px 0 8px;flex:none}
+  .swipe-action-btn{width:64px;height:64px;border-radius:50%;border:none;font-size:26px;box-shadow:0 10px 24px rgba(0,0,0,.35);transition:transform .15s}
+  .swipe-action-btn:hover{transform:scale(1.08)}
+  .swipe-action-btn.pass{background:#fff;color:#e74c3c}
+  .swipe-action-btn.like{background:#fff;color:#e74c3c}
+  .swipe-hint{color:rgba(255,255,255,.6);font-size:12.5px;text-align:center;margin:0 0 6px;flex:none}
+  @media(max-height:700px){.swipe-header{padding-top:4px}.swipe-actions{padding:12px 0 4px}.swipe-action-btn{width:54px;height:54px;font-size:22px}}
 </style>
 </head>
 <body>
@@ -240,6 +273,7 @@
     </a>
     <nav>
       <a href="#finder">Find fruit</a>
+      <a href="#" id="navSwipe">🔥 Fruit Swipe</a>
       <a href="#how">How it works</a>
       <a href="#about">About</a>
     </nav>
@@ -255,7 +289,7 @@
       <p class="lead">Mango, lychee, mangosteen, jamun, chikoo and more — this finder shows you which vendors carry each fruit near you in California or shipped to your door, and whether it looks in stock right now.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#finder">Find fruit near me →</a>
-        <a class="btn btn-ghost" href="#how">How stock is checked</a>
+        <button class="btn btn-ghost" id="heroSwipeBtn">🔥 Swipe fruit near you</button>
       </div>
       <div class="stat-strip">
         <div class="stat"><b id="statFruit">23</b><span>fruits</span></div>
@@ -337,6 +371,20 @@
 
 <div class="modal-scrim" id="scrim" role="dialog" aria-modal="true">
   <div class="modal" id="modal"></div>
+</div>
+
+<div class="swipe-scrim" id="swipeScrim" role="dialog" aria-modal="true">
+  <button class="swipe-close" id="swipeClose" aria-label="Close">✕</button>
+  <div class="swipe-header">
+    <span class="swipe-title">🔥 Fruit Swipe</span>
+    <span class="swipe-tally"><span id="swipeLikedCount">0</span> liked</span>
+  </div>
+  <div class="swipe-stack" id="swipeStack"></div>
+  <div class="swipe-actions">
+    <button class="swipe-action-btn pass" id="swipePassBtn" aria-label="Pass">✕</button>
+    <button class="swipe-action-btn like" id="swipeLikeBtn" aria-label="Like">❤️</button>
+  </div>
+  <p class="swipe-hint">Drag a card, or use the buttons — it loops forever.</p>
 </div>
 
 <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
@@ -443,16 +491,17 @@ function resolveVendorFruitView(v,fruitName){
       status:fs.status||"unknown",
       status_text:fs.status_text||"Not yet checked — awaiting next scheduled scrape.",
       last_checked:fs.last_checked||null,
+      price:fs.price??null,
       check_url:fu[fruitName],
       canCheckLive:true,
       autoChecked:true
     };
   }
   if(fu){
-    return {status:"manual",status_text:null,last_checked:null,check_url:v.url,canCheckLive:false,autoChecked:false};
+    return {status:"manual",status_text:null,last_checked:null,price:null,check_url:v.url,canCheckLive:false,autoChecked:false};
   }
   return {
-    status:v.status,status_text:v.status_text,last_checked:v.last_checked,
+    status:v.status,status_text:v.status_text,last_checked:v.last_checked,price:v.price??null,
     check_url:v.check_url,canCheckLive:!!(v.auto_checked&&v.check_url),autoChecked:!!v.auto_checked
   };
 }
@@ -576,6 +625,7 @@ function vendorRow(v,fruitName){
     ${v.note?`<div class="vendor-note">${v.note}</div>`:""}
     ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
     ${varieties?`<div class="vendor-varieties"><span class="vv-label">Varieties carried:</span> ${varieties.map(n=>`<span class="vv-tag">${n}</span>`).join('')}</div>`:""}
+    <div class="vendor-price">${view.price!=null?`$${view.price.toFixed(2)}`:"Price: check vendor"}</div>
     ${seasonNote}
     <div class="vendor-foot">
       <span class="checked">${view.autoChecked&&view.last_checked?relTime(view.last_checked):(view.autoChecked?"auto-checked":"manually curated")}</span>
@@ -632,9 +682,9 @@ async function onCheckLive(e){
     if(v){
       if(v.fruit_urls && Object.prototype.hasOwnProperty.call(v.fruit_urls,fruitName)){
         v.fruit_status=v.fruit_status||{};
-        v.fruit_status[fruitName]={status:data.status,status_text:data.status_text,last_checked:data.checked_at};
+        v.fruit_status[fruitName]={status:data.status,status_text:data.status_text,last_checked:data.checked_at,price:data.price??null};
       } else {
-        v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;
+        v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;v.price=data.price??null;
       }
       const view=resolveVendorFruitView(v,fruitName);
       const si=STATUS_INFO[view.status]||STATUS_INFO.manual;
@@ -642,6 +692,7 @@ async function onCheckLive(e){
       badge.className=`status-badge ${si.cls}`;
       badge.innerHTML=`<span class="sd"></span>${si.label}`;
       row.querySelector('.checked').textContent="checked just now";
+      row.querySelector('.vendor-price').textContent=view.price!=null?`$${view.price.toFixed(2)}`:"Price: check vendor";
       render();
     }
     btn.textContent="⚡ Check live";btn.disabled=false;
@@ -761,6 +812,134 @@ document.getElementById('heroArt').innerHTML=["mango","mangosteen","dragonfruit"
 const toTop=document.getElementById('toTop');
 window.addEventListener('scroll',()=>toTop.classList.toggle('show',window.scrollY>600));
 toTop.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+// ---- Fruit Swipe: an endless Tinder-style deck of (fruit, vendor) profiles ----
+let swipeDeck=[], swipeLiked=0;
+const swipeScrim=document.getElementById('swipeScrim');
+const swipeStack=document.getElementById('swipeStack');
+
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function buildSwipeDeck(){
+  const pairs=[];
+  FRUITS.forEach(f=>{
+    VENDORS.filter(v=>v.fruits.includes(f.name)).forEach(v=>pairs.push({f,v}));
+  });
+  swipeDeck=shuffle(pairs);
+}
+function nextSwipePair(){
+  if(!swipeDeck.length) buildSwipeDeck();
+  return swipeDeck.pop();
+}
+function swipeCardHtml(pair){
+  const {f,v}=pair;
+  const view=resolveVendorFruitView(v,f.name);
+  const priceText=view.price!=null?`$${view.price.toFixed(2)}`:"Check price →";
+  return `<div class="swipe-card">
+    <div class="sc-photo">
+      <img src="images/fruit/${f.art}.jpg" alt="${f.name}" draggable="false">
+      <div class="sc-stamp like">Liked</div>
+      <div class="sc-stamp pass">Passed</div>
+      <div class="sc-body">
+        <div class="sc-toprow">
+          <span class="sc-name">${f.name}, ${f.local.split(' ')[0]}</span>
+          <span class="sc-price">${priceText}</span>
+        </div>
+        <div class="sc-vendor">📍 ${v.name}</div>
+        <div class="sc-loc">${v.location}</div>
+        <div class="sc-tastes">${f.tastes.map(t=>`<span>${t}</span>`).join('')}</div>
+        <div class="sc-tagline">"${f.tagline}"</div>
+      </div>
+    </div>
+  </div>`;
+}
+function refillSwipeStack(){
+  while(swipeStack.children.length<2){
+    const pair=nextSwipePair();
+    swipeStack.insertAdjacentHTML('afterbegin',swipeCardHtml(pair));
+    swipeStack.firstElementChild._pair=pair;
+  }
+  bindTopSwipeCard();
+}
+function bindTopSwipeCard(){
+  const top=swipeStack.lastElementChild;
+  if(!top||top._bound) return;
+  top._bound=true;
+  let startX=0,startY=0,dx=0,dragging=false;
+  const onDown=(e)=>{
+    dragging=true;
+    const pt=e.touches?e.touches[0]:e;
+    startX=pt.clientX;startY=pt.clientY;
+    top.style.transition='none';
+  };
+  const onMove=(e)=>{
+    if(!dragging) return;
+    const pt=e.touches?e.touches[0]:e;
+    dx=pt.clientX-startX;
+    const dy=pt.clientY-startY;
+    const rot=dx/14;
+    top.style.transform=`translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+    const likeStamp=top.querySelector('.sc-stamp.like'), passStamp=top.querySelector('.sc-stamp.pass');
+    likeStamp.style.opacity=Math.max(0,Math.min(1,dx/80));
+    passStamp.style.opacity=Math.max(0,Math.min(1,-dx/80));
+  };
+  const onUp=()=>{
+    if(!dragging) return;
+    dragging=false;
+    top.style.transition='transform .3s ease';
+    if(Math.abs(dx)>100){
+      finishSwipe(top,dx>0?'like':'pass');
+    } else {
+      top.style.transform='';
+      top.querySelector('.sc-stamp.like').style.opacity=0;
+      top.querySelector('.sc-stamp.pass').style.opacity=0;
+    }
+    dx=0;
+  };
+  top.addEventListener('pointerdown',onDown);
+  top.addEventListener('pointermove',onMove);
+  top.addEventListener('pointerup',onUp);
+  top.addEventListener('pointerleave',()=>{if(dragging)onUp();});
+}
+function finishSwipe(card,direction){
+  const flyX=direction==='like'?900:-900;
+  card.style.transform=`translate(${flyX}px, -40px) rotate(${direction==='like'?30:-30}deg)`;
+  card.style.opacity='0';
+  if(direction==='like'){
+    swipeLiked++;
+    document.getElementById('swipeLikedCount').textContent=swipeLiked;
+  }
+  setTimeout(()=>{
+    card.remove();
+    refillSwipeStack();
+  },250);
+}
+function programmaticSwipe(direction){
+  const top=swipeStack.lastElementChild;
+  if(!top) return;
+  finishSwipe(top,direction);
+}
+function openSwipeView(){
+  if(!VENDORS.length) return;
+  swipeStack.innerHTML='';
+  buildSwipeDeck();
+  refillSwipeStack();
+  swipeScrim.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeSwipeView(){
+  swipeScrim.classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('navSwipe').addEventListener('click',(e)=>{e.preventDefault();openSwipeView();});
+document.getElementById('heroSwipeBtn').addEventListener('click',openSwipeView);
+document.getElementById('swipeClose').addEventListener('click',closeSwipeView);
+document.getElementById('swipePassBtn').addEventListener('click',()=>programmaticSwipe('pass'));
+document.getElementById('swipeLikeBtn').addEventListener('click',()=>programmaticSwipe('like'));
+document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&swipeScrim.classList.contains('open'))closeSwipeView();});
 
 function fmtDate(iso){try{return new Date(iso).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}catch(e){return "recently";}}
 function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();}

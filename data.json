@@ -389,11 +389,60 @@
         "Guava": "https://tropicalfruitbox.com/products/tropical-guava-box",
         "Custard Apple": "https://tropicalfruitbox.com/products/cherimoya-fruit"
       },
-      "fruit_status": {},
+      "fruit_status": {
+        "Mango": {
+          "price": null
+        },
+        "Mangosteen": {
+          "price": null
+        },
+        "Rambutan": {
+          "price": null
+        },
+        "Lychee": {
+          "price": null
+        },
+        "Longan": {
+          "price": null
+        },
+        "Dragon Fruit": {
+          "price": null
+        },
+        "Jackfruit": {
+          "price": null
+        },
+        "Starfruit": {
+          "price": null
+        },
+        "Chikoo": {
+          "price": null
+        },
+        "Passion Fruit": {
+          "price": null
+        },
+        "Guava": {
+          "price": null
+        },
+        "Custard Apple": {
+          "price": null
+        }
+      },
       "variety_names": {
-        "Guava": ["Pink Guava", "White Guava", "Purple Guava", "Watermelon Guava"],
-        "Custard Apple": ["Cherimoya", "Red Custard Apple"],
-        "Dragon Fruit": ["Yellow", "Red-Flesh", "Red-White Flesh"]
+        "Guava": [
+          "Pink Guava",
+          "White Guava",
+          "Purple Guava",
+          "Watermelon Guava"
+        ],
+        "Custard Apple": [
+          "Cherimoya",
+          "Red Custard Apple"
+        ],
+        "Dragon Fruit": [
+          "Yellow",
+          "Red-Flesh",
+          "Red-White Flesh"
+        ]
       }
     },
     {
@@ -434,12 +483,53 @@
         "Mango": "https://miamifruit.org/products/kiett-mango-box",
         "Custard Apple": "https://miamifruit.org/products/custard-apple"
       },
-      "fruit_status": {},
+      "fruit_status": {
+        "Mangosteen": {
+          "price": 77
+        },
+        "Dragon Fruit": {
+          "price": 67
+        },
+        "Rambutan": {
+          "price": 87
+        },
+        "Longan": {
+          "price": 77
+        },
+        "Lychee": {
+          "price": 127
+        },
+        "Passion Fruit": {
+          "price": 27
+        },
+        "Guava": {
+          "price": 37
+        },
+        "Jackfruit": {
+          "price": 197
+        },
+        "Mango": {
+          "price": 197
+        },
+        "Custard Apple": {
+          "price": 97
+        }
+      },
       "variety_names": {
-        "Lychee": ["Sweetheart", "Mauritius", "Emperor"],
-        "Guava": ["Pink Guava"],
-        "Mango": ["Kiett"],
-        "Dragon Fruit": ["White Pitaya"]
+        "Lychee": [
+          "Sweetheart",
+          "Mauritius",
+          "Emperor"
+        ],
+        "Guava": [
+          "Pink Guava"
+        ],
+        "Mango": [
+          "Kiett"
+        ],
+        "Dragon Fruit": [
+          "White Pitaya"
+        ]
       }
     },
     {
@@ -473,7 +563,17 @@
         "Mango": "https://www.sayweee.com/en/product/Air-shipped-Alphonso-Mangoes/103134",
         "Dragon Fruit": "https://www.sayweee.com/en/product/Yellow-Dragon-Fruit/97403"
       },
-      "fruit_status": {}
+      "fruit_status": {
+        "Lychee": {
+          "price": null
+        },
+        "Mango": {
+          "price": null
+        },
+        "Dragon Fruit": {
+          "price": null
+        }
+      }
     },
     {
       "id": "aumpi",
@@ -492,8 +592,13 @@
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
       "last_checked": "2026-07-06T16:31:43.721367+00:00",
       "variety_names": {
-        "Mango": ["Alphonso", "Kesar", "Banganapalli"]
-      }
+        "Mango": [
+          "Alphonso",
+          "Kesar",
+          "Banganapalli"
+        ]
+      },
+      "price": 65.99
     },
     {
       "id": "bhanu-natural-products",
@@ -512,8 +617,11 @@
       "status_text": "june, depending on harvest conditions. pre-orders are recommended as stock sells out qui",
       "last_checked": "2026-07-06T16:31:43.721367+00:00",
       "variety_names": {
-        "Mango": ["Alphonso"]
-      }
+        "Mango": [
+          "Alphonso"
+        ]
+      },
+      "price": null
     },
     {
       "id": "fresh-mangoes",
@@ -536,9 +644,20 @@
         "Mango": "https://freshmangoes.us/products/pre-order-2025-season-ratnagiri-devgad-alphonso-mangoes",
         "Custard Apple": "https://freshmangoes.us/products/pre-order-for-2023-season-sitaphal-custard-apple-sugar-apple"
       },
-      "fruit_status": {},
+      "fruit_status": {
+        "Mango": {
+          "price": 74
+        },
+        "Custard Apple": {
+          "price": 62
+        }
+      },
       "variety_names": {
-        "Mango": ["Alphonso", "Kesar", "Banganapalli"]
+        "Mango": [
+          "Alphonso",
+          "Kesar",
+          "Banganapalli"
+        ]
       }
     },
     {
@@ -558,8 +677,11 @@
       "status_text": "schema availability = \"http://schema.org/OutOfStock\"",
       "last_checked": "2026-07-06T16:31:43.721367+00:00",
       "variety_names": {
-        "Mango": ["Alphonso"]
-      }
+        "Mango": [
+          "Alphonso"
+        ]
+      },
+      "price": 50
     },
     {
       "id": "ar4mangoes",
@@ -578,8 +700,11 @@
       "status_text": "og:availability = \"out of stock\"",
       "last_checked": "2026-07-06T16:31:43.721367+00:00",
       "variety_names": {
-        "Mango": ["Alphonso"]
-      }
+        "Mango": [
+          "Alphonso"
+        ]
+      },
+      "price": null
     },
     {
       "id": "zzmango",
@@ -699,7 +824,17 @@
         "Mango": "https://fresh.99ranch.com/products/yellow-mango",
         "Lychee": "https://fresh.99ranch.com/products/lychee-black-leaf"
       },
-      "fruit_status": {}
+      "fruit_status": {
+        "Dragon Fruit": {
+          "price": null
+        },
+        "Mango": {
+          "price": null
+        },
+        "Lychee": {
+          "price": null
+        }
+      }
     },
     {
       "id": "hmart",
@@ -731,7 +866,23 @@
         "Rambutan": "https://sameday.hmart.com/store/hmart/products/16346205-rambutan-each",
         "Dragon Fruit": "https://sameday.hmart.com/store/hmart/products/3182051-dragon-fruit-per-lb"
       },
-      "fruit_status": {}
+      "fruit_status": {
+        "Mango": {
+          "price": 2.99
+        },
+        "Lychee": {
+          "price": 3.44
+        },
+        "Longan": {
+          "price": 10.42
+        },
+        "Rambutan": {
+          "price": 12.08
+        },
+        "Dragon Fruit": {
+          "price": 4.49
+        }
+      }
     },
     {
       "id": "northgate-market",
@@ -819,7 +970,10 @@
       "status_text": "Seasonal warehouse stock — check your local Costco.",
       "last_checked": null,
       "variety_names": {
-        "Mango": ["Ataulfo", "Champagne"]
+        "Mango": [
+          "Ataulfo",
+          "Champagne"
+        ]
       }
     },
     {
@@ -855,9 +1009,39 @@
         "Dragon Fruit": "https://www.melissas.com/products/dragon-fruit-red",
         "Lychee": "https://www.melissas.com/products/lychee"
       },
-      "fruit_status": {},
+      "fruit_status": {
+        "Custard Apple": {
+          "price": 43.59
+        },
+        "Passion Fruit": {
+          "price": 32.39
+        },
+        "Starfruit": {
+          "price": null
+        },
+        "Rambutan": {
+          "price": 22.79
+        },
+        "Tamarind": {
+          "price": 19.29
+        },
+        "Guava": {
+          "price": 19.69
+        },
+        "Dragon Fruit": {
+          "price": 48.19
+        },
+        "Lychee": {
+          "price": 32.79
+        }
+      },
       "variety_names": {
-        "Dragon Fruit": ["White", "Yellow", "Red", "Organic"]
+        "Dragon Fruit": [
+          "White",
+          "Yellow",
+          "Red",
+          "Organic"
+        ]
       }
     },
     {
@@ -884,7 +1068,14 @@
         "Mangosteen": "https://www.exoticfruitsusa.com/Mangosteen-Fruits-Buy-Mangosteen-Fresh-Mangosteen-p/mangosteen--2-pounds--9-16.htm",
         "Mango": "https://www.exoticfruitsusa.com/Honey-Mangoes-buy-Honey-Mangoes-p/h2018.htm"
       },
-      "fruit_status": {}
+      "fruit_status": {
+        "Mangosteen": {
+          "price": null
+        },
+        "Mango": {
+          "price": null
+        }
+      }
     },
     {
       "id": "mango-mania-us",
@@ -903,8 +1094,11 @@
       "status_text": "Not yet checked — awaiting next scheduled scrape.",
       "last_checked": null,
       "variety_names": {
-        "Mango": ["Alphonso"]
-      }
+        "Mango": [
+          "Alphonso"
+        ]
+      },
+      "price": 54.99
     },
     {
       "id": "ishopindian",
@@ -921,7 +1115,8 @@
       "auto_checked": true,
       "status": "unknown",
       "status_text": "Not yet checked — awaiting next scheduled scrape.",
-      "last_checked": null
+      "last_checked": null,
+      "price": null
     },
     {
       "id": "new-india-bazar",
