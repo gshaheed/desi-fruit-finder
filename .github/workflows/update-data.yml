@@ -18,6 +18,26 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install Playwright
+        run: pip install playwright
+
+      # Only the browser binary benefits from caching -- OS-level shared
+      # libraries (installed below via install-deps) don't persist between
+      # runs on GitHub's ephemeral runners, so those always reinstall (fast).
+      - name: Cache Playwright Chromium browser binary
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}
+
+      - name: Download Playwright's Chromium (only used for the Weee vendor)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: playwright install chromium
+
+      - name: Install Chromium's OS-level dependencies
+        run: playwright install-deps chromium
+
       - name: Run scraper
         run: python scraper.py
 

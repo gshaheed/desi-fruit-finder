@@ -26,6 +26,10 @@ Two layers of signal, checked in order:
 This is still a best-effort heuristic, not a guaranteed real-time inventory
 feed -- see README.md for the known limitations.
 
+A vendor marked "needs_js_render": true is instead fetched with a headless
+browser (see fetch_rendered()), for sites whose real stock status is added
+to the page entirely client-side after load -- a plain GET sees none of it.
+
 Run via GitHub Actions on a schedule (see .github/workflows/update-data.yml).
 """
 
@@ -102,6 +106,32 @@ def fetch(url: str) -> str:
     return raw.decode("utf-8", errors="ignore")
 
 
+def fetch_rendered(url: str) -> str:
+    """Fetch a page after letting its JS run.
+
+    Some storefronts (e.g. Weee!) render their real stock status entirely
+    client-side after page load; a plain GET only sees the pre-render HTML,
+    which carries no genuine signal (and can be actively misleading -- SPA
+    bundles often ship generic i18n strings like "sold_out"/"in_stock" as
+    UI label text, unrelated to any specific product's real status).
+
+    Requires Playwright + a Chromium download (see the "install-browser"
+    step in .github/workflows/update-data.yml) -- only imported when a
+    vendor is marked "needs_js_render": true, so environments without it
+    installed can still run the rest of the scraper.
+    """
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(user_agent=HEADERS["User-Agent"])
+            page.goto(url, wait_until="networkidle", timeout=TIMEOUT * 1000)
+            return page.content()
+        finally:
+            browser.close()
+
+
 def strip_noise(html: str) -> str:
     """Remove <script> and <style> blocks (contents included), then tags."""
     html = re.sub(r"<script[^>]*>.*?</script>", " ", html, flags=re.DOTALL | re.IGNORECASE)
@@ -170,10 +200,11 @@ def main() -> int:
             # Multi-fruit vendor: a single shared page can't represent every
             # fruit it carries, so don't scrape it as one vendor-wide status.
             # Scrape each fruit's own verified URL instead.
+            fetch_fn = fetch_rendered if vendor.get("needs_js_render") else fetch
             fruit_status = vendor.setdefault("fruit_status", {})
             for fruit_name, url in fruit_urls.items():
                 try:
-                    html = fetch(url)
+                    html = fetch_fn(url)
                     status, snippet = classify(html)
                 except Exception as exc:  # noqa: BLE001 - best effort, keep going
                     status, snippet = "error", "Fetch failed: %s" % exc

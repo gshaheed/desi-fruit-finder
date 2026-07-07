@@ -456,6 +456,7 @@
       "status": "manual",
       "status_text": "Marketplace — search app/site for current stock in your area.",
       "last_checked": null,
+      "needs_js_render": true,
       "fruit_urls": {
         "Lychee": "https://www.sayweee.com/en/products/Royal-Smile-Lychee/96083",
         "Mango": "https://www.sayweee.com/en/product/Air-shipped-Alphonso-Mangoes/103134",
@@ -666,7 +667,13 @@
       "auto_checked": false,
       "status": "manual",
       "status_text": "Seasonal fresh exotics — check store or Instacart for your location.",
-      "last_checked": null
+      "last_checked": null,
+      "fruit_urls": {
+        "Dragon Fruit": "https://fresh.99ranch.com/products/dragon-fruit",
+        "Mango": "https://fresh.99ranch.com/products/yellow-mango",
+        "Lychee": "https://fresh.99ranch.com/products/lychee-black-leaf"
+      },
+      "fruit_status": {}
     },
     {
       "id": "hmart",
@@ -690,7 +697,15 @@
       "auto_checked": false,
       "status": "manual",
       "status_text": "Seasonal produce — check store or hmart.com for your location.",
-      "last_checked": null
+      "last_checked": null,
+      "fruit_urls": {
+        "Mango": "https://sameday.hmart.com/store/hmart/products/3182046-mango-each",
+        "Lychee": "https://sameday.hmart.com/store/hmart/products/16345620-lychee-each",
+        "Longan": "https://sameday.hmart.com/store/hmart/products/3182070-longan-per-lb",
+        "Rambutan": "https://sameday.hmart.com/store/hmart/products/16346205-rambutan-each",
+        "Dragon Fruit": "https://sameday.hmart.com/store/hmart/products/3182051-dragon-fruit-per-lb"
+      },
+      "fruit_status": {}
     },
     {
       "id": "northgate-market",

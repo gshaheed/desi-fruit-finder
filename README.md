@@ -12,7 +12,8 @@ Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen
 - **Check live, on demand** — any auto-checked vendor also has a "⚡ Check live" button that fetches its current stock right now, via a small serverless proxy (see "Live checks" below), instead of waiting for the next scheduled run.
 - **Automatic in-season signal** — for grocery vendors that can't be scraped, the site computes a "typically in season" or "typically out of season" read from each fruit's harvest calendar and today's date, so you get a useful signal without ever opening the vendor's site. It's an estimate based on typical season, not a live inventory count.
 - **"Only where I can buy it now"** — one toggle to hide fruits with nothing available in your region.
-- **A full guide for every fruit** — season, how to eat it, nutrition and a fun fact, behind each fruit's *Where to buy* panel.
+- **A full guide for every fruit** — season, how to eat it, nutrition and a fun fact, behind each fruit's *Where to buy* panel. Several fruits (Mango, Lychee, Guava, Custard Apple) also list popular named varieties (Alphonso, Kesar, Totapuri, Chausa...).
+- **Real photos** — every fruit card and detail panel shows an actual photo (`images/fruit/`), not just the illustrated art. The inline SVG illustrations still render as a fallback if a photo fails to load.
 - **23 fruits and 24 vendors tracked**, and growing — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
 
 ## How stock checking works
@@ -29,6 +30,12 @@ Instead, such vendors get a `fruit_urls` map — `{"Dragon Fruit": "https://.../
 
 Any fruit that vendor carries but isn't in `fruit_urls` shows "Check directly" (plus the seasonal signal) instead of a shared/ambiguous status — coverage is intentionally traded for accuracy. Extending coverage later is additive: just add another verified URL to `fruit_urls`, no other change needed. Never guess a URL — verify it's a real, single-product page first, or leave that fruit uncovered.
 
+### Vendors whose stock is only rendered client-side
+
+Some sites (Weee! is the current example) don't put real stock status anywhere in the HTML a plain GET receives — it's fetched by the page's own JS after load and painted into the DOM afterward. Worse, their JS bundle can contain generic UI label strings like `"sold_out":"Sold Out"` (i18n dictionaries) that have nothing to do with any specific product, so text-scanning the raw response is actively unreliable, not just incomplete.
+
+A vendor marked `"needs_js_render": true` is fetched with a real headless browser instead (`fetch_rendered()` in `scraper.py`, via [Playwright](https://playwright.dev/)) — it waits for the page's JS to run, then reads the fully-rendered DOM, the same content a real visitor would see. This only runs in the scheduled GitHub Actions scraper (which installs Chromium; see the workflow's caching steps). The Cloudflare Worker behind the "⚡ Check live" button is a lightweight edge function with no browser available on the free tier, so for `needs_js_render` vendors it still does a plain fetch and will often honestly return `unknown` rather than a wrong answer — the scheduled scraper is the accurate source for those.
+
 ## Live checks (the "⚡ Check live" button)
 
 GitHub Pages only serves static files, and browsers block client-side JS from fetching most vendor sites directly (CORS) — so an on-demand, in-page check needs a tiny server-side proxy. `worker/check-stock.js` is that proxy: a [Cloudflare Worker](https://workers.cloudflare.com/) (free tier) that fetches a vendor's page server-side and runs the same classification logic as `scraper.py`, then returns the result to the browser with CORS enabled. It only fetches hosts on its `ALLOWED_HOSTS` allowlist, so it can't be used as an open proxy for arbitrary URLs.
@@ -44,8 +51,9 @@ Until `CHECK_LIVE_ENDPOINT` is set, the button shows a message instead of failin
 ## Files
 
 - `index.html` — the whole site (HTML, CSS, vanilla JS, inline SVG illustrations). No build step; only Google Fonts from a CDN.
+- `images/fruit/` — one photo per fruit (resized to ≤1200px wide, JPEG). All sourced from Wikimedia Commons/Wikipedia, which requires freely-licensed images (public domain or Creative Commons) for article use — see each file's Commons page (search the filename at commons.wikimedia.org) for its specific license and photographer credit before reusing outside this project.
 - `data.json` — the fruit and vendor dataset, and the file the scraper updates.
-- `scraper.py` — the stock checker (standard library only).
+- `scraper.py` — the stock checker (standard library only, except for `needs_js_render` vendors, which need Playwright — installed by the workflow, not required to just read the code).
 - `.github/workflows/update-data.yml` — the schedule that runs the scraper.
 - `worker/check-stock.js` — the Cloudflare Worker behind the "⚡ Check live" button (see "Live checks" below).
 
@@ -61,4 +69,4 @@ Opening `index.html` directly also works, but `data.json` only loads over http(s
 ## Adding a vendor or fruit
 
 - **Vendor:** add an entry to the `vendors` array in `data.json` — set `region` (`norcal`, `socal`, `both-ca`, or `ships-statewide`), list the `fruits` it carries (names must match the fruit names in `index.html`), and set `auto_checked` + a `check_url` if it has one scrapeable product page (otherwise `auto_checked: false` and a `manual` status). If the vendor carries more than one fruit, use `fruit_urls` instead (see "Vendors that carry more than one fruit" above) rather than pointing `check_url` at a shared page.
-- **Fruit:** add an entry to the `FRUITS` array and a matching SVG to the `ART` object in `index.html`, plus a matching entry (with `season_months`, the 1–12 months it's typically available) to the `fruits` array in `data.json`. The finder, filters and detail panel pick it up automatically.
+- **Fruit:** add an entry to the `FRUITS` array and a matching SVG to the `ART` object in `index.html`, plus a matching entry (with `season_months`, the 1–12 months it's typically available) to the `fruits` array in `data.json`. Drop a photo at `images/fruit/<art-key>.jpg` (same key as the `art` field) — it's picked up automatically, with the SVG as a fallback if it's missing. Optionally add a `varieties` array (`[{n: "name", d: "description"}, ...]`) to show named regional varieties in the fruit guide. The finder, filters and detail panel pick all of this up automatically.

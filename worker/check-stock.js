@@ -25,6 +25,8 @@ const ALLOWED_HOSTS = new Set([
   "www.ishopindian.com",
   "www.melissas.com",
   "www.sayweee.com",
+  "fresh.99ranch.com",
+  "sameday.hmart.com",
 ]);
 
 const FETCH_TIMEOUT_MS = 15000;
