@@ -38,12 +38,24 @@ function json(body, status = 200) {
   });
 }
 
+const MAX_PRICE_PER_LB = 20;
+
+// Mirrors the same filter in index.html: a listing's price only means
+// anything relative to how much fruit it buys. If unit_lbs can't be
+// determined for a listing, fall back to a flat dollar cap so an outlier
+// (e.g. a multi-pound gift box priced per-box) can never reach checkout.
+function reasonablePrice(price, unitLbs) {
+  if (price == null) return null;
+  if (unitLbs != null) return price / unitLbs <= MAX_PRICE_PER_LB ? price : null;
+  return price <= MAX_PRICE_PER_LB ? price : null;
+}
+
 function resolveVendorFruitView(v, fruitName) {
   if (v.fruit_urls && Object.prototype.hasOwnProperty.call(v.fruit_urls, fruitName)) {
     const fs = (v.fruit_status && v.fruit_status[fruitName]) || {};
     return {
       status: fs.status || "manual",
-      price: fs.price ?? null,
+      price: reasonablePrice(fs.price ?? null, fs.unit_lbs ?? null),
     };
   }
   if (v.fruit_urls && !Object.prototype.hasOwnProperty.call(v.fruit_urls, fruitName)) {
@@ -51,7 +63,7 @@ function resolveVendorFruitView(v, fruitName) {
   }
   return {
     status: v.status,
-    price: v.price ?? null,
+    price: reasonablePrice(v.price ?? null, v.unit_lbs ?? null),
   };
 }
 
@@ -118,8 +130,12 @@ async function createStripeSession(env, validatedItems, customerNote) {
     const qty = item.quantity;
     const vCents = vendorCents(item.vendorPrice);
     const fCents = feeCents(item.vendorPrice);
-    orderTotalCents += (vCents + fCents) * qty;
+    const totalCents = vCents + fCents;
+    orderTotalCents += totalCents * qty;
 
+    // One line item at our all-in price — the vendor/brokerage split is an
+    // internal accounting detail (kept in `summary` below for fulfillment),
+    // not something the customer needs broken out on the Stripe page.
     params.set(`line_items[${idx}][price_data][currency]`, "usd");
     params.set(
       `line_items[${idx}][price_data][product_data][name]`,
@@ -127,19 +143,9 @@ async function createStripeSession(env, validatedItems, customerNote) {
     );
     params.set(
       `line_items[${idx}][price_data][product_data][description]`,
-      `Vendor-listed price. Fulfilled by ${item.vendorName}.`
+      `Fulfilled by ${item.vendorName} via Desi Fruit Finder.`
     );
-    params.set(`line_items[${idx}][price_data][unit_amount]`, String(vCents));
-    params.set(`line_items[${idx}][quantity]`, String(qty));
-    idx++;
-
-    params.set(`line_items[${idx}][price_data][currency]`, "usd");
-    params.set(`line_items[${idx}][price_data][product_data][name]`, "Brokerage service (5%)");
-    params.set(
-      `line_items[${idx}][price_data][product_data][description]`,
-      `Desi Fruit Finder order facilitation for ${item.fruitName}`
-    );
-    params.set(`line_items[${idx}][price_data][unit_amount]`, String(fCents));
+    params.set(`line_items[${idx}][price_data][unit_amount]`, String(totalCents));
     params.set(`line_items[${idx}][quantity]`, String(qty));
     idx++;
 
