@@ -15,9 +15,9 @@ Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen
 - **A full guide for every fruit** — season, how to eat it, nutrition and a fun fact, behind each fruit's *Where to buy* panel. Several fruits (Mango, Lychee, Guava, Custard Apple) also list popular named varieties (Alphonso, Kesar, Totapuri, Chausa...).
 - **Varieties tied to actual vendors** — where we have real evidence (a vendor's own listed specialty, or a specific product name like "Pink Guava"/"Sweetheart Lychee"), the vendor's "Where to buy" row shows exactly which named varieties they carry, not just a general encyclopedia entry.
 - **Real photos** — every fruit card and detail panel shows an actual photo (`images/fruit/`), not just the illustrated art. The inline SVG illustrations still render as a fallback if a photo fails to load.
-- **🛒 Buy on site** — when a listing has a verified vendor price and is **in stock** or **pre-order**, add it to your cart and pay through Stripe. You pay the vendor's listed price plus a **5% brokerage fee** for order facilitation. Fulfillment is by the vendor; see [Order on site](#order-terms) on the live site.
+- **🛒 Buy on site** — when a listing has a price and is **in stock** or **pre-order**, add it to your cart and pay through Stripe on site. Fulfillment is by the vendor; see [Order on site](#order-terms) on the live site.
 - **📝 Request order** — for listings without a checkout price (in-store grocers, sold out, etc.), a small form prepares a ready-to-send message you copy to the vendor yourself.
-- **Real prices** — where a vendor's page exposes structured price data (`og:price:amount` or a JSON-LD `Product.offers.price`), the scraper reads the real, current price and shows it right on the listing. No price signal found → shows "check vendor" instead of guessing.
+- **Real prices** — where a vendor's page exposes structured price data (`og:price:amount` or a JSON-LD `Product.offers.price`), the scraper reads it and buyable listings show that price on site. No price signal found → shows "check vendor" instead of guessing.
 - **🔥 Fruit Swipe** — an endless Tinder-style card deck (nav bar or the hero button) of every tracked (fruit, vendor) pairing: photo, "Fruit Name, $price" where "Name, Age" would be on a real profile, vendor + location, taste tags and a tagline. Drag or tap ❤️/✕ — it reshuffles forever, purely for fun browsing. Prices are also shown directly on every fruit's grid card ("From $X.XX"), not just inside the swipe deck or a vendor's detail row.
 - **💬 Message us** — a chat-style bubble (bottom-left) opens a small contact form that emails straight to the site owner, no account or backend needed.
 - **23 fruits and 24 vendors tracked**, and growing — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
@@ -58,20 +58,19 @@ To turn the button on:
 
 Until `CHECK_LIVE_ENDPOINT` is set, the button shows a message instead of failing silently. Keep `ALLOWED_HOSTS` in the worker in sync with the `check_url` hosts of `auto_checked` vendors in `data.json` whenever you add or remove one.
 
-## Buy on site (Stripe checkout + 5% brokerage)
+## Buy on site (Stripe checkout)
 
 GitHub Pages can't process payments, so checkout uses a second Cloudflare Worker (`worker/create-checkout.js`) plus [Stripe Checkout](https://stripe.com/docs/payments/checkout).
 
 **Customer flow**
 1. Open a fruit → tap **🛒 Buy on site** on any in-stock / pre-order listing with a real price.
-2. Cart shows vendor subtotal + 5% brokerage fee.
+2. Cart shows your items and total.
 3. **Pay securely with Stripe** → shipping address and phone collected on Stripe's page.
 4. After payment, `order-success.html` confirms; the cart clears.
 
 **How pricing works**
-- Vendor price comes from `data.json` (same structured scrape as the finder UI).
-- The Worker re-validates every cart line against live `data.json` before creating a Stripe session — clients can't tamper with prices.
-- Stripe line items show the vendor product and a separate "Brokerage service (5%)" line per item.
+- Listing prices come from `data.json` (structured scrape); the checkout worker re-validates every cart line before creating a Stripe session.
+- Stripe line items match the on-site listing price.
 
 **Deploy the checkout worker**
 
@@ -92,7 +91,7 @@ GitHub Pages can't process payments, so checkout uses a second Cloudflare Worker
 
 **Fulfillment (your ops)**
 - Webhook emails order details to `ORDER_EMAIL` (via FormSubmit).
-- You place each order with the vendor at their listed price; your revenue is the 5% fee (minus Stripe fees).
+- You place each order with the vendor for fulfillment.
 - For scale, consider [Stripe Connect](https://stripe.com/connect) so vendors get paid automatically — not required for launch.
 
 **Pages:** `order-success.html`, `order-cancel.html`, `#order-terms` section in `index.html`.
@@ -109,7 +108,7 @@ The chat bubble posts to [FormSubmit](https://formsubmit.co/) (`CHAT_EMAIL_ENDPO
 - `scraper.py` — the stock checker (standard library only, except for `needs_js_render` vendors, which need Playwright — installed by the workflow, not required to just read the code).
 - `.github/workflows/update-data.yml` — the schedule that runs the scraper.
 - `worker/check-stock.js` — the Cloudflare Worker behind the "⚡ Check live" button.
-- `worker/create-checkout.js` — Stripe Checkout + webhook for on-site purchases (5% brokerage).
+- `worker/create-checkout.js` — Stripe Checkout + webhook for on-site purchases.
 - `order-success.html` / `order-cancel.html` — post-checkout pages.
 - `wrangler.toml` — deploy config for the checkout worker.
 

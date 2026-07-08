@@ -350,7 +350,7 @@
     <div>
       <span class="eyebrow">Where to buy desi &amp; tropical fruit</span>
       <h1 class="display">Find the fruit.<br>See <em>who's got it.</em></h1>
-      <p class="lead">Mango, lychee, mangosteen, jamun, chikoo and more — find which vendors carry each fruit, see whether it looks in stock, and <b>buy on site</b> at the vendor's price plus a 5% brokerage fee.</p>
+      <p class="lead">Mango, lychee, mangosteen, jamun, chikoo and more — find which vendors carry each fruit, see whether it looks in stock, and <b>buy on site</b> when it's available.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#finder">Find fruit near me →</a>
         <button class="btn btn-ghost" id="heroSwipeBtn">🔥 Swipe fruit near you</button>
@@ -404,7 +404,7 @@
       <h2>How the stock check works</h2>
       <p>For online vendors, a script checks each store's public product page every 15 minutes and reads its stock signal — so a badge like <b>In stock</b>, <b>Pre-order</b> or <b>Sold out</b> reflects the last automated check, with the time shown on each listing. Hit the <b>⚡ Check live</b> button on any of those listings to trigger a fresh, on-the-spot check instead of waiting for the next scheduled run.</p>
       <p>Grocery stores don't publish live inventory, so those are marked <b>Check directly</b>. For those, the site also computes a <b>typically in/out of season</b> signal from each fruit's harvest calendar and today's date — so you get an automatic read without visiting the store, though it's an estimate, not a live count. Every listing still has a direct link so you can verify before you go.</p>
-      <p>Listings with a real price and an <b>in stock</b> or <b>pre-order</b> badge can be added to your cart and purchased on site at the vendor price plus a <b>5% brokerage fee</b> — see <a href="#order-terms" style="color:var(--sun)">Order on site</a> for details.</p>
+      <p>Listings with a price and an <b>in stock</b> or <b>pre-order</b> badge can be added to your cart and purchased on site — see <a href="#order-terms" style="color:var(--sun)">Order on site</a> for details.</p>
     </div>
     <div class="mini">
       <div class="m"><b>Near you</b><span>Filter by NorCal, SoCal, or vendors that ship to your door.</span></div>
@@ -418,10 +418,10 @@
 <section class="order-terms" id="order-terms">
   <div class="wrap">
     <h2>Buy on site — how it works</h2>
-    <p>When a vendor listing shows a real price and is <b>in stock</b> or <b>pre-order</b>, you can add it to your cart and pay here. We charge the vendor's listed price plus a <b>5% brokerage fee</b> for placing and coordinating the order.</p>
+    <p>When a listing shows a price and is <b>in stock</b> or <b>pre-order</b>, you can add it to your cart and pay here on site.</p>
     <ul>
       <li><b>You pay once</b> through Stripe (card, Apple Pay, Google Pay where available).</li>
-      <li><b>We broker the sale</b> — after payment we order from the vendor at their listed price and pass along your shipping details.</li>
+      <li><b>We place the order</b> — after payment we order from the vendor and pass along your shipping details.</li>
       <li><b>Fulfillment is by the vendor</b> — shipping times, pickup, and perishable handling follow their policies. Always confirm availability before travel for in-store vendors.</li>
       <li><b>No price on the listing?</b> Use <b>Request order</b> to message the vendor yourself — we don't guess prices.</li>
     </ul>
@@ -443,7 +443,7 @@
 
 <footer>
   <div class="wrap foot-inner">
-    <div>Desi Fruit Finder — find fruit, check stock, buy on site (5% brokerage). Stock is best-effort; always confirm with the vendor.</div>
+    <div>Desi Fruit Finder — find fruit, check stock, buy on site. Stock is best-effort; always confirm with the vendor.</div>
     <div>Data updated <span id="footUpdated">recently</span> · <a href="#order-terms">Order terms</a> · <a href="#finder">Back to the finder</a></div>
   </div>
 </footer>
@@ -568,15 +568,15 @@ function inSeasonNow(fruitName){
 }
 let state={q:"",season:null,taste:null,region:"all",onlyAvail:false};
 
-const BROKER_RATE=0.05;
+const MARKUP_RATE=0.05;
 const CART_KEY="dff_cart_v1";
 const CHECKOUT_ENDPOINT="https://desi-fruit-check-stock.gurneetsshaheed.workers.dev/create-checkout";
 
 function canBuy(view){
   return view.price!=null&&view.price>0&&(view.status==="in_stock"||view.status==="pre_order");
 }
-function serviceFee(vendorPrice){return Math.round(vendorPrice*BROKER_RATE*100)/100;}
-function lineTotal(vendorPrice,qty){return Math.round((vendorPrice+serviceFee(vendorPrice))*qty*100)/100;}
+function sitePrice(amount){return Math.round(amount*(1+MARKUP_RATE)*100)/100;}
+function lineTotal(vendorPrice,qty){return Math.round(sitePrice(vendorPrice)*qty*100)/100;}
 
 function loadCart(){
   try{return JSON.parse(localStorage.getItem(CART_KEY)||"[]");}catch(e){return [];}
@@ -614,12 +614,9 @@ function removeFromCart(vendorId,fruitName){
 }
 
 function cartSummary(items){
-  let vendorSub=0,feeSub=0;
-  items.forEach(i=>{
-    vendorSub+=i.vendorPrice*i.quantity;
-    feeSub+=serviceFee(i.vendorPrice)*i.quantity;
-  });
-  return {vendorSub,feeSub,grand:Math.round((vendorSub+feeSub)*100)/100};
+  let subtotal=0;
+  items.forEach(i=>{subtotal+=sitePrice(i.vendorPrice)*i.quantity;});
+  return {subtotal:Math.round(subtotal*100)/100};
 }
 
 function updateCartUI(){
@@ -668,7 +665,7 @@ function updateCartUI(){
   }));
 
   const s=cartSummary(items);
-  totals.innerHTML=`<div class="grand">Total: $${s.grand.toFixed(2)}</div>`;
+  totals.innerHTML=`<div class="grand">Total: $${s.subtotal.toFixed(2)}</div>`;
   checkoutBtn.disabled=false;
 }
 
@@ -778,7 +775,7 @@ function formatPerLb(ppl){return ppl==null?null:`$${ppl.toFixed(2)}/lb`;}
 function onSitePerLb(vendorPrice,view){
   const ppl=pricePerLb(vendorPrice,view);
   if(ppl==null) return null;
-  return Math.round(ppl*(1+BROKER_RATE)*100)/100;
+  return Math.round(ppl*(1+MARKUP_RATE)*100)/100;
 }
 function sortVendorsByPrice(vs,fruitName){
   return vs.slice().sort((a,b)=>{
@@ -882,7 +879,7 @@ function matches(f){
 
 function card(f){
   const s=summaryFor(f.name);
-  const displayPpl=s.lowestPricePerLb!=null?Math.round(s.lowestPricePerLb*(1+BROKER_RATE)*100)/100:null;
+  const displayPpl=s.lowestPricePerLb!=null?Math.round(s.lowestPricePerLb*(1+MARKUP_RATE)*100)/100:null;
   const seasonDot=SEASON_COLORS[f.season]||'#999';
   return `<button class="card" data-id="${f.id}">
     <div class="art" style="background:${f.bg}">
@@ -935,6 +932,13 @@ function relTime(iso){
   if(diff<86400) return `checked ${Math.round(diff/3600)} hr ago`;
   return `checked ${Math.round(diff/86400)} day(s) ago`;
 }
+function listingPriceLabel(view){
+  if(!canBuy(view)) return "Price: check vendor";
+  const sitePpl=onSitePerLb(view.price,view);
+  const lbs=resolveWeightLbs(view);
+  const pkgNote=lbs?` · ${lbs} lb pkg`:"";
+  return sitePpl!=null?`${formatPerLb(sitePpl)} on site${pkgNote}`:"Price: check vendor";
+}
 function vendorRow(v,fruitName){
   const view=resolveVendorFruitView(v,fruitName);
   const si=STATUS_INFO[view.status]||STATUS_INFO.manual;
@@ -950,10 +954,6 @@ function vendorRow(v,fruitName){
   const canCheckLive=view.canCheckLive;
   const varieties=v.variety_names&&v.variety_names[fruitName];
   const canPurchase=canBuy(view);
-  const ppl=pricePerLb(view.price,view);
-  const lbs=resolveWeightLbs(view);
-  const pkgNote=lbs?` · ${lbs} lb pkg`:"";
-  const sitePpl=canPurchase?onSitePerLb(view.price,view):null;
   return `<div class="vendor" data-vendor-id="${v.id}" data-fruit-name="${fruitName}">
     <div class="vendor-top">
       <div class="vendor-name">${v.name}</div>
@@ -963,8 +963,7 @@ function vendorRow(v,fruitName){
     ${v.note?`<div class="vendor-note">${v.note}</div>`:""}
     ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
     ${varieties?`<div class="vendor-varieties"><span class="vv-label">Varieties carried:</span> ${varieties.map(n=>`<span class="vv-tag">${n}</span>`).join('')}</div>`:""}
-    <div class="vendor-price">${ppl!=null?`${formatPerLb(ppl)} vendor${pkgNote}`:"Price: check vendor"}</div>
-    ${canPurchase&&sitePpl!=null?`<div class="price-breakdown"><b>${formatPerLb(sitePpl)}</b> on site (incl. 5% brokerage)</div>`:""}
+    <div class="vendor-price">${listingPriceLabel(view)}</div>
     ${seasonNote}
     <div class="vendor-foot">
       <span class="checked">${view.autoChecked&&view.last_checked?relTime(view.last_checked):(view.autoChecked?"auto-checked":"manually curated")}</span>
@@ -1045,15 +1044,8 @@ async function onCheckLive(e){
       badge.className=`status-badge ${si.cls}`;
       badge.innerHTML=`<span class="sd"></span>${si.label}`;
       row.querySelector('.checked').textContent="checked just now";
-      const ppl=pricePerLb(view.price,view);
-      const lbs=resolveWeightLbs(view);
-      const pkgNote=lbs?` · ${lbs} lb pkg`:"";
-      row.querySelector('.vendor-price').textContent=ppl!=null?`${formatPerLb(ppl)} vendor${pkgNote}`:"Price: check vendor";
-      const breakdown=row.querySelector('.price-breakdown');
-      if(breakdown&&canBuy(view)){
-        const sitePpl=onSitePerLb(view.price,view);
-        if(sitePpl!=null) breakdown.innerHTML=`<b>${formatPerLb(sitePpl)}</b> on site (incl. 5% brokerage)`;
-      }
+      const priceEl=row.querySelector('.vendor-price');
+      if(priceEl) priceEl.textContent=listingPriceLabel(view);
       render();
     }
     btn.textContent="⚡ Check live";btn.disabled=false;
@@ -1234,8 +1226,8 @@ function nextSwipePair(){
 function swipeCardHtml(pair){
   const {f,v}=pair;
   const view=resolveVendorFruitView(v,f.name);
-  const ppl=pricePerLb(view.price,view);
-  const priceText=ppl!=null?formatPerLb(ppl):"Check price →";
+  const sitePpl=canBuy(view)?onSitePerLb(view.price,view):null;
+  const priceText=sitePpl!=null?formatPerLb(sitePpl):"Check price →";
   return `<div class="swipe-card">
     <div class="sc-photo">
       <img src="images/fruit/${f.art}.jpg" alt="${f.name}" draggable="false">

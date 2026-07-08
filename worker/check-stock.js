@@ -219,7 +219,7 @@ function withCors(body, status = 200) {
 }
 
 // --- Checkout (Stripe) — POST /create-checkout and POST /webhook ---
-const BROKER_RATE = 0.05;
+const MARKUP_RATE = 0.05;
 const BUYABLE = new Set(["in_stock", "pre_order"]);
 const DEFAULT_DATA_JSON =
   "https://raw.githubusercontent.com/gshaheed/desi-fruit-finder/main/data.json";
@@ -284,12 +284,8 @@ async function getCatalog(env) {
   return map;
 }
 
-function feeCents(vendorPrice) {
-  return Math.round(vendorPrice * BROKER_RATE * 100);
-}
-
-function vendorCents(vendorPrice) {
-  return Math.round(vendorPrice * 100);
+function chargeCents(vendorPrice) {
+  return Math.round(vendorPrice * (1 + MARKUP_RATE) * 100);
 }
 
 async function createStripeSession(env, validatedItems, customerNote) {
@@ -309,21 +305,13 @@ async function createStripeSession(env, validatedItems, customerNote) {
 
   for (const item of validatedItems) {
     const qty = item.quantity;
-    const vCents = vendorCents(item.vendorPrice);
-    const fCents = feeCents(item.vendorPrice);
-    orderTotalCents += (vCents + fCents) * qty;
+    const unitCents = chargeCents(item.vendorPrice);
+    orderTotalCents += unitCents * qty;
 
     params.set(`line_items[${idx}][price_data][currency]`, "usd");
     params.set(`line_items[${idx}][price_data][product_data][name]`, `${item.fruitName} — ${item.vendorName}`);
-    params.set(`line_items[${idx}][price_data][product_data][description]`, `Vendor-listed price. Fulfilled by ${item.vendorName}.`);
-    params.set(`line_items[${idx}][price_data][unit_amount]`, String(vCents));
-    params.set(`line_items[${idx}][quantity]`, String(qty));
-    idx++;
-
-    params.set(`line_items[${idx}][price_data][currency]`, "usd");
-    params.set(`line_items[${idx}][price_data][product_data][name]`, "Brokerage service (5%)");
-    params.set(`line_items[${idx}][price_data][product_data][description]`, `Desi Fruit Finder order facilitation for ${item.fruitName}`);
-    params.set(`line_items[${idx}][price_data][unit_amount]`, String(fCents));
+    params.set(`line_items[${idx}][price_data][product_data][description]`, `Fulfilled by ${item.vendorName} via Desi Fruit Finder.`);
+    params.set(`line_items[${idx}][price_data][unit_amount]`, String(unitCents));
     params.set(`line_items[${idx}][quantity]`, String(qty));
     idx++;
 
@@ -333,8 +321,8 @@ async function createStripeSession(env, validatedItems, customerNote) {
       vendorId: item.vendorId,
       qty,
       vendorPrice: item.vendorPrice,
-      serviceFee: fCents / 100,
-      lineTotal: ((vCents + fCents) * qty) / 100,
+      chargedPrice: unitCents / 100,
+      lineTotal: (unitCents * qty) / 100,
     });
   }
 
@@ -406,12 +394,12 @@ async function notifyOrder(env, session) {
     ``,
     `Items:`,
     ...(Array.isArray(items)
-      ? items.map((i) => `- ${i.qty}x ${i.fruit} from ${i.vendor} (vendor $${i.vendorPrice}, fee $${i.serviceFee}, total $${i.lineTotal})`)
+      ? items.map((i) => `- ${i.qty}x ${i.fruit} from ${i.vendor} (pay vendor $${i.vendorPrice} each, collected $${i.lineTotal})`)
       : [String(items)]),
     ``,
     session.metadata?.customer_note ? `Customer note: ${session.metadata.customer_note}` : null,
     ``,
-    `Fulfillment: place the order with each vendor at their listed price; Desi Fruit Finder keeps the 5% brokerage fee.`,
+    `Fulfillment: place the order with each vendor.`,
   ].filter(Boolean);
   await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(email)}`, {
     method: "POST",
