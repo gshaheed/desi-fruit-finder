@@ -171,6 +171,42 @@ function extractPrice(html) {
   return null;
 }
 
+function extractWeightLbs(html, url) {
+  const u = (url || "").toLowerCase();
+  if (u.includes("per-lb") || u.includes("per lb") || u.includes("/lb")) return 1;
+
+  for (const pat of [/(\d+(?:\.\d+)?)[-\s]?pounds?/, /(\d+(?:\.\d+)?)[-\s]?lbs?(?:\b|[-.])/]) {
+    const m = u.match(pat);
+    if (m) {
+      const value = parseFloat(m[1]);
+      if (value > 0) return value;
+    }
+  }
+  const kg = u.match(/(\d+(?:\.\d+)?)[-\s]?kg/);
+  if (kg) {
+    const value = parseFloat(kg[1]);
+    if (value > 0) return Math.round(value * 2.20462 * 100) / 100;
+  }
+
+  if (html) {
+    const text = html.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .toLowerCase();
+    for (const pat of [/(\d+(?:\.\d+)?)\s*pounds?/, /(\d+(?:\.\d+)?)\s*lbs?\b/]) {
+      const m = text.match(pat);
+      if (m) {
+        const value = parseFloat(m[1]);
+        if (value > 0) return value;
+      }
+    }
+  }
+
+  if (u.includes("-box") || u.includes("/box") || u.includes("box-")) return 6;
+  return null;
+}
+
 function withCors(body, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
@@ -488,10 +524,12 @@ export default {
       const html = await resp.text();
       const [status, statusText] = classify(html);
       const price = extractPrice(html);
+      const weight_lbs = extractWeightLbs(html, parsed.toString());
       return withCors({
         status,
         status_text: statusText,
         price,
+        weight_lbs,
         checked_at: new Date().toISOString(),
       });
     } catch (err) {

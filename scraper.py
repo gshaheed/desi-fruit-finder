@@ -256,6 +256,50 @@ def extract_price(html: str):
     return None
 
 
+def extract_weight_lbs(html: str, url: str = ""):
+    """Best-effort product weight in pounds for $/lb display. Returns None if unknown."""
+    u = (url or "").lower()
+    if "per-lb" in u or "per lb" in u or "/lb" in u:
+        return 1.0
+
+    for pattern in (
+        r"(\d+(?:\.\d+)?)[-\s]?pounds?",
+        r"(\d+(?:\.\d+)?)[-\s]?lbs?(?:\b|[-.])",
+        r"(\d+(?:\.\d+)?)\s*lb\b",
+    ):
+        m = re.search(pattern, u)
+        if m:
+            value = float(m.group(1))
+            if value > 0:
+                return value
+
+    m = re.search(r"(\d+(?:\.\d+)?)[-\s]?kg", u)
+    if m:
+        value = float(m.group(1))
+        if value > 0:
+            return round(value * 2.20462, 2)
+
+    text = strip_noise(html) if html else ""
+    for pattern in (
+        r"(\d+(?:\.\d+)?)\s*pounds?",
+        r"(\d+(?:\.\d+)?)\s*lbs?\b",
+        r"(\d+(?:\.\d+)?)\s*kilograms?",
+        r"(\d+(?:\.\d+)?)\s*kg\b",
+    ):
+        m = re.search(pattern, text)
+        if m:
+            value = float(m.group(1))
+            if value > 0:
+                if "kg" in pattern or "kilogram" in pattern:
+                    return round(value * 2.20462, 2)
+                return value
+
+    if "-box" in u or "/box" in u or "box-" in u:
+        return 6.0
+
+    return None
+
+
 def classify(html: str):
     structured = check_structured_availability(html)
     if structured:
@@ -290,10 +334,13 @@ def main() -> int:
             fruit_status = vendor.setdefault("fruit_status", {})
             for fruit_name, url in fruit_urls.items():
                 price = None
+                weight_lbs = None
+                html = ""
                 try:
                     html = fetch_fn(url)
                     status, snippet = classify(html)
                     price = extract_price(html)
+                    weight_lbs = extract_weight_lbs(html, url)
                 except Exception as exc:  # noqa: BLE001 - best effort, keep going
                     status, snippet = "error", "Fetch failed: %s" % exc
 
@@ -303,7 +350,16 @@ def main() -> int:
                 # check actually found one.
                 if price is None:
                     price = prev.get("price")
-                if prev.get("status") != status or prev.get("status_text") != snippet or prev.get("price") != price:
+                if weight_lbs is None:
+                    weight_lbs = prev.get("weight_lbs")
+                if weight_lbs is None:
+                    weight_lbs = extract_weight_lbs("", url)
+                if (
+                    prev.get("status") != status
+                    or prev.get("status_text") != snippet
+                    or prev.get("price") != price
+                    or prev.get("weight_lbs") != weight_lbs
+                ):
                     changed = True
 
                 # Merge rather than replace -- preserves hand-researched fields
@@ -315,27 +371,40 @@ def main() -> int:
                     "status_text": snippet,
                     "last_checked": now,
                     "price": price,
+                    "weight_lbs": weight_lbs,
                 }
 
         elif vendor.get("auto_checked") and vendor.get("check_url"):
             url = vendor["check_url"]
             price = None
+            weight_lbs = None
             try:
                 html = fetch(url)
                 status, snippet = classify(html)
                 price = extract_price(html)
+                weight_lbs = extract_weight_lbs(html, url)
             except Exception as exc:  # noqa: BLE001 - best effort, keep going
                 status, snippet = "error", "Fetch failed: %s" % exc
 
             if price is None:
                 price = vendor.get("price")
-            if vendor.get("status") != status or vendor.get("status_text") != snippet or vendor.get("price") != price:
+            if weight_lbs is None:
+                weight_lbs = vendor.get("weight_lbs")
+            if weight_lbs is None:
+                weight_lbs = extract_weight_lbs("", url)
+            if (
+                vendor.get("status") != status
+                or vendor.get("status_text") != snippet
+                or vendor.get("price") != price
+                or vendor.get("weight_lbs") != weight_lbs
+            ):
                 changed = True
 
             vendor["status"] = status
             vendor["status_text"] = snippet
             vendor["last_checked"] = now
             vendor["price"] = price
+            vendor["weight_lbs"] = weight_lbs
 
     data["generated_at"] = now
 

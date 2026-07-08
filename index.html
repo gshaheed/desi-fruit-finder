@@ -751,6 +751,45 @@ function reasonablePrice(price,unitLbs){
   if(unitLbs!=null) return (price/unitLbs)<=MAX_PRICE_PER_LB ? price : null;
   return price<=MAX_PRICE_PER_LB ? price : null;
 }
+function weightFromUrl(url){
+  const u=(url||"").toLowerCase();
+  if(u.includes("per-lb")||u.includes("per lb")||u.includes("/lb")) return 1;
+  for(const pat of [/(\d+(?:\.\d+)?)[-\s]?pounds?/,/(\d+(?:\.\d+)?)[-\s]?lbs?(?:\b|[-.])/]){
+    const m=u.match(pat);
+    if(m){const value=parseFloat(m[1]);if(value>0) return value;}
+  }
+  const kg=u.match(/(\d+(?:\.\d+)?)[-\s]?kg/);
+  if(kg){const value=parseFloat(kg[1]);if(value>0) return Math.round(value*2.20462*100)/100;}
+  if(u.includes("-box")||u.includes("/box")||u.includes("box-")) return 6;
+  return null;
+}
+function resolveWeightLbs(view){
+  if(view.unit_lbs!=null&&view.unit_lbs>0) return view.unit_lbs;
+  if(view.weight_lbs!=null&&view.weight_lbs>0) return view.weight_lbs;
+  return weightFromUrl(view.check_url);
+}
+function pricePerLb(price,view){
+  if(price==null||price<=0) return null;
+  const lbs=resolveWeightLbs(view);
+  if(!lbs||lbs<=0) return null;
+  return Math.round((price/lbs)*100)/100;
+}
+function formatPerLb(ppl){return ppl==null?null:`$${ppl.toFixed(2)}/lb`;}
+function onSitePerLb(vendorPrice,view){
+  const ppl=pricePerLb(vendorPrice,view);
+  if(ppl==null) return null;
+  return Math.round(ppl*(1+BROKER_RATE)*100)/100;
+}
+function sortVendorsByPrice(vs,fruitName){
+  return vs.slice().sort((a,b)=>{
+    const va=resolveVendorFruitView(a,fruitName), vb=resolveVendorFruitView(b,fruitName);
+    const pa=pricePerLb(va.price,va), pb=pricePerLb(vb.price,vb);
+    if(pa==null&&pb==null) return 0;
+    if(pa==null) return 1;
+    if(pb==null) return -1;
+    return pa-pb;
+  });
+}
 
 // A vendor's top-level status/check_url can't represent every fruit it
 // carries once it has fruit_urls (per-fruit product pages) — resolve the
@@ -760,39 +799,47 @@ function resolveVendorFruitView(v,fruitName){
   const fu=v.fruit_urls;
   if(fu && Object.prototype.hasOwnProperty.call(fu,fruitName)){
     const fs=(v.fruit_status && v.fruit_status[fruitName])||{};
+    const unitLbs=fs.unit_lbs??fs.weight_lbs??weightFromUrl(fu[fruitName]);
     return {
       status:fs.status||"unknown",
       status_text:fs.status_text||"Not yet checked — awaiting next scheduled scrape.",
       last_checked:fs.last_checked||null,
-      price:reasonablePrice(fs.price??null,fs.unit_lbs??null),
+      price:reasonablePrice(fs.price??null,unitLbs),
+      unit_lbs:fs.unit_lbs??null,
+      weight_lbs:fs.weight_lbs??null,
       check_url:fu[fruitName],
       canCheckLive:true,
       autoChecked:true
     };
   }
   if(fu){
-    return {status:"manual",status_text:null,last_checked:null,price:null,check_url:v.url,canCheckLive:false,autoChecked:false};
+    return {status:"manual",status_text:null,last_checked:null,price:null,weight_lbs:null,check_url:v.url,canCheckLive:false,autoChecked:false};
   }
+  const unitLbs=v.unit_lbs??v.weight_lbs??weightFromUrl(v.check_url);
   return {
-    status:v.status,status_text:v.status_text,last_checked:v.last_checked,price:reasonablePrice(v.price??null,v.unit_lbs??null),
+    status:v.status,status_text:v.status_text,last_checked:v.last_checked,
+    price:reasonablePrice(v.price??null,unitLbs),
+    unit_lbs:v.unit_lbs??null,
+    weight_lbs:v.weight_lbs??null,
     check_url:v.check_url,canCheckLive:!!(v.auto_checked&&v.check_url),autoChecked:!!v.auto_checked
   };
 }
 
 function summaryFor(fruitName){
   const vs=vendorsFor(fruitName);
-  if(!vs.length) return {kind:"none",label:"No tracked vendors yet",count:0,lowestPrice:null};
-  let best=resolveVendorFruitView(vs[0],fruitName), bestRank=-1, lowestPrice=null;
+  if(!vs.length) return {kind:"none",label:"No tracked vendors yet",count:0,lowestPricePerLb:null};
+  let best=resolveVendorFruitView(vs[0],fruitName), bestRank=-1, lowestPricePerLb=null;
   vs.forEach(v=>{
     const view=resolveVendorFruitView(v,fruitName);
     const r=STATUS_RANK[view.status]??3; if(r>bestRank){bestRank=r;best=view;}
-    if(view.price!=null && (lowestPrice===null || view.price<lowestPrice)) lowestPrice=view.price;
+    const ppl=pricePerLb(view.price,view);
+    if(ppl!=null && (lowestPricePerLb===null || ppl<lowestPricePerLb)) lowestPricePerLb=ppl;
   });
   const n=vs.length, plural=n===1?"vendor":"vendors";
-  if(best.status==='in_stock') return {kind:"in",label:`Available at ${n} ${plural}`,count:n,lowestPrice};
-  if(best.status==='pre_order') return {kind:"pre",label:`Pre-order at ${n} ${plural}`,count:n,lowestPrice};
-  if(best.status==='sold_out'||best.status==='season_ended') return {kind:"out",label:`Out of season · ${n} ${plural}`,count:n,lowestPrice};
-  return {kind:"check",label:`Check ${n} ${plural}`,count:n,lowestPrice};
+  if(best.status==='in_stock') return {kind:"in",label:`Available at ${n} ${plural}`,count:n,lowestPricePerLb};
+  if(best.status==='pre_order') return {kind:"pre",label:`Pre-order at ${n} ${plural}`,count:n,lowestPricePerLb};
+  if(best.status==='sold_out'||best.status==='season_ended') return {kind:"out",label:`Out of season · ${n} ${plural}`,count:n,lowestPricePerLb};
+  return {kind:"check",label:`Check ${n} ${plural}`,count:n,lowestPricePerLb};
 }
 
 function buildFilters(){
@@ -835,6 +882,7 @@ function matches(f){
 
 function card(f){
   const s=summaryFor(f.name);
+  const displayPpl=s.lowestPricePerLb!=null?Math.round(s.lowestPricePerLb*(1+BROKER_RATE)*100)/100:null;
   const seasonDot=SEASON_COLORS[f.season]||'#999';
   return `<button class="card" data-id="${f.id}">
     <div class="art" style="background:${f.bg}">
@@ -845,14 +893,21 @@ function card(f){
     <h3>${f.name}</h3>
     <div class="local">${f.local}</div>
     <div class="avail ${s.kind}"><span class="adot"></span>${s.label}</div>
-    ${s.lowestPrice!=null?`<div class="card-price">From $${(s.lowestPrice+serviceFee(s.lowestPrice)).toFixed(2)} on site</div>`:""}
+    ${displayPpl!=null?`<div class="card-price">From ${formatPerLb(displayPpl)} on site</div>`:""}
   </button>`;
 }
 
 function render(){
   const list=FRUITS.filter(matches).sort((a,b)=>{
     const order={in:3,pre:2,check:1,out:0,none:-1};
-    return order[summaryFor(b.name).kind]-order[summaryFor(a.name).kind];
+    const ka=summaryFor(a.name).kind, kb=summaryFor(b.name).kind;
+    const availDiff=order[kb]-order[ka];
+    if(availDiff!==0) return availDiff;
+    const pa=summaryFor(a.name).lowestPricePerLb, pb=summaryFor(b.name).lowestPricePerLb;
+    if(pa==null&&pb==null) return 0;
+    if(pa==null) return 1;
+    if(pb==null) return -1;
+    return pa-pb;
   });
   countPill.textContent=`${list.length} of ${FRUITS.length}`;
   if(!list.length){
@@ -895,7 +950,10 @@ function vendorRow(v,fruitName){
   const canCheckLive=view.canCheckLive;
   const varieties=v.variety_names&&v.variety_names[fruitName];
   const canPurchase=canBuy(view);
-  const total=view.price!=null?view.price+serviceFee(view.price):null;
+  const ppl=pricePerLb(view.price,view);
+  const lbs=resolveWeightLbs(view);
+  const pkgNote=lbs?` · ${lbs} lb pkg`:"";
+  const sitePpl=canPurchase?onSitePerLb(view.price,view):null;
   return `<div class="vendor" data-vendor-id="${v.id}" data-fruit-name="${fruitName}">
     <div class="vendor-top">
       <div class="vendor-name">${v.name}</div>
@@ -905,7 +963,8 @@ function vendorRow(v,fruitName){
     ${v.note?`<div class="vendor-note">${v.note}</div>`:""}
     ${v.contact?`<div class="vendor-contact">${v.contact}</div>`:""}
     ${varieties?`<div class="vendor-varieties"><span class="vv-label">Varieties carried:</span> ${varieties.map(n=>`<span class="vv-tag">${n}</span>`).join('')}</div>`:""}
-    <div class="vendor-price">${total!=null?`$${total.toFixed(2)} on site`:"Price: check vendor"}</div>
+    <div class="vendor-price">${ppl!=null?`${formatPerLb(ppl)} vendor${pkgNote}`:"Price: check vendor"}</div>
+    ${canPurchase&&sitePpl!=null?`<div class="price-breakdown"><b>${formatPerLb(sitePpl)}</b> on site (incl. 5% brokerage)</div>`:""}
     ${seasonNote}
     <div class="vendor-foot">
       <span class="checked">${view.autoChecked&&view.last_checked?relTime(view.last_checked):(view.autoChecked?"auto-checked":"manually curated")}</span>
@@ -968,11 +1027,17 @@ async function onCheckLive(e){
         v.fruit_status=v.fruit_status||{};
         const prev=v.fruit_status[fruitName]||{};
         const prevPrice=prev.price??null;
-        // Merge (not replace) so a manually-researched unit_lbs survives a live check.
-        v.fruit_status[fruitName]={...prev,status:data.status,status_text:data.status_text,last_checked:data.checked_at,price:data.price??prevPrice};
+        v.fruit_status[fruitName]={
+          ...prev,
+          status:data.status,status_text:data.status_text,last_checked:data.checked_at,
+          price:data.price??prevPrice,
+          weight_lbs:data.weight_lbs??prev.weight_lbs??weightFromUrl(url)
+        };
       } else {
         const prevPrice=v.price??null;
-        v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;v.price=data.price??prevPrice;
+        v.status=data.status;v.status_text=data.status_text;v.last_checked=data.checked_at;
+        v.price=data.price??prevPrice;
+        v.weight_lbs=data.weight_lbs??v.weight_lbs??weightFromUrl(url);
       }
       const view=resolveVendorFruitView(v,fruitName);
       const si=STATUS_INFO[view.status]||STATUS_INFO.manual;
@@ -980,8 +1045,15 @@ async function onCheckLive(e){
       badge.className=`status-badge ${si.cls}`;
       badge.innerHTML=`<span class="sd"></span>${si.label}`;
       row.querySelector('.checked').textContent="checked just now";
-      const total=view.price!=null?view.price+serviceFee(view.price):null;
-      row.querySelector('.vendor-price').textContent=total!=null?`$${total.toFixed(2)} on site`:"Price: check vendor";
+      const ppl=pricePerLb(view.price,view);
+      const lbs=resolveWeightLbs(view);
+      const pkgNote=lbs?` · ${lbs} lb pkg`:"";
+      row.querySelector('.vendor-price').textContent=ppl!=null?`${formatPerLb(ppl)} vendor${pkgNote}`:"Price: check vendor";
+      const breakdown=row.querySelector('.price-breakdown');
+      if(breakdown&&canBuy(view)){
+        const sitePpl=onSitePerLb(view.price,view);
+        if(sitePpl!=null) breakdown.innerHTML=`<b>${formatPerLb(sitePpl)}</b> on site (incl. 5% brokerage)`;
+      }
       render();
     }
     btn.textContent="⚡ Check live";btn.disabled=false;
@@ -1028,7 +1100,7 @@ function onPrepareRequest(e){
 }
 function openModal(id){
   const f=FRUITS.find(x=>x.id===id);if(!f)return;
-  const vs=vendorsFor(f.name);
+  const vs=sortVendorsByPrice(vendorsFor(f.name),f.name);
   const buyBody = vs.length
     ? `<div class="vendor-list">${vs.map(v=>vendorRow(v,f.name)).join('')}</div>`
     : `<div class="no-vendors"><b>No tracked vendors carry ${f.name} in ${REGION_LABEL[state.region]} yet.</b><br>Try switching to <b>All regions</b> or <b>Ships to me</b> — vendor coverage keeps growing.</div>`;
@@ -1140,27 +1212,30 @@ let swipeDeck=[], swipeLiked=0;
 const swipeScrim=document.getElementById('swipeScrim');
 const swipeStack=document.getElementById('swipeStack');
 
-function shuffle(arr){
-  const a=arr.slice();
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
-}
 function buildSwipeDeck(){
   const pairs=[];
   FRUITS.forEach(f=>{
     VENDORS.filter(v=>v.fruits.includes(f.name)).forEach(v=>pairs.push({f,v}));
   });
-  swipeDeck=shuffle(pairs);
+  pairs.sort((a,b)=>{
+    const va=resolveVendorFruitView(a.v,a.f.name), vb=resolveVendorFruitView(b.v,b.f.name);
+    const pa=pricePerLb(va.price,va), pb=pricePerLb(vb.price,vb);
+    if(pa==null&&pb==null) return 0;
+    if(pa==null) return 1;
+    if(pb==null) return -1;
+    return pa-pb;
+  });
+  swipeDeck=pairs;
 }
 function nextSwipePair(){
   if(!swipeDeck.length) buildSwipeDeck();
-  return swipeDeck.pop();
+  return swipeDeck.shift();
 }
 function swipeCardHtml(pair){
   const {f,v}=pair;
   const view=resolveVendorFruitView(v,f.name);
-  const total=view.price!=null?view.price+serviceFee(view.price):null;
-  const priceText=total!=null?`$${total.toFixed(2)}`:"Check price →";
+  const ppl=pricePerLb(view.price,view);
+  const priceText=ppl!=null?formatPerLb(ppl):"Check price →";
   return `<div class="swipe-card">
     <div class="sc-photo">
       <img src="images/fruit/${f.art}.jpg" alt="${f.name}" draggable="false">
