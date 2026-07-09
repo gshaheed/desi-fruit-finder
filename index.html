@@ -235,6 +235,24 @@
   .variety{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
   .variety-name{display:block;font-weight:700;font-size:13.5px;margin-bottom:3px}
   .variety-desc{display:block;font-size:12.5px;color:var(--ink-soft);line-height:1.4}
+  .variety-picker{margin:0 0 18px}
+  .vp-hint{margin:0 0 12px;font-size:14px;color:var(--ink-soft)}
+  .variety-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+  .variety-pick{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:12px 14px;text-align:left;transition:border-color .15s,box-shadow .15s}
+  .variety-pick:hover{border-color:var(--mango);box-shadow:0 6px 16px var(--shadow)}
+  .variety-pick .vp-name{display:block;font-weight:700;font-size:14.5px;margin-bottom:4px}
+  .variety-pick .vp-meta{display:block;font-size:12px;color:var(--ink-soft);line-height:1.35}
+  .variety-pick.all{grid-column:1/-1;text-align:center;font-weight:600}
+  .variety-back{display:inline-flex;align-items:center;gap:6px;border:none;background:transparent;color:var(--guava);font-weight:700;font-size:13px;padding:0;margin:0 0 12px;cursor:pointer}
+  .shop-banner{background:linear-gradient(135deg,#e3f5ea,#fffaf2);border:1px solid #b8e6cc;border-radius:14px;padding:12px 14px;margin:0 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .shop-banner b{color:var(--leaf)}
+  .card-shop{color:var(--leaf)}
+  .swipe-liked-panel{width:100%;max-width:380px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:12px;margin-top:8px;max-height:180px;overflow:auto}
+  .swipe-liked-panel h4{margin:0 0 8px;font-size:13px;color:#fff;font-weight:700}
+  .swipe-liked-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:12.5px;color:#fff}
+  .swipe-liked-item:last-child{border-bottom:none}
+  .swipe-liked-item button{border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:100px;padding:5px 10px;font-size:11.5px;font-weight:700}
+  .swipe-tally{cursor:pointer}
   .enc-toggle{background:transparent;border:1.5px solid var(--line);border-radius:100px;padding:9px 16px;font-size:13.5px;font-weight:600;color:var(--ink-soft);margin-top:4px}
   .enc-toggle:hover{border-color:var(--ink);color:var(--ink)}
   .enc[hidden]{display:none}
@@ -334,6 +352,7 @@
     <div class="top-actions">
       <nav>
         <a href="#finder">Find fruit</a>
+        <a href="#finder" id="navShop">🛒 Shop</a>
         <a href="#" id="navSwipe">🔥 Fruit Swipe</a>
         <a href="#how">How it works</a>
         <a href="#order-terms">Order on site</a>
@@ -353,6 +372,7 @@
       <p class="lead">Mango, lychee, mangosteen, jamun, chikoo and more — find which vendors carry each fruit, see whether it looks in stock, and <b>buy on site</b> when it's available.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#finder">Find fruit near me →</a>
+        <button class="btn btn-ghost" id="heroShopBtn">🛒 Shop in-stock fruit</button>
         <button class="btn btn-ghost" id="heroSwipeBtn">🔥 Swipe fruit near you</button>
       </div>
       <div class="stat-strip">
@@ -456,14 +476,18 @@
   <button class="swipe-close" id="swipeClose" aria-label="Close">✕</button>
   <div class="swipe-header">
     <span class="swipe-title">🔥 Fruit Swipe</span>
-    <span class="swipe-tally"><span id="swipeLikedCount">0</span> liked</span>
+    <span class="swipe-tally" id="swipeTally" title="View your liked fruit">❤️ <span id="swipeLikedCount">0</span> liked</span>
+  </div>
+  <div class="swipe-liked-panel" id="swipeLikedPanel" hidden>
+    <h4>Your liked fruit</h4>
+    <div id="swipeLikedList"></div>
   </div>
   <div class="swipe-stack" id="swipeStack"></div>
   <div class="swipe-actions">
     <button class="swipe-action-btn pass" id="swipePassBtn" aria-label="Pass">✕</button>
     <button class="swipe-action-btn like" id="swipeLikeBtn" aria-label="Like">❤️</button>
   </div>
-  <p class="swipe-hint">Drag a card, or use the buttons — it loops forever.</p>
+  <p class="swipe-hint">Drag or tap ❤️/✕ — likes are saved. Tap the ❤️ count to view them.</p>
 </div>
 
 <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
@@ -570,6 +594,7 @@ let state={q:"",season:null,taste:null,region:"all",onlyAvail:false};
 
 const MARKUP_RATE=0.05;
 const CART_KEY="dff_cart_v1";
+const SWIPE_LIKES_KEY="dff_swipe_likes_v1";
 const CHECKOUT_ENDPOINT="https://desi-fruit-check-stock.gurneetsshaheed.workers.dev/create-checkout";
 
 function canBuy(view){
@@ -879,8 +904,12 @@ function matches(f){
 
 function card(f){
   const s=summaryFor(f.name);
+  const buy=buyableSummaryFor(f.name);
   const displayPpl=s.lowestPricePerLb!=null?Math.round(s.lowestPricePerLb*(1+MARKUP_RATE)*100)/100:null;
   const seasonDot=SEASON_COLORS[f.season]||'#999';
+  const priceLine=buy.count
+    ?`<div class="card-price card-shop">🛒 Shop from ${buy.lowestPpl!=null?formatPerLb(buy.lowestPpl):'listed price'} · ${buy.count} listing${buy.count===1?'':'s'}</div>`
+    :(displayPpl!=null?`<div class="card-price">From ${formatPerLb(displayPpl)} on site</div>`:"");
   return `<button class="card" data-id="${f.id}">
     <div class="art" style="background:${f.bg}">
       <span class="season-tag"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${seasonDot};margin-right:5px;vertical-align:middle"></span>${f.season}</span>
@@ -890,7 +919,7 @@ function card(f){
     <h3>${f.name}</h3>
     <div class="local">${f.local}</div>
     <div class="avail ${s.kind}"><span class="adot"></span>${s.label}</div>
-    ${displayPpl!=null?`<div class="card-price">From ${formatPerLb(displayPpl)} on site</div>`:""}
+    ${priceLine}
   </button>`;
 }
 
@@ -931,6 +960,91 @@ function relTime(iso){
   if(diff<3600) return `checked ${Math.max(1,Math.round(diff/60))} min ago`;
   if(diff<86400) return `checked ${Math.round(diff/3600)} hr ago`;
   return `checked ${Math.round(diff/86400)} day(s) ago`;
+}
+function buyableSummaryFor(fruitName){
+  let count=0, lowestPpl=null;
+  vendorsFor(fruitName).forEach(v=>{
+    const view=resolveVendorFruitView(v,fruitName);
+    if(!canBuy(view)) return;
+    count++;
+    const ppl=onSitePerLb(view.price,view);
+    if(ppl!=null&&(lowestPpl===null||ppl<lowestPpl)) lowestPpl=ppl;
+  });
+  return {count,lowestPpl};
+}
+function normalizeVarietyName(name){return String(name||'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'');}
+function varietyNamesForVendor(v,fruitName){
+  return (v.variety_names&&v.variety_names[fruitName])||[];
+}
+function vendorCarriesVariety(v,fruitName,varietyName){
+  if(!varietyName) return true;
+  const q=normalizeVarietyName(varietyName);
+  const names=varietyNamesForVendor(v,fruitName);
+  if(!names.length) return false;
+  return names.some(n=>{
+    const nn=normalizeVarietyName(n);
+    return nn===q||nn.includes(q)||q.includes(nn);
+  });
+}
+function collectVarietiesForFruit(fruit){
+  const map=new Map();
+  (fruit.varieties||[]).forEach(v=>map.set(normalizeVarietyName(v.n),{name:v.n,desc:v.d}));
+  vendorsFor(fruit.name).forEach(v=>{
+    varietyNamesForVendor(v,fruit.name).forEach(n=>{
+      const key=normalizeVarietyName(n);
+      if(!map.has(key)) map.set(key,{name:n,desc:null});
+    });
+  });
+  return [...map.values()].sort((a,b)=>{
+    const ca=vendorsFor(fruit.name).filter(v=>vendorCarriesVariety(v,fruit.name,a.name)).length;
+    const cb=vendorsFor(fruit.name).filter(v=>vendorCarriesVariety(v,fruit.name,b.name)).length;
+    return cb-ca||a.name.localeCompare(b.name);
+  });
+}
+function varietyVendorCount(fruitName,varietyName){
+  return vendorsFor(fruitName).filter(v=>vendorCarriesVariety(v,fruitName,varietyName)).length;
+}
+function swipeLikeKey(pair){return `${pair.v.id}::${pair.f.name}`;}
+function loadSwipeLikes(){
+  try{return JSON.parse(localStorage.getItem(SWIPE_LIKES_KEY)||'[]');}catch(e){return [];}
+}
+function saveSwipeLikes(likes){localStorage.setItem(SWIPE_LIKES_KEY,JSON.stringify(likes));}
+function addSwipeLike(pair){
+  const likes=loadSwipeLikes();
+  const key=swipeLikeKey(pair);
+  if(likes.some(l=>l.key===key)) return;
+  likes.unshift({key,vendorId:pair.v.id,vendorName:pair.v.name,fruitName:pair.f.name,fruitId:pair.f.id,at:Date.now()});
+  saveSwipeLikes(likes.slice(0,100));
+  syncSwipeLikedUI();
+}
+function removeSwipeLike(key){
+  saveSwipeLikes(loadSwipeLikes().filter(l=>l.key!==key));
+  syncSwipeLikedUI();
+}
+function syncSwipeLikedUI(){
+  const likes=loadSwipeLikes();
+  const countEl=document.getElementById('swipeLikedCount');
+  if(countEl) countEl.textContent=String(likes.length);
+  const listEl=document.getElementById('swipeLikedList');
+  const panel=document.getElementById('swipeLikedPanel');
+  if(!listEl||!panel) return;
+  if(!likes.length){
+    listEl.innerHTML='<div style="font-size:12.5px;color:rgba(255,255,255,.75)">Like cards with ❤️ — they stay saved here.</div>';
+    return;
+  }
+  listEl.innerHTML=likes.map(l=>`
+    <div class="swipe-liked-item">
+      <span>${l.fruitName} · ${l.vendorName}</span>
+      <span style="display:flex;gap:6px">
+        <button type="button" class="swipe-open-liked" data-fruit-id="${l.fruitId}">Shop</button>
+        <button type="button" class="swipe-remove-liked" data-like-key="${l.key}">✕</button>
+      </span>
+    </div>`).join('');
+  listEl.querySelectorAll('.swipe-open-liked').forEach(b=>b.addEventListener('click',()=>{
+    closeSwipeView();
+    openModal(b.dataset.fruitId);
+  }));
+  listEl.querySelectorAll('.swipe-remove-liked').forEach(b=>b.addEventListener('click',()=>removeSwipeLike(b.dataset.likeKey)));
 }
 function listingPriceLabel(view){
   if(!canBuy(view)) return "Price: check vendor";
@@ -1090,12 +1204,66 @@ function onPrepareRequest(e){
     copiedNote.hidden=true;
   });
 }
-function openModal(id){
+function renderVarietyPicker(f){
+  const varieties=collectVarietiesForFruit(f);
+  if(!varieties.length) return null;
+  return `
+    <div class="variety-picker">
+      <p class="vp-hint">Pick a variety first — then we'll show vendors that carry it in ${REGION_LABEL[state.region]}.</p>
+      <div class="variety-pick-grid">
+        ${varieties.map(v=>{
+          const n=varietyVendorCount(f.name,v.name);
+          return `<button type="button" class="variety-pick" data-variety="${v.name.replace(/"/g,'&quot;')}">
+            <span class="vp-name">${v.name}</span>
+            <span class="vp-meta">${n?`${n} vendor${n===1?'':'s'} near you`: 'No tracked vendors yet'}${v.desc?` · ${v.desc.split('—')[0].trim()}`:''}</span>
+          </button>`;
+        }).join('')}
+        <button type="button" class="variety-pick all" data-variety="">Show all varieties</button>
+      </div>
+    </div>`;
+}
+function renderVendorSection(f,selectedVariety){
+  let vs=sortVendorsByPrice(vendorsFor(f.name),f.name);
+  if(selectedVariety) vs=vs.filter(v=>vendorCarriesVariety(v,f.name,selectedVariety));
+  const buyable=vs.filter(v=>canBuy(resolveVendorFruitView(v,f.name))).length;
+  const backBtn=collectVarietiesForFruit(f).length
+    ?`<button type="button" class="variety-back" data-fruit-id="${f.id}">← All varieties</button>`
+    :"";
+  const varietyLabel=selectedVariety?`<span class="ctx"> · ${selectedVariety}</span>`:"";
+  const shopBanner=buyable?`<div class="shop-banner"><b>Buy on site</b> — add to cart and pay through Stripe. We place the order with the vendor for you.</div>`:"";
+  const buyBody=vs.length
+    ?`${shopBanner}<div class="vendor-list">${vs.map(v=>vendorRow(v,f.name)).join('')}</div>`
+    :`<div class="no-vendors"><b>No vendors carry ${selectedVariety?`${selectedVariety} `:''}${f.name} in ${REGION_LABEL[state.region]} yet.</b><br>Try <b>All regions</b>, another variety, or <b>Ships to me</b>.</div>`;
+  return {html:`${backBtn}
+      <div class="buy-head">
+        <h4>Where to buy${selectedVariety?` · ${selectedVariety}`:''}</h4>
+        <span class="ctx">Showing ${REGION_LABEL[state.region]} · ${vs.length} vendor${vs.length===1?'':'s'}${varietyLabel}</span>
+      </div>
+      ${buyBody}`, vendorCount:vs.length};
+}
+function bindModalActions(root){
+  root.querySelector('.close-x')?.addEventListener('click',closeModal);
+  root.querySelectorAll('.check-live-btn').forEach(b=>b.addEventListener('click',onCheckLive));
+  root.querySelectorAll('.buy-btn').forEach(b=>b.addEventListener('click',onBuyClick));
+  root.querySelectorAll('.request-btn').forEach(b=>b.addEventListener('click',onToggleRequestForm));
+  root.querySelectorAll('.request-copy-btn').forEach(b=>b.addEventListener('click',onPrepareRequest));
+  root.querySelectorAll('.variety-pick').forEach(b=>b.addEventListener('click',()=>{
+    const fruitId=root.dataset.fruitId;
+    openModal(fruitId,b.dataset.variety);
+  }));
+  root.querySelectorAll('.variety-back').forEach(b=>b.addEventListener('click',()=>openModal(b.dataset.fruitId)));
+}
+function openModal(id,selectedVariety){
   const f=FRUITS.find(x=>x.id===id);if(!f)return;
-  const vs=sortVendorsByPrice(vendorsFor(f.name),f.name);
-  const buyBody = vs.length
-    ? `<div class="vendor-list">${vs.map(v=>vendorRow(v,f.name)).join('')}</div>`
-    : `<div class="no-vendors"><b>No tracked vendors carry ${f.name} in ${REGION_LABEL[state.region]} yet.</b><br>Try switching to <b>All regions</b> or <b>Ships to me</b> — vendor coverage keeps growing.</div>`;
+  const varieties=collectVarietiesForFruit(f);
+  const atVarietyPicker=arguments.length<2&&varieties.length>0;
+  let buySection;
+  if(atVarietyPicker){
+    buySection=renderVarietyPicker(f);
+  }else{
+    buySection=renderVendorSection(f,selectedVariety||null).html;
+  }
+  modal.dataset.fruitId=f.id;
   modal.innerHTML=`
     <button class="close-x" aria-label="Close">✕</button>
     <div class="m-hero">
@@ -1110,11 +1278,7 @@ function openModal(id){
       </div>
     </div>
     <div class="m-body">
-      <div class="buy-head">
-        <h4>Where to buy</h4>
-        <span class="ctx">Showing ${REGION_LABEL[state.region]} · ${vs.length} vendor${vs.length===1?"":"s"}</span>
-      </div>
-      ${buyBody}
+      ${buySection}
       <hr class="m-divider">
       <div class="m-facts">
         <div class="fact"><div class="k">Season</div><div class="v">${f.season}</div></div>
@@ -1131,11 +1295,7 @@ function openModal(id){
     </div>`;
   scrim.classList.add('open');
   document.body.style.overflow='hidden';
-  modal.querySelector('.close-x').addEventListener('click',closeModal);
-  modal.querySelectorAll('.check-live-btn').forEach(b=>b.addEventListener('click',onCheckLive));
-  modal.querySelectorAll('.buy-btn').forEach(b=>b.addEventListener('click',onBuyClick));
-  modal.querySelectorAll('.request-btn').forEach(b=>b.addEventListener('click',onToggleRequestForm));
-  modal.querySelectorAll('.request-copy-btn').forEach(b=>b.addEventListener('click',onPrepareRequest));
+  bindModalActions(modal);
   const enc=modal.querySelector('#enc'), encBtn=modal.querySelector('#encToggle');
   encBtn.addEventListener('click',()=>{const h=enc.hasAttribute('hidden');if(h){enc.removeAttribute('hidden');encBtn.textContent="Hide the full fruit guide ↑";}else{enc.setAttribute('hidden','');encBtn.textContent="Read the full fruit guide ↓";}});
   modal.scrollTop=0;
@@ -1200,7 +1360,7 @@ document.getElementById('chatForm').addEventListener('submit',async(e)=>{
 });
 
 // ---- Fruit Swipe: an endless Tinder-style deck of (fruit, vendor) profiles ----
-let swipeDeck=[], swipeLiked=0;
+let swipeDeck=[];
 const swipeScrim=document.getElementById('swipeScrim');
 const swipeStack=document.getElementById('swipeStack');
 
@@ -1304,10 +1464,7 @@ function finishSwipe(card,direction){
   const flyX=direction==='like'?900:-900;
   card.style.transform=`translate(${flyX}px, -40px) rotate(${direction==='like'?30:-30}deg)`;
   card.style.opacity='0';
-  if(direction==='like'){
-    swipeLiked++;
-    document.getElementById('swipeLikedCount').textContent=swipeLiked;
-  }
+  if(direction==='like'&&card._pair) addSwipeLike(card._pair);
   setTimeout(()=>{
     card.remove();
     refillSwipeStack();
@@ -1323,22 +1480,39 @@ function openSwipeView(){
   swipeStack.innerHTML='';
   buildSwipeDeck();
   refillSwipeStack();
+  syncSwipeLikedUI();
   swipeScrim.classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeSwipeView(){
   swipeScrim.classList.remove('open');
+  document.getElementById('swipeLikedPanel').hidden=true;
   document.body.style.overflow='';
 }
+function openShopFinder(){
+  state.onlyAvail=true;
+  const toggle=document.getElementById('availToggle');
+  if(toggle) toggle.checked=true;
+  syncChips();
+  render();
+  document.getElementById('finder').scrollIntoView({behavior:'smooth'});
+}
 document.getElementById('navSwipe').addEventListener('click',(e)=>{e.preventDefault();openSwipeView();});
+document.getElementById('navShop').addEventListener('click',(e)=>{e.preventDefault();openShopFinder();});
 document.getElementById('heroSwipeBtn').addEventListener('click',openSwipeView);
+document.getElementById('heroShopBtn').addEventListener('click',openShopFinder);
 document.getElementById('swipeClose').addEventListener('click',closeSwipeView);
 document.getElementById('swipePassBtn').addEventListener('click',()=>programmaticSwipe('pass'));
 document.getElementById('swipeLikeBtn').addEventListener('click',()=>programmaticSwipe('like'));
+document.getElementById('swipeTally').addEventListener('click',()=>{
+  const panel=document.getElementById('swipeLikedPanel');
+  panel.hidden=!panel.hidden;
+  syncSwipeLikedUI();
+});
 document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&swipeScrim.classList.contains('open'))closeSwipeView();});
 
 function fmtDate(iso){try{return new Date(iso).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}catch(e){return "recently";}}
-function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();updateCartUI();}
+function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();updateCartUI();syncSwipeLikedUI();}
 document.getElementById('cartToggle').addEventListener('click',openCart);
 document.getElementById('cartClose').addEventListener('click',closeCart);
 document.getElementById('cartScrim').addEventListener('click',e=>{if(e.target===document.getElementById('cartScrim'))closeCart();});
