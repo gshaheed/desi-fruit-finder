@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Desi Fruit Finder — Where to buy desi & tropical fruit near you</title>
-<meta name="description" content="Find where to buy South Asian & tropical fruit — mango, lychee, mangosteen, jamun, chikoo and more — near you in California or shipped to your door, and see whether it's in stock right now." />
+<meta name="description" content="Find where to buy South Asian & tropical fruit — mango, lychee, mangosteen, jamun, chikoo and more — near you anywhere in the US or shipped to your door, and see whether it's in stock right now." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -78,6 +78,8 @@
   .region-toggle button{border:none;background:transparent;border-radius:100px;padding:8px 16px;font-size:13.5px;font-weight:600;color:var(--ink-soft);transition:all .15s;white-space:nowrap}
   .region-toggle button.on{background:var(--ink);color:var(--paper)}
   .region-note{font-size:12.5px;color:var(--muted);margin-left:auto}
+  .state-select{border:1.5px solid var(--line);background:var(--paper);border-radius:100px;padding:8px 14px;font-size:13.5px;font-weight:600;color:var(--ink);font-family:inherit;min-width:148px;cursor:pointer}
+  .state-select:disabled{opacity:.45;cursor:default}
   .search-row{display:flex;gap:12px;align-items:center}
   .search-box{flex:1;display:flex;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--line);border-radius:14px;padding:0 14px}
   .search-box:focus-within{border-color:var(--mango)}
@@ -262,6 +264,7 @@
     .m-facts{grid-template-columns:1fr}
     .region-note{margin-left:0;width:100%}
     .region-row{flex-direction:column;align-items:stretch;gap:8px}
+    .state-select{width:100%}
     .region-toggle{width:100%;flex-wrap:wrap}
     .region-toggle button{flex:1 1 calc(50% - 6px);padding:8px 10px;font-size:12.5px;text-align:center}
   }
@@ -378,7 +381,7 @@
       <div class="stat-strip">
         <div class="stat"><b id="statFruit">23</b><span>fruits</span></div>
         <div class="stat"><b id="statVendor">24</b><span>vendors tracked</span></div>
-        <div class="stat"><b>3</b><span>regions + shipping</span></div>
+        <div class="stat"><b>50</b><span>states + shipping</span></div>
       </div>
     </div>
     <div class="hero-art" id="heroArt"></div>
@@ -389,16 +392,16 @@
   <div class="wrap">
     <div class="section-head">
       <h2>The Finder</h2>
-      <p>Pick where you are, search or filter, then open any fruit to see where to buy it and its latest stock status.</p>
+      <p>Pick your state, search or filter, then open any fruit to see where to buy it and its latest stock status.</p>
     </div>
 
     <div class="controls">
       <div class="region-row">
         <span class="region-label">📍 I'm shopping in</span>
+        <select id="stateSelect" class="state-select" aria-label="Select your state"></select>
         <div class="region-toggle" id="regionToggle">
-          <button data-region="all" class="on">All regions</button>
-          <button data-region="norcal">NorCal</button>
-          <button data-region="socal">SoCal</button>
+          <button data-region="all" class="on">All US</button>
+          <button data-region="local">Near me</button>
           <button data-region="ships">Ships to me</button>
         </div>
         <span class="region-note" id="regionNote"></span>
@@ -427,7 +430,7 @@
       <p>Listings with a price and an <b>in stock</b> or <b>pre-order</b> badge can be added to your cart and purchased on site — see <a href="#order-terms" style="color:var(--sun)">Order on site</a> for details.</p>
     </div>
     <div class="mini">
-      <div class="m"><b>Near you</b><span>Filter by NorCal, SoCal, or vendors that ship to your door.</span></div>
+      <div class="m"><b>Near you</b><span>Filter by your state, or vendors that ship nationwide to your door.</span></div>
       <div class="m"><b>Right now</b><span>Live-ish stock badges for online sellers, refreshed automatically.</span></div>
       <div class="m"><b>Every source</b><span>Desi, Asian and Latin groceries, specialty shippers and corporate stores.</span></div>
       <div class="m"><b>Know the fruit</b><span>Each fruit also has a full guide: season, how to eat, nutrition.</span></div>
@@ -456,7 +459,7 @@
       <p>The best desi and tropical fruits show up for only a few weeks a year, and the good stock vanishes fast. This finder was built to answer one question quickly: where can I actually buy this fruit right now, near me?</p>
     </div>
     <div>
-      <p style="color:#e8dccb;font-size:16px">It covers South Asian favourites and the wider tropical world, from Alphonso mango and jamun to mangosteen, rambutan and dragon fruit — with real vendors across California and nationwide shipping. Vendor coverage keeps growing.</p>
+      <p style="color:#e8dccb;font-size:16px">It covers South Asian favourites and the wider tropical world, from Alphonso mango and jamun to mangosteen, rambutan and dragon fruit — with real vendors across all 50 states and nationwide shipping. Vendor coverage keeps growing.</p>
     </div>
   </div>
 </section>
@@ -590,7 +593,33 @@ function inSeasonNow(fruitName){
   if(!months||!months.length) return null;
   return months.includes(new Date().getMonth()+1);
 }
-let state={q:"",season:null,taste:null,region:"all",onlyAvail:false};
+let state={q:"",season:null,taste:null,region:"all",usState:"CA",onlyAvail:false};
+
+const LOCATION_KEY="dff_location_v1";
+const US_STATES=[
+  {code:"AL",name:"Alabama"},{code:"AK",name:"Alaska"},{code:"AZ",name:"Arizona"},{code:"AR",name:"Arkansas"},
+  {code:"CA",name:"California"},{code:"CO",name:"Colorado"},{code:"CT",name:"Connecticut"},{code:"DE",name:"Delaware"},
+  {code:"DC",name:"District of Columbia"},{code:"FL",name:"Florida"},{code:"GA",name:"Georgia"},{code:"HI",name:"Hawaii"},
+  {code:"ID",name:"Idaho"},{code:"IL",name:"Illinois"},{code:"IN",name:"Indiana"},{code:"IA",name:"Iowa"},
+  {code:"KS",name:"Kansas"},{code:"KY",name:"Kentucky"},{code:"LA",name:"Louisiana"},{code:"ME",name:"Maine"},
+  {code:"MD",name:"Maryland"},{code:"MA",name:"Massachusetts"},{code:"MI",name:"Michigan"},{code:"MN",name:"Minnesota"},
+  {code:"MS",name:"Mississippi"},{code:"MO",name:"Missouri"},{code:"MT",name:"Montana"},{code:"NE",name:"Nebraska"},
+  {code:"NV",name:"Nevada"},{code:"NH",name:"New Hampshire"},{code:"NJ",name:"New Jersey"},{code:"NM",name:"New Mexico"},
+  {code:"NY",name:"New York"},{code:"NC",name:"North Carolina"},{code:"ND",name:"North Dakota"},{code:"OH",name:"Ohio"},
+  {code:"OK",name:"Oklahoma"},{code:"OR",name:"Oregon"},{code:"PA",name:"Pennsylvania"},{code:"RI",name:"Rhode Island"},
+  {code:"SC",name:"South Carolina"},{code:"SD",name:"South Dakota"},{code:"TN",name:"Tennessee"},{code:"TX",name:"Texas"},
+  {code:"UT",name:"Utah"},{code:"VT",name:"Vermont"},{code:"VA",name:"Virginia"},{code:"WA",name:"Washington"},
+  {code:"WV",name:"West Virginia"},{code:"WI",name:"Wisconsin"},{code:"WY",name:"Wyoming"}
+];
+function loadLocation(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(LOCATION_KEY)||"{}");
+    if(saved.region) state.region=saved.region;
+    if(saved.usState) state.usState=saved.usState;
+  }catch(e){}
+}
+function saveLocation(){localStorage.setItem(LOCATION_KEY,JSON.stringify({region:state.region,usState:state.usState}));}
+function stateName(code){return (US_STATES.find(s=>s.code===code)||{name:code}).name;}
 
 const MARKUP_RATE=0.05;
 const CART_KEY="dff_cart_v1";
@@ -748,12 +777,31 @@ document.getElementById('statFruit').textContent=FRUITS.length;
 const SEASONS=["Summer","Monsoon","Winter"];
 const TASTES=[...new Set(FRUITS.flatMap(f=>f.tastes))];
 
-function vendorInRegion(v,region){
-  if(region==='all') return true;
-  if(region==='ships') return v.region==='ships-statewide';
-  if(region==='norcal') return v.region==='norcal'||v.region==='both-ca';
-  if(region==='socal') return v.region==='socal'||v.region==='both-ca';
+function vendorShipsNationwide(v){return v.region==="ships-statewide";}
+function vendorNationwideInstore(v){return v.region==="nationwide-instore";}
+function vendorStates(v){
+  if(v.states&&v.states.length) return v.states;
+  if(vendorShipsNationwide(v)||vendorNationwideInstore(v)) return null;
+  if(v.region==="norcal"||v.region==="socal"||v.region==="both-ca") return ["CA"];
+  return [];
+}
+function vendorServesState(v,st){
+  if(!st) return true;
+  if(vendorNationwideInstore(v)) return true;
+  const states=vendorStates(v);
+  if(states===null) return false;
+  return states.includes(st);
+}
+function vendorInRegion(v,mode){
+  if(mode==="all") return true;
+  if(mode==="ships") return vendorShipsNationwide(v);
+  if(mode==="local") return vendorServesState(v,state.usState);
   return true;
+}
+function regionLabel(){
+  if(state.region==="all") return "the US";
+  if(state.region==="ships") return "nationwide shipping";
+  return stateName(state.usState);
 }
 function vendorsFor(fruitName){
   return VENDORS.filter(v=>v.fruits.includes(fruitName) && vendorInRegion(v,state.region));
@@ -946,7 +994,11 @@ function render(){
 
 const scrim=document.getElementById('scrim');
 const modal=document.getElementById('modal');
-const REGION_LABEL={all:"all regions",norcal:"NorCal",socal:"SoCal",ships:"shipped to you"};
+const REGION_HINT={
+  all:"Every vendor: in-store chains and online shippers across the US.",
+  local:"Stores and chains serving your state — pick a state above.",
+  ships:"Online sellers that ship straight to your door."
+};
 const STATUS_INFO={
   in_stock:{cls:"sb-in",label:"In stock"}, pre_order:{cls:"sb-pre",label:"Pre-order"},
   sold_out:{cls:"sb-out",label:"Sold out"}, season_ended:{cls:"sb-ended",label:"Season ended"},
@@ -1209,7 +1261,7 @@ function renderVarietyPicker(f){
   if(!varieties.length) return null;
   return `
     <div class="variety-picker">
-      <p class="vp-hint">Pick a variety first — then we'll show vendors that carry it in ${REGION_LABEL[state.region]}.</p>
+      <p class="vp-hint">Pick a variety first — then we'll show vendors that carry it in ${regionLabel()}.</p>
       <div class="variety-pick-grid">
         ${varieties.map(v=>{
           const n=varietyVendorCount(f.name,v.name);
@@ -1233,11 +1285,11 @@ function renderVendorSection(f,selectedVariety){
   const shopBanner=buyable?`<div class="shop-banner"><b>Buy on site</b> — add to cart and pay through Stripe. We place the order with the vendor for you.</div>`:"";
   const buyBody=vs.length
     ?`${shopBanner}<div class="vendor-list">${vs.map(v=>vendorRow(v,f.name)).join('')}</div>`
-    :`<div class="no-vendors"><b>No vendors carry ${selectedVariety?`${selectedVariety} `:''}${f.name} in ${REGION_LABEL[state.region]} yet.</b><br>Try <b>All regions</b>, another variety, or <b>Ships to me</b>.</div>`;
+    :`<div class="no-vendors"><b>No vendors carry ${selectedVariety?`${selectedVariety} `:''}${f.name} in ${regionLabel()} yet.</b><br>Try <b>All US</b>, another variety, another state, or <b>Ships to me</b>.</div>`;
   return {html:`${backBtn}
       <div class="buy-head">
         <h4>Where to buy${selectedVariety?` · ${selectedVariety}`:''}</h4>
-        <span class="ctx">Showing ${REGION_LABEL[state.region]} · ${vs.length} vendor${vs.length===1?'':'s'}${varietyLabel}</span>
+        <span class="ctx">Showing ${regionLabel()} · ${vs.length} vendor${vs.length===1?'':'s'}${varietyLabel}</span>
       </div>
       ${buyBody}`, vendorCount:vs.length};
 }
@@ -1304,18 +1356,30 @@ function closeModal(){scrim.classList.remove('open');document.body.style.overflo
 scrim.addEventListener('click',e=>{if(e.target===scrim)closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-const REGION_HINT={
-  all:"Every vendor: California stores + nationwide shipping.",
-  norcal:"Bay Area & Northern California stores, plus shippers.",
-  socal:"LA & Southern California stores, plus shippers.",
-  ships:"Online sellers that ship straight to your door."
-};
-document.getElementById('regionToggle').querySelectorAll('button').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.getElementById('regionToggle').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
-    b.classList.add('on');state.region=b.dataset.region;regionNote.textContent=REGION_HINT[state.region];render();
+function syncLocationUI(){
+  const select=document.getElementById('stateSelect');
+  if(select) select.value=state.usState;
+  if(select) select.disabled=state.region!=='local';
+  document.getElementById('regionToggle').querySelectorAll('button').forEach(b=>{
+    b.classList.toggle('on',b.dataset.region===state.region);
   });
-});
+  regionNote.textContent=REGION_HINT[state.region]||'';
+}
+function setupLocationControls(){
+  const select=document.getElementById('stateSelect');
+  if(select){
+    select.innerHTML=US_STATES.map(s=>`<option value="${s.code}">${s.name}</option>`).join('');
+    select.addEventListener('change',()=>{
+      state.usState=select.value;saveLocation();if(state.region==='local') render();
+    });
+  }
+  document.getElementById('regionToggle').querySelectorAll('button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.getElementById('regionToggle').querySelectorAll('button').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');state.region=b.dataset.region;saveLocation();syncLocationUI();render();
+    });
+  });
+}
 
 searchEl.addEventListener('input',()=>{state.q=searchEl.value.trim().toLowerCase();render();});
 
@@ -1512,7 +1576,7 @@ document.getElementById('swipeTally').addEventListener('click',()=>{
 document.addEventListener('keydown',(e)=>{if(e.key==='Escape'&&swipeScrim.classList.contains('open'))closeSwipeView();});
 
 function fmtDate(iso){try{return new Date(iso).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'});}catch(e){return "recently";}}
-function boot(){buildFilters();regionNote.textContent=REGION_HINT.all;render();updateCartUI();syncSwipeLikedUI();}
+function boot(){loadLocation();setupLocationControls();buildFilters();syncLocationUI();render();updateCartUI();syncSwipeLikedUI();}
 document.getElementById('cartToggle').addEventListener('click',openCart);
 document.getElementById('cartClose').addEventListener('click',closeCart);
 document.getElementById('cartScrim').addEventListener('click',e=>{if(e.target===document.getElementById('cartScrim'))closeCart();});

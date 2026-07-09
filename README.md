@@ -1,17 +1,17 @@
 # Desi Fruit Finder
 
-Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen, jamun, chikoo and more — near you in California or shipped to your door, and see whether it looks **in stock right now**.
+Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen, jamun, chikoo and more — near you anywhere in the US or shipped to your door, and see whether it looks **in stock right now**.
 
 **Live site:** https://gshaheed.github.io/desi-fruit-finder/
 
 ## What it does
 
 - **Where to buy, per fruit** — open any fruit to see the vendors that carry it, each with a stock badge (in stock / pre-order / sold out / check directly), location, notes and a direct link.
-- **Shop by region** — filter to NorCal, SoCal, or vendors that ship nationwide to your door.
+- **Shop by location** — pick your state and filter to nearby stores, or vendors that ship nationwide to your door.
 - **Live-ish stock** — for online stores, a scheduled scraper checks each vendor's product page every 15 minutes and records the result, with a "last checked" time on every listing. Grocery stores don't publish live inventory, so they're marked *check directly* with a link to confirm.
 - **Check live, on demand** — any auto-checked vendor also has a "⚡ Check live" button that fetches its current stock right now, via a small serverless proxy (see "Live checks" below), instead of waiting for the next scheduled run.
 - **Automatic in-season signal** — for grocery vendors that can't be scraped, the site computes a "typically in season" or "typically out of season" read from each fruit's harvest calendar and today's date, so you get a useful signal without ever opening the vendor's site. It's an estimate based on typical season, not a live inventory count.
-- **"Only where I can buy it now"** — one toggle to hide fruits with nothing available in your region.
+- **"Only where I can buy it now"** — one toggle to hide fruits with nothing available in your state.
 - **A full guide for every fruit** — season, how to eat it, nutrition and a fun fact, behind each fruit's *Where to buy* panel. Several fruits (Mango, Lychee, Guava, Custard Apple) also list popular named varieties (Alphonso, Kesar, Totapuri, Chausa...).
 - **Varieties tied to actual vendors** — where we have real evidence (a vendor's own listed specialty, or a specific product name like "Pink Guava"/"Sweetheart Lychee"), the vendor's "Where to buy" row shows exactly which named varieties they carry, not just a general encyclopedia entry.
 - **Real photos** — every fruit card and detail panel shows an actual photo (`images/fruit/`), not just the illustrated art. The inline SVG illustrations still render as a fallback if a photo fails to load.
@@ -20,7 +20,7 @@ Find **where to buy** South Asian & tropical fruit — mango, lychee, mangosteen
 - **Real prices** — where a vendor's page exposes structured price data (`og:price:amount` or a JSON-LD `Product.offers.price`), the scraper reads it and buyable listings show that price on site. No price signal found → shows "check vendor" instead of guessing.
 - **🔥 Fruit Swipe** — an endless Tinder-style card deck (nav bar or the hero button) of every tracked (fruit, vendor) pairing: photo, "Fruit Name, $price" where "Name, Age" would be on a real profile, vendor + location, taste tags and a tagline. Drag or tap ❤️/✕ — it reshuffles forever, purely for fun browsing. Prices are also shown directly on every fruit's grid card ("From $X.XX"), not just inside the swipe deck or a vendor's detail row.
 - **💬 Message us** — a chat-style bubble (bottom-left) opens a small contact form that emails straight to the site owner, no account or backend needed.
-- **23 fruits and 24 vendors tracked**, and growing — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
+- **32 vendors tracked** across all 50 states (and growing) — desi, Asian and Latin groceries, specialty shippers, and corporate stores.
 
 ## How stock checking works
 
@@ -123,6 +123,6 @@ Opening `index.html` directly also works, but `data.json` only loads over http(s
 
 ## Adding a vendor or fruit
 
-- **Vendor:** add an entry to the `vendors` array in `data.json` — set `region` (`norcal`, `socal`, `both-ca`, or `ships-statewide`), list the `fruits` it carries (names must match the fruit names in `index.html`), and set `auto_checked` + a `check_url` if it has one scrapeable product page (otherwise `auto_checked: false` and a `manual` status). If the vendor carries more than one fruit, use `fruit_urls` instead (see "Vendors that carry more than one fruit" above) rather than pointing `check_url` at a shared page.
+- **Vendor:** add an entry to the `vendors` array in `data.json` — set `region` (`ships-statewide` for online shippers, `nationwide-instore` for national chains, or `multi-state` / legacy `norcal` / `socal` / `both-ca` for in-store vendors), and add a `states` array of two-letter codes (e.g. `["TX","OK"]`) for regional stores. List the `fruits` it carries (names must match the fruit names in `index.html`), and set `auto_checked` + a `check_url` if it has one scrapeable product page (otherwise `auto_checked: false` and a `manual` status). If the vendor carries more than one fruit, use `fruit_urls` instead (see "Vendors that carry more than one fruit" above) rather than pointing `check_url` at a shared page.
 - **Fruit:** add an entry to the `FRUITS` array and a matching SVG to the `ART` object in `index.html`, plus a matching entry (with `season_months`, the 1–12 months it's typically available) to the `fruits` array in `data.json`. Drop a photo at `images/fruit/<art-key>.jpg` (same key as the `art` field) — it's picked up automatically, with the SVG as a fallback if it's missing. Optionally add a `varieties` array (`[{n: "name", d: "description"}, ...]`) to show named regional varieties in the fruit guide. The finder, filters and detail panel pick all of this up automatically.
 - **Vendor variety:** if you have real evidence a vendor carries a specific named variety (their own marketing copy, or a distinct product listing — never guess), add `variety_names` to that vendor in `data.json`: `{"Mango": ["Alphonso", "Kesar"]}`. It shows as tags directly on that vendor's row in the fruit's "Where to buy" list.
