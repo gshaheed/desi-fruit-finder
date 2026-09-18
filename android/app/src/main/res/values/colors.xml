@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mango">#FF7A00</color>
+    <color name="guava">#E8195B</color>
+    <color name="leaf">#128A5B</color>
+    <color name="paper">#FFF6EA</color>
+    <color name="ink">#241A12</color>
+</resources>
